@@ -1,3 +1,18 @@
-Testing123
-git cap test
-testing more
+To make git easier you can add aliases to the command line interface.
+
+Assuming you have git installed, open a terminal and run the following commands:
+cd ~/
+pwd
+
+This will tell you what directory the .gitconfig file is in, navigate there and open .gitconfig file. Append the following to your .gitconfig file:
+[alias]
+	unstage = reset HEAD
+	cap = "!f(){ git commit -m \"$*\" && git push -u origin master; }; f"
+	ass = !git add * && git status -s
+	
+	
+Save and close. Now you can do the following:
+
+git ass    <-- adds all modified files to the staging area and lists their status
+
+git cap this is my commit message <-- commits the staging area to the repo, with the message 'this is my commit message', then pushes the repo to origin master (our master repo hosted on github)
