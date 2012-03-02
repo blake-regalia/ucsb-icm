@@ -27,10 +27,10 @@
     <script type="text/javascript" src="includes/arcgis.preload.js"></script>
 	
 	<!-- ArcGIS API for JavaScript -->
-	<script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7"></script>
+	<script type="text/javascript" src="includes/arcgis.js"></script>
 	
 	<!-- jQuery -->
-	<!-- <script type="text/javascript" src="jquery.js"></script> -->
+	<!-- <script type="text/javascript" src="includes/jquery.js"></script> -->
 	
 	<!-- javascript functionality tools -->
 	<script type="text/javascript" src="includes/unra.js"></script>
@@ -47,9 +47,17 @@
 </head>
 
 <body class="claro">
-	<div dojotype="dijit.layout.BorderContainer" design="headline" gutters="false" style="width: 100%; height: 100%; margin: 0;">
+	<div dojotype="dijit.layout.BorderContainer" design="headline" gutters="false" style="width: 100%; height:99%; margin: 0; vertical-align:bottom;">
 		<div id="map" dojotype="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
-			<div id="header" class="div-box">Header</div>
+			<div id="header" class="div-box">
+				<div style="width: 100%; margin: 0; background-color:#003399; color:white; height:25px;">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="vertical-align: -5px;">Search | Classes | Layers</span>
+				</div>
+				<div>
+					<img src="http://earth.geog.ucsb.edu/icm/images/banner5.png" style="padding-top: 10px; padding-left: 15px;">
+					<img src="http://earth.geog.ucsb.edu/icm/images/ucsbLogo.png" style="position:absolute; right:15px; top:40px;">
+				</div>
+			</div>
 		</div>
 	</div>
 </body>
