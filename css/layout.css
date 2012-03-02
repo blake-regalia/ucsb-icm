@@ -6,6 +6,7 @@ html, body {
 	padding: 0;
 	
 	font-family: helvetica,arial,sans-serif;
+	overflow: hidden;
 }
 
 #map {
@@ -26,7 +27,6 @@ div.sideInfoWindow	{
 	margin: auto;
 	text-align:left;
 	z-index:10;
-	
 }
 .navBar {
 	position:absolute;
