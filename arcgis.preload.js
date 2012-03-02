@@ -1,0 +1,3 @@
+var djConfig = {
+	parseOnLoad: true
+};

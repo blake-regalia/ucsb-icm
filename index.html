@@ -1,51 +1,52 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9" />
-    <!--The viewport meta tag is used to improve the presentation and behavior of the samples 
-      on iOS devices-->
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
-    <title>UCSB Interactive Campus Map</title>
-    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css">
-    <style>
-      html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
-      #map{padding:0;}
-    </style>
-    <script type="text/javascript">var djConfig = {parseOnLoad: true};</script>
-    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7"></script>
-    <script type="text/javascript">
-      dojo.require("dijit.layout.BorderContainer");
-      dojo.require("dijit.layout.ContentPane");
-      dojo.require("esri.map");
-      var map;
-      function init() {
-        var initExtent = new esri.geometry.Extent({"xmin":-119.89065,"ymin":34.39492,"xmax":-119.83027,"ymax":34.43037,"spatialReference":{"wkid":4326}});
-        map = new esri.Map("map",{extent:initExtent});
-        
-        //Add Basemap
-		
-        var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://earth.geog.ucsb.edu/ArcGIS/rest/services/icmBasemap10/MapServer");
-        map.addLayer(basemap);
-        
-  
-        dojo.connect(map, 'onLoad', function(theMap) {
-          //resize the map when the browser resizes
-          dojo.connect(dijit.byId('map'), 'resize', map,map.resize);
-        });
-      }
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=7,IE=9" />
+	
+	<!--The viewport meta tag is used to improve the presentation and behavior of the samples on iOS devices-->
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+	
+	<title>UCSB Interactive Campus Map</title>
+	
+	<!-- default / basic CSS -->
+	<link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css">
+	
+	
+	<style>
+		html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
+		#map{padding:0;}
+	</style>
+	
+	<!-- perform whatever needs to be done before loading arcgis api -->
+    <script type="text/javascript" src="arcgis.preload.js"></script>
+	
+	<!-- ArcGIS API for JavaScript -->
+	<script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7"></script>
+	
+	<!-- jQuery -->
+	<!-- <script type="text/javascript" src="jquery.js"></script> -->
+	
+	<!-- javascript functionality tools -->
+	<script type="text/javascript" src="unra.js"></script>
+	
+	<!-- this is where classes in development go -->
+	<script type="text/javascript" src="tools.js"></script>
+	
+	<!-- interact with the esri map -->
+	<script type="text/javascript" src="esri.map.js"></script>
+	
+	<!-- dojo init -->
+	<script type="text/javascript" src="dojo.init.js"></script>
+	
+</head>
 
-      dojo.addOnLoad(init);
-    </script>
-  </head>
-  
-  <body class="claro">
-    <div dojotype="dijit.layout.BorderContainer" design="headline" gutters="false"
-    style="width: 100%; height: 100%; margin: 0;">
+<body class="claro">
+	<div dojotype="dijit.layout.BorderContainer" design="headline" gutters="false" style="width: 100%; height: 100%; margin: 0;">
 		<div id="map" dojotype="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
 			<div>Header</div>
 		</div>
 	</div>
-  </body>
+</body>
 
 </html>
