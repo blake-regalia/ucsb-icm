@@ -9,40 +9,35 @@
 	
 	<title>UCSB Interactive Campus Map</title>
 	
-	
+	<!-- BEGIN STYLESHEETS -->
 	<!-- default / basic CSS -->
 	<link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css">
-	
 	<!-- layout CSS -->
 	<link rel="stylesheet" type="text/css" href="css/layout.css">
+	<style type="text/css">
+	a:link {color:#FFFFFF; text-decoration:none;}    /* unvisited link */
+	a:visited {color:#FFFFFF;} /* visited link */
+	a:hover {color:#FFFFFF;}   /* mouse over link */
+	a:active {color:#FFFFFF;}  /* selected link */
+	</style>
+	<!-- END STYLESHEETS -->
 	
-	<!-- header CSS -->
-	<link rel="stylesheet" type="text/css" href="css/header.css">
-	
-	<!-- default theme CSS -->
-	<link rel="stylesheet" type="text/css" href="css/default.theme.css">
-	
-	
+	<!-- BEGIN JAVASCRIPT INCLUDES -->
 	<!-- perform whatever needs to be done before loading arcgis api -->
     <script type="text/javascript" src="includes/arcgis.preload.js"></script>
-	
 	<!-- ArcGIS API for JavaScript -->
 	<script type="text/javascript" src="includes/arcgis.js"></script>
-	
 	<!-- jQuery -->
 	<!-- <script type="text/javascript" src="includes/jquery.js"></script> -->
-	
 	<!-- javascript functionality tools -->
 	<script type="text/javascript" src="includes/unra.js"></script>
-	
 	<!-- this is where classes in development go -->
 	<script type="text/javascript" src="includes/tools.js"></script>
-	
 	<!-- interact with the esri map -->
 	<script type="text/javascript" src="includes/esri.map.js"></script>
-	
 	<!-- dojo init -->
 	<script type="text/javascript" src="includes/dojo.init.js"></script>
+	<!-- END JAVASCRIPT INCLUDES -->
 	
 </head>
 
@@ -51,7 +46,9 @@
 		<div id="map" dojotype="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
 			<div id="header" class="div-box">
 				<div style="width: 100%; margin: 0; background-color:#003399; color:white; height:25px;">
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="vertical-align: -5px;">Search | Classes | Layers</span>
+					<span class="navBar">
+						<b>Search | Classes | Layers | <a href="#" onclick="toggle_visibility('sideInfoWindow');">Toggle sideInfoWindow</a></b>
+					</span>
 				</div>
 				<div>
 					<img src="http://earth.geog.ucsb.edu/icm/images/banner5.png" style="padding-top: 10px; padding-left: 15px;">
@@ -60,6 +57,7 @@
 			</div>
 		</div>
 	</div>
+	<div id="sideInfoWindow" class="sideInfoWindow" style="display:none;">This is where the stuff will go.</div>
 </body>
 
 </html>
