@@ -1,0 +1,7 @@
+#header {
+	width: 100%;
+	height: 96px;
+	
+	position: fixed;
+	z-index: 1;
+}

@@ -1,1 +1,0 @@
-window.$ = window.jQuery? window.jQuery: window.unra;

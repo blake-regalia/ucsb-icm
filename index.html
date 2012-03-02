@@ -9,20 +9,25 @@
 	
 	<title>UCSB Interactive Campus Map</title>
 	
+	
 	<!-- default / basic CSS -->
 	<link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css">
 	
+	<!-- layout CSS -->
+	<link rel="stylesheet" type="text/css" href="css/layout.css">
 	
-	<style>
-		html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
-		#map{padding:0;}
-	</style>
+	<!-- header CSS -->
+	<link rel="stylesheet" type="text/css" href="css/header.css">
+	
+	<!-- default theme CSS -->
+	<link rel="stylesheet" type="text/css" href="css/default.theme.css">
+	
 	
 	<!-- perform whatever needs to be done before loading arcgis api -->
     <script type="text/javascript" src="arcgis.preload.js"></script>
 	
 	<!-- ArcGIS API for JavaScript -->
-	<script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7"></script>
+	<script type="text/javascript" src="arcgis.js"></script>
 	
 	<!-- jQuery -->
 	<!-- <script type="text/javascript" src="jquery.js"></script> -->
@@ -44,7 +49,7 @@
 <body class="claro">
 	<div dojotype="dijit.layout.BorderContainer" design="headline" gutters="false" style="width: 100%; height: 100%; margin: 0;">
 		<div id="map" dojotype="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
-			<div>Header</div>
+			<div id="header" class="div-box">Header</div>
 		</div>
 	</div>
 </body>

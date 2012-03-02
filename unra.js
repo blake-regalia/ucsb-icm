@@ -1,3 +1,4 @@
+Benchmark.start('unra.js');
 
  /** ****************************************** **/
  /**** Underlying Natural Resource Algorithms ****/
@@ -906,3 +907,5 @@ DOM_VK = {
 	"'":222,
 	"META":224,
 };
+
+Benchmark.stop('unra.js','load');

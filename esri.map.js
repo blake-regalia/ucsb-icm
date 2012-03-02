@@ -1,3 +1,4 @@
+Benchmark.start('esri.map.js');
 
 window.UCSB_Campus = {
 	basemap: {
@@ -16,7 +17,7 @@ window.UCSB_Campus = {
 
 window.DefaultPackage = UCSB_Campus;
 
-/** ESRI_Map
+/** static ESRI_Map
 *
 */
 (function() {
@@ -25,11 +26,11 @@ window.DefaultPackage = UCSB_Campus;
 		
 	};
 	var global = window.ESRI_Map = function(package) {
+		Benchmark.start(global);
+		
 		map = new esri.Map('map', {
 			extent: package.extent,
 		});
-		
-		console.log(package.basemap.url);
 		
 		// Add Basemap
 		map.addLayer(
@@ -38,11 +39,18 @@ window.DefaultPackage = UCSB_Campus;
 		
 		// map onload event
 		dojo.connect(map, 'onLoad', function() {
+			Benchmark.mark('map load', global);
+			Benchmark.mark('map load', 'script');
+			
 			// resize map on window resize event
 			dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
 		});
 	};
 	$.extend(global, {
-		
+		toString: function() {
+			return 'ESRI_Map()';
+		},
 	});
 })();
+
+Benchmark.stop('esri.map.js','load');
