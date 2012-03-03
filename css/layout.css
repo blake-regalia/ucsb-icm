@@ -47,9 +47,10 @@ div.sideInfoWindow	{
 	z-index:10;
 }
 .navBar {
-	position:absolute;
+	position:relative;
 	left:20px;
 	top: 5px;
+	font-size: 85%;
 }
 
 #header {
