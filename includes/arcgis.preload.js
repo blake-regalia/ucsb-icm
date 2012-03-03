@@ -38,20 +38,57 @@ var djConfig = {
 			if(!event[key]) {
 				event[key] = {
 					start: now(),
+					marks: [],
 				};
 			}
 		},
 		stop: function(key, action) {
 			if(arguments.length < 2) action = 'complete';
-			var mark = event[key];
-			if(mark) {
-				mark.stop = now();
-				console.info(selfToString,': ',key,' took ',format(mark.stop-mark.start),' to ',action);
+			var bench = event[key];
+			if(bench) {
+				bench.stop = {
+					time: now(),
+					action: action,
+				};
+				console.info(selfToString,': ',key,' took ',format(bench.stop.time-bench.start),' to ',action);
 			}
 		},
 		mark: function(what, since) {
-			var mark = event[since];
-			console.info(selfToString,': ',what,' took ',format(now()-mark.start),' since ',since,' started');
+			var bench = event[since];
+			if(bench) {
+				var mark = now()-bench.start;
+				bench.marks.push({
+					after: mark,
+					what: what,
+					
+				});
+				console.info(selfToString,': ',what,' took ',format(mark),' since ',since,' started');
+			}
+		},
+		save: function(as) {
+			var log = '';
+			for(var e in event) {
+				var bench = event[e];
+				var marks = bench.marks;
+				var length = marks.length;
+				for(var i=0; i!==length; i++) {
+					var mark = marks[i];
+					log += mark.what+' took '+format(mark.after)+' since '+e+' started\n';
+				}
+				if(bench.stop) {
+					log += e+' took '+format(bench.stop.time-bench.start)+' to '+bench.stop.action+'\n';
+				}
+			}
+			
+			var framework = false;
+			if(typeof dojo !== 'undefined' && dojo) framework = dojo;
+			/*
+			if(framework && framework.get) {
+				framework.get({
+					url: 'benchmark.php?save='+as+'&log='+log,
+				});
+			}*/
+			console.log(log);
 		},
 		toString: function() {
 			return 'Benchmark()';
