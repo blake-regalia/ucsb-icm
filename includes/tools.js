@@ -7,3 +7,10 @@ function toggle_visibility(id) {
    else
 	  e.style.display = 'block';
 }
+
+// Initialize vector layers to "Layers" pane
+function initLayer(url, id) {
+	var layer = new esri.layers.ArcGISDynamicMapServiceLayer(url, {id:id, visible:false});
+	map.addLayer(layer);
+	return layer;
+}
