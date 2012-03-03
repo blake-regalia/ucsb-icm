@@ -23,6 +23,7 @@
 	<!-- END STYLESHEETS -->
 	
 	<!-- BEGIN JAVASCRIPT INCLUDES -->
+	<!--JavaScript includes are locally saved for Benchmarking purposes-->
 	<!-- perform whatever needs to be done before loading arcgis api -->
     <script type="text/javascript" src="includes/arcgis.preload.js"></script>
 	<!-- ArcGIS API for JavaScript -->
@@ -42,8 +43,8 @@
 </head>
 
 <body class="claro">
-	<div dojotype="dijit.layout.BorderContainer" style="width: 100%; height:100%;">
-	<div id="header" dojotype="dijit.layout.ContentPane" region="top" class="roundedCorners" > 
+	<div dojotype="dijit.layout.BorderContainer" style="width: 100%; height:100%; margin: auto; padding:0px;">
+	<div id="header" dojotype="dijit.layout.ContentPane" region="top"> 
 			<div style="width: 100%; margin: 0; background-color:#243C5F; color:white; height:27px;">
 				<span class="navBar">
 					<b>Search&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Classes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Layers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -56,9 +57,9 @@
 			</div>
     </div>  
 	
+	
 	<div id="map" dojotype="dijit.layout.ContentPane" region="center" style="overflow:hidden;"></div>
 	</div>
-	
 	<div id="sideInfoWindow" class="sideInfoWindow" style="display:none;">
 		This is where the stuff will go.  It can stretch and be sized as needed and will be easy to change the contents using javascript.
 	</div>

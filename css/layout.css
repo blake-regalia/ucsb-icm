@@ -10,10 +10,10 @@ html, body {
 }
 
 #header {
-        border: 1px #243C5F solid;
         padding: 0px;
 		margin: auto;
-      }
+		border: 0px;
+}
 
 #map {
 	padding:0;
