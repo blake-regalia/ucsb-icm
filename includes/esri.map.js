@@ -28,7 +28,8 @@ window.DefaultPackage = UCSB_Campus;
 	var global = window.ESRI_Map = function(package) {
 		Benchmark.start(global);
 		
-		esriConfig.defaults.map.slider = { right:"10px", bottom:"10px", width:null, height:"200px" };
+		//Settings for the position and size of the Zoom slider.
+		//esriConfig.defaults.map.slider = { left:"10px", top:"10px", width:null, height:"200px" };
 		
 		map = new esri.Map('map', {
 			extent: package.extent,

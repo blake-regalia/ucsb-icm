@@ -11,6 +11,12 @@ html, body {
 
 #map {
 	padding:0;
+	position: absolute;
+	top: 96px;
+	bottom: 0px;
+	left:0px;
+	right: 0px;
+	margin: auto;
 }
 
 div.sideInfoWindow	{
