@@ -9,14 +9,26 @@ html, body {
 	overflow: hidden;
 }
 
+#header {
+        border: 1px #243C5F solid;
+        padding: 0px;
+		margin: auto;
+      }
+
 #map {
 	padding:0;
 	position: absolute;
-	top: 84px;
 	bottom: 0px;
 	left:0px;
 	right: 0px;
 	margin: auto;
+	border-color: #243C5F;
+}
+
+.roundedCorners {
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-o-border-radius: 5px;
 }
 
 div.sideInfoWindow	{
@@ -25,10 +37,10 @@ div.sideInfoWindow	{
 	-webkit-border-radius: 7px 0px 0px 7px; 
 	border: 2px solid #003399;
 	background-color: white;
-	position: absolute;
+	position: fixed;
 	padding: 4px;
 	width: 200px;
-	top: 200px;
+	top: 25%;
 	right: -3px;
 	margin: auto;
 	text-align:left;

@@ -42,22 +42,26 @@
 </head>
 
 <body class="claro">
-<div id="header" class="div-box">
-	<div style="width: 100%; margin: 0; background-color:#243C5F; color:white; height:27px;">
-		<span class="navBar">
-			<b>Search&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Classes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Layers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="javascript:void();" onclick="toggle_visibility('sideInfoWindow');">Toggle sideInfoWindow</a></b>
-		</span>
+	<div dojotype="dijit.layout.BorderContainer" style="width: 100%; height:100%;">
+	<div id="header" dojotype="dijit.layout.ContentPane" region="top" class="roundedCorners" > 
+			<div style="width: 100%; margin: 0; background-color:#243C5F; color:white; height:27px;">
+				<span class="navBar">
+					<b>Search&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Classes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Layers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="javascript:void();" onclick="toggle_visibility('sideInfoWindow');">Toggle sideInfoWindow</a></b>
+				</span>
+			</div>
+			<div>
+				<img src="http://earth.geog.ucsb.edu/icm/images/banner5.png" style="padding-top: 10px; padding-left: 15px;">
+				<img src="http://earth.geog.ucsb.edu/icm/images/ucsbLogo.png" style="position:absolute; right:15px; top:40px;">
+			</div>
+    </div>  
+	
+	<div id="map" dojotype="dijit.layout.ContentPane" region="center" style="overflow:hidden;"></div>
 	</div>
-	<div>
-		<img src="http://earth.geog.ucsb.edu/icm/images/banner5.png" style="padding-top: 10px; padding-left: 15px;">
-		<img src="http://earth.geog.ucsb.edu/icm/images/ucsbLogo.png" style="position:absolute; right:15px; top:40px;">
+	
+	<div id="sideInfoWindow" class="sideInfoWindow" style="display:none;">
+		This is where the stuff will go.  It can stretch and be sized as needed and will be easy to change the contents using javascript.
 	</div>
-</div>
-	<div dojotype="dijit.layout.BorderContainer" design="headline" gutters="false" style="width: 100%; height:100%; margin: 0; position: fixed; top:84px;">
-		<div id="map" dojotype="dijit.layout.ContentPane" region="center" style="overflow:hidden;"></div>
-	</div>
-	<div id="sideInfoWindow" class="sideInfoWindow" style="display:none;">This is where the stuff will go.  It can stretch and be sized as needed and will be easy to change the contents using javascript.</div>
 </body>
 
 </html>
