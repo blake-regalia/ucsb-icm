@@ -110,6 +110,11 @@ var djConfig = {
 		setFancy: function(bool) {
 			fancy = !!bool;
 		},
+		highlight: function(text) {
+			var p = function(){};
+			p.toString = function(){return text;};
+			return p;
+		},
 	};
 	
 	Benchmark.setFancy(true);
