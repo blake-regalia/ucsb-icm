@@ -3,7 +3,6 @@ Array
     [PHPRC] => \xampp\php
     [HTTP_HOST] => localhost
     [HTTP_REFERER] => http://localhost/ags2/ucsb-icm/
-    [PATH] => C:\Program Files\CollabNet\Subversion Client;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Git\cmd;
     [SystemRoot] => C:\Windows
     [SERVER_SIGNATURE] => <address>Apache/2.2.21 (Win32) mod_ssl/2.2.21 OpenSSL/1.0.0e PHP/5.3.8 mod_perl/2.0.4 Perl/v5.10.1 Server at localhost Port 80</address>
 

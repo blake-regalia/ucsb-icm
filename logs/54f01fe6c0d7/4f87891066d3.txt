@@ -8,3 +8,48 @@ dojo.init.js took 0.002s to load
 document load took 1.526s since script started
 map load took 0.194s since ESRI_Map() started
 map load took 1.722s since script started
+
+load: Mon Mar 05 2012 23:37:11 GMT-0800 (Pacific Standard Time)
+arcgis.js took 0.049s to load
+unra.js took 0s to load
+esri.map.js took 0s to load
+dojo.init.js took 0.001s to load
+document load took 1.347s since script started
+map load took 0.2s since ESRI_Map() started
+map load took 1.559s since script started
+
+load: Mon Mar 05 2012 23:39:00 GMT-0800 (Pacific Standard Time)
+arcgis.js took 0.049s to load
+unra.js took 0.001s to load
+esri.map.js took 0s to load
+dojo.init.js took 0.002s to load
+document load took 1.535s since script started
+map load took 0.552s since ESRI_Map() started
+map load took 2.1s since script started
+
+load: Mon Mar 05 2012 23:39:39 GMT-0800 (Pacific Standard Time)
+arcgis.js took 0.049s to load
+unra.js took 0.001s to load
+esri.map.js took 0s to load
+dojo.init.js took 0.002s to load
+document load took 1.342s since script started
+map load took 0.154s since ESRI_Map() started
+map load took 1.508s since script started
+
+load: Mon Mar 05 2012 23:40:01 GMT-0800 (Pacific Standard Time)
+arcgis.js took 0.049s to load
+unra.js took 0.001s to load
+esri.map.js took 0s to load
+dojo.init.js took 0.002s to load
+document load took 1.858s since script started
+map load took 0.197s since ESRI_Map() started
+map load took 2.068s since script started
+
+load: Mon Mar 05 2012 23:41:04 GMT-0800 (Pacific Standard Time)
+arcgis.js took 0.051s to load
+unra.js took 0.001s to load
+esri.map.js took 0s to load
+dojo.init.js took 0.002s to load
+document load took 1.141s since script started
+map load took 0.144s since ESRI_Map() started
+map load took 1.298s since script started

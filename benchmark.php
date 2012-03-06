@@ -7,7 +7,6 @@ $server_vars = array(
 	'PHPRC'=>'',
 	'HTTP_HOST'=>'',
 	'HTTP_REFERER'=>'',
-	'PATH'=>'',
 	'SERVER_SIGNATURE'=>'',
 	'SERVER_NAME'=>'',
 	'SERVER_ADDR'=>'',
