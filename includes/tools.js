@@ -39,7 +39,6 @@ function changeMap(layers) {
 }
 
 
-//Threaded Loop
 (function() {
 	var __func__ = 'ThreadedLoop';
 	var construct = function(program) {
@@ -141,7 +140,7 @@ function changeMap(layers) {
 	});
 })();
 
-//Omnibox Search
+
 (function() {
 	var __func__ = 'Omnibox';
 	var construct = function(dom_node) {
