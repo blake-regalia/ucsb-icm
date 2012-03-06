@@ -1,0 +1,10 @@
+Mozilla/5.0 (Windows NT 6.1; WOW64; rv:10.0.2) Gecko/20100101 Firefox/10.0.2
+
+load: Mon Mar 05 2012 23:20:33 GMT-0800 (Pacific Standard Time)
+arcgis.js took 0.033s to load
+unra.js took 0s to load
+esri.map.js took 0s to load
+dojo.init.js took 0.002s to load
+document load took 1.526s since script started
+map load took 0.194s since ESRI_Map() started
+map load took 1.722s since script started

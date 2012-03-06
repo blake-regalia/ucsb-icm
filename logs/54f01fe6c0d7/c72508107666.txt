@@ -1,0 +1,10 @@
+Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.11 (KHTML, like Gecko) Chrome/17.0.963.56 Safari/535.11
+
+load: Mon Mar 05 2012 23:21:37 GMT-0800 (Pacific Standard Time)
+arcgis.js took 0.111s to load
+unra.js took 0s to load
+esri.map.js took 0s to load
+dojo.init.js took 0.001s to load
+document load took 1.52s since script started
+map load took 0.313s since ESRI_Map() started
+map load took 1.833s since script started

@@ -9,9 +9,11 @@ var djConfig = {
 	};
 	
 	var event = {};
+	var order = [];
 	var selfToString = 'Benchmark()';
 	
 	var fancy = false;
+	var online = false;
 	
 	var time_form = 'ms';
 	var format = function(time) {
@@ -33,6 +35,18 @@ var djConfig = {
 		return str;
 	};
 	
+	var log_file = [];
+	var save_log = function() {
+		if(console && console.info) console.info.apply(console, arguments);
+		if(online) {
+			var tmp = '';
+			for(var i=0; i!==arguments.length; i++) {
+				tmp += arguments[i];
+			}
+			log_file.push(tmp);
+		}
+	}
+	
 	var global = window.Benchmark = {
 		start: function(key) {
 			if(!event[key]) {
@@ -50,7 +64,7 @@ var djConfig = {
 					time: now(),
 					action: action,
 				};
-				console.info(selfToString,': ',key,' took ',format(bench.stop.time-bench.start),' to ',action);
+				save_log(key,' took ',format(bench.stop.time-bench.start),' to ',action);
 			}
 		},
 		mark: function(what, since) {
@@ -62,33 +76,27 @@ var djConfig = {
 					what: what,
 					
 				});
-				console.info(selfToString,': ',what,' took ',format(mark),' since ',since,' started');
+				save_log(what,' took ',format(mark),' since ',since,' started');
 			}
 		},
 		save: function(as) {
-			var log = '';
-			for(var e in event) {
-				var bench = event[e];
-				var marks = bench.marks;
-				var length = marks.length;
-				for(var i=0; i!==length; i++) {
-					var mark = marks[i];
-					log += mark.what+' took '+format(mark.after)+' since '+e+' started\n';
-				}
-				if(bench.stop) {
-					log += e+' took '+format(bench.stop.time-bench.start)+' to '+bench.stop.action+'\n';
-				}
+			if(!online) return;
+			
+			var framework_xhr_method = false;
+			if(typeof dojo !== 'undefined' && dojo) {
+				framework_xhr_get_method = function(o) {
+					dojo.xhrGet(o);
+				};
 			}
 			
-			var framework = false;
-			if(typeof dojo !== 'undefined' && dojo) framework = dojo;
-			/*
-			if(framework && framework.get) {
-				framework.get({
-					url: 'benchmark.php?save='+as+'&log='+log,
+			if(framework_xhr_get_method) {
+				var log = (new Date()).toString()+'\n'+log_file.join('\n');
+				var urlstr = 'benchmark.php?save='+as+'&log='+encodeURIComponent(log);
+				framework_xhr_get_method({
+					url: urlstr,
 				});
-			}*/
-			console.log(log);
+			}
+			log_file.length = 0;
 		},
 		toString: function() {
 			return 'Benchmark()';
@@ -103,7 +111,12 @@ var djConfig = {
 			fancy = !!bool;
 		},
 	};
+	
 	Benchmark.setFancy(true);
 	Benchmark.setFormat('s');
 	Benchmark.start('script');
+	
+	if(window.location.host !== '') {
+		online = true;
+	}
 })();
