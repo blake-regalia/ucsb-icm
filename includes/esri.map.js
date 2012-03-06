@@ -22,6 +22,7 @@ window.DefaultPackage = UCSB_Campus;
 */
 (function() {
 	var map = false;
+	var listeners = [];
 	var self = {
 		
 	};
@@ -50,10 +51,23 @@ window.DefaultPackage = UCSB_Campus;
 			// resize map on window resize event
 			dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
 		});
+		
+		var i = listeners.length;
+		while(i--) {
+			listeners.pop().apply(window, [map]);
+		}
 	};
 	$.extend(global, {
 		toString: function() {
 			return 'ESRI_Map()';
+		},
+		
+		// for developers to test scripts
+		getMap: function() {
+			return map;
+		},
+		ready: function(callback) {
+			listeners.push(callback);
 		},
 	});
 })();

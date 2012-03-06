@@ -78,4 +78,13 @@
 			return __func__+'()';
 		},
 	});
+	
+	/* setup DOM for the omnibox */
+	
+	var omnibox = dojo.byId('omnibox');
+	
+	// steal any stray keystrokes
+	dojo.connect(document, 'onkeydown', function() {
+		omnibox.focus();
+	});
 })();
