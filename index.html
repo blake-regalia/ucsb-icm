@@ -48,7 +48,10 @@
 	<div id="header" dojotype="dijit.layout.ContentPane" region="top"> 
 			<div style="width: 100%; margin: 0; background-color:#243C5F; color:white; height:27px;">
 				<span class="navBar">
-					<b><a href="#" onclick="toggle_visibility('omniboxDiv');">Search</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Classes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Layers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<b><a href="#" onclick="toggle_visibility('searchDiv');">Search</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Classes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					
+					<a href="javascript:void();" onclick="toggle_visibility('layersDiv');">Layers</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					
 					<a href="javascript:void();" onclick="toggle_visibility('sideInfoWindow');">Toggle sideInfoWindow</a></b>
 				</span>
 			</div>
@@ -65,9 +68,16 @@
 		This is where the stuff will go.  It can stretch and be sized as needed and will be easy to change the contents using javascript.
 	</div>
 	
-	<div id="omniboxDiv" style="display:none;">
+	<div id="searchDiv" style="display:none;">
 		<input id="omnibox" type="text"></input>
 		<a href="#" onclick="alert('Search button!');">&nbsp;&nbsp;&nbsp;<img src="images/searchIcon.png" style="vertical-align:middle" width="20"/></a>
+	</div>
+	
+	<div id="layersDiv" style="display:none; color:black;">
+		<input type="radio" name="toggleLayer" id="basemap5" onClick="changeMap([recycling]);">Recycling<br>
+		<input type="radio" name="toggleLayer" id="basemap9" onClick="changeMap([BikeRepairStations]);">Bike Repair Stations<br>
+		<br>
+		<input type="button" value="clear" onclick="hideDynamicLayers();">
 	</div>
 	
 </body>
