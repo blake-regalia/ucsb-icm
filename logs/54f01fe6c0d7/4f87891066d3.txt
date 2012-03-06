@@ -53,3 +53,12 @@ dojo.init.js took 0.002s to load
 document load took 1.141s since script started
 map load took 0.144s since ESRI_Map() started
 map load took 1.298s since script started
+
+load: Tue Mar 06 2012 11:59:39 GMT-0800 (Pacific Standard Time)
+arcgis.js took 0.051s to load
+unra.js took 0s to load
+esri.map.js took 0s to load
+dojo.init.js took 0.002s to load
+document load took 1.14s since script started
+map load took 0.1s since ESRI_Map() started
+map load took 1.252s since script started

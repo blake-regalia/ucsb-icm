@@ -16,16 +16,74 @@ function initLayer(url, id) {
 }
 
 
+(function() {
+	var __func__ = 'ThreadedLoop';
+	var construct = function(program) {
+		var cycle_time = 10;
+		var is_running;
+		var timer;
+		var self = {
+			runs: function() {
+				if(!is_running) {
+					return false;
+				}
+				else {
+					timer();
+					return !timer.expired;
+				}
+			},
+			cycle: function() {
+				setTimeout(public, 0);
+			},
+		};
+		var public = function() {
+			is_running = true;
+			timer = new Timer(cycle_time);
+			program.apply(self, arguments);
+		};
+		$.extend(public, {
+			setCycleTime: function(ms) {
+				cycle_time = ms;
+			},
+			interupt: function() {
+				is_running = false;
+			},
+		});
+		return public;
+	};
+	var global = window[__func__] = function() {
+		if(this !== window) {
+			var instance = construct.apply(this, arguments);
+			return instance;
+		}
+		else {
+			
+		}
+	};
+	$.extend(global, {
+		
+	});
+})();
+
 
 (function() {
 	var __func__ = 'Omnibox';
 	var construct = function(dom_node) {
+		var threaded_search = new ThreadedLoop(function() {
+			while(this.runs()) {
+				
+			}
+			this.cycle();
+		});
+		threaded_search.setCycleTime(250);
 		var self = {
 			keyup: function() {
 				
 			},
 			keydown: function(e) {
-				
+				threaded_search.interupt(function() {
+					this.start();
+				});
 			},
 		};
 		
