@@ -65,7 +65,7 @@ div.sideInfoWindow	{
 	background-color: white;
 }
 
-#omniboxDiv {
+#searchDiv {
 	border-radius: 7px 7px 7px 7px; 
 	-moz-border-radius: 7px 7px 7px 7px; 
 	-webkit-border-radius: 7px 7px 7px 7px; 
@@ -78,6 +78,22 @@ div.sideInfoWindow	{
 	left: 5px;
 	margin: auto;
 	text-align:left;
-	z-index:10;
+	z-index:100;
 	vertical-align="middle";
+}
+#layersDiv {
+	border-radius: 0px 7px 7px 7px; 
+	-moz-border-radius: 0px 0px 7px 7px; 
+	-webkit-border-radius: 0px 0px 7px 7px; 
+	border: 2px solid #243C5F;
+	background-color: white;
+	position: fixed;
+	padding: 4px;
+	width: 200px;
+	top: 25px;
+	left: 5px;
+	text-align:left;
+	z-index:100;
+	vertical-align="middle";
+	font-color:black;
 }

@@ -37,11 +37,15 @@ window.DefaultPackage = UCSB_Campus;
 			new esri.layers.ArcGISTiledMapServiceLayer(package.basemap.url)
 		);
 		
+		
 		// map onload event
 		dojo.connect(map, 'onLoad', function() {
 			Benchmark.mark('map load', global);
 			Benchmark.mark('map load', 'script');
 			Benchmark.save('load');
+			
+			//Init Selectable Layers
+			initLayers();
 			
 			// resize map on window resize event
 			dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
