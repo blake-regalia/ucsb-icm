@@ -64,3 +64,20 @@ div.sideInfoWindow	{
 .div-box {
 	background-color: white;
 }
+
+#omniboxDiv {
+	border-radius: 7px 7px 7px 7px; 
+	-moz-border-radius: 7px 7px 7px 7px; 
+	-webkit-border-radius: 7px 7px 7px 7px; 
+	border: 2px solid #243C5F;
+	background-color: white;
+	position: fixed;
+	padding: 4px;
+	width: 200px;
+	top: 25px;
+	left: 5px;
+	margin: auto;
+	text-align:left;
+	z-index:10;
+	vertical-align="middle";
+}

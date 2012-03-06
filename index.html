@@ -48,14 +48,13 @@
 	<div id="header" dojotype="dijit.layout.ContentPane" region="top"> 
 			<div style="width: 100%; margin: 0; background-color:#243C5F; color:white; height:27px;">
 				<span class="navBar">
-					<b>Search&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Classes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Layers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<b><a href="#" onclick="toggle_visibility('omniboxDiv');">Search</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Classes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Layers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="javascript:void();" onclick="toggle_visibility('sideInfoWindow');">Toggle sideInfoWindow</a></b>
 				</span>
 			</div>
 			<div>
 				<img src="http://earth.geog.ucsb.edu/icm/images/banner5.png" style="padding-top: 10px; padding-left: 15px;">
 				<img src="http://earth.geog.ucsb.edu/icm/images/ucsbLogo.png" style="position:absolute; right:15px; top:40px;">
-				<input id="omnibox" type="text"></input>
 			</div>
     </div>  
 	
@@ -65,6 +64,12 @@
 	<div id="sideInfoWindow" class="sideInfoWindow" style="display:none;">
 		This is where the stuff will go.  It can stretch and be sized as needed and will be easy to change the contents using javascript.
 	</div>
+	
+	<div id="omniboxDiv" style="display:none;">
+		<input id="omnibox" type="text"></input>
+		<a href="#" onclick="alert('Search button!');">&nbsp;&nbsp;&nbsp;<img src="images/searchIcon.png" style="vertical-align:middle" width="20"/></a>
+	</div>
+	
 </body>
 
 </html>
