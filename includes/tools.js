@@ -31,8 +31,6 @@ ESRI_Map.ready(function(map) {
 				layers.hide();
 			}
 		}
-		map.removeLayer(hoverGraphicsLayerBus);
-		construction.show();
 	}
 	window.changeMap = function(layers) {
 		hideDynamicLayers(layers);
