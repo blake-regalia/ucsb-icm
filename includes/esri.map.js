@@ -38,6 +38,10 @@ window.DefaultPackage = UCSB_Campus;
 			new esri.layers.ArcGISTiledMapServiceLayer(package.basemap.url)
 		);
 		
+		var i = listeners.length;
+		while(i--) {
+			listeners.pop().apply(window, [map]);
+		}
 		
 		// map onload event
 		dojo.connect(map, 'onLoad', function() {
@@ -51,11 +55,6 @@ window.DefaultPackage = UCSB_Campus;
 			// resize map on window resize event
 			dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
 		});
-		
-		var i = listeners.length;
-		while(i--) {
-			listeners.pop().apply(window, [map]);
-		}
 	};
 	$.extend(global, {
 		toString: function() {
