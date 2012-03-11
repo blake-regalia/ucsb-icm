@@ -17,12 +17,21 @@ ESRI_Map.ready(function(map) {
 		map.addLayer(layer);
 		return layer;
 	}
-	function initOpacLayer(url, id) {
+	window.initOpacLayer = function(url, id) {
 		var layer = new esri.layers.ArcGISDynamicMapServiceLayer(url, {id:id, opacity:0.8,visible:false});
 		map.addLayer(layer);
 		return layer;
 	}
-
+	
+	//Specified Extent for campus and isla vista
+	window.mainCampusExtent = function(){
+		map.setExtent(wireless.fullExtent);
+	}
+	window.fullCampusExtent = function(){
+		var fullCampusExtent = new esri.geometry.Extent({"xmin":-119.89065,"ymin":34.39492,"xmax":-119.83027,"ymax":34.43037,"spatialReference":{"wkid":4326}});
+		map.setExtent(fullCampusExtent);
+	}
+	
 	
 	window.initLayers = function(){
 		recycling = initLayer("http://ags2.geog.ucsb.edu//arcgis/rest/services/icmRecyclingPoints/MapServer", "recycling");

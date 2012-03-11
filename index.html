@@ -62,6 +62,12 @@
 			<div>
 				<img src="http://earth.geog.ucsb.edu/icm/images/banner5.png" style="padding-top: 10px; padding-left: 15px;">
 				<img src="http://earth.geog.ucsb.edu/icm/images/ucsbLogo.png" style="position:absolute; right:15px; top:40px;">
+				<div>
+					<div class="zoommainIcon" style="position:absolute; padding:3px;right:250px; top:50px; z-index:99;" onClick="mainCampusExtent()"></div>
+					<div class="zoomfullextIcon" style="position:absolute; padding:3px;right:210px; top:50px; z-index:99;" onClick="fullCampusExtent();"></div>
+					<div id="zoomprev" class="zoomprevIcon" style="position:absolute; padding:3px;right:170px; top:50px; z-index:99;" onClick="navToolbar.zoomToPrevExtent();"></div>
+					<div id="zoomnext" class="zoomnextIcon" style="position:absolute; padding:3px;right:130px; top:50px; z-index:99;" onClick="navToolbar.zoomToNextExtent();"></div>
+				</div>
 			</div>
     </div>  
 	
@@ -85,10 +91,10 @@
 		<input type="radio" name="toggleLayer" id="basemap6" onClick="changeMap([emergencyPhones]);">Emergency Phones<br>
         <input type="radio" name="toggleLayer" id="basemap7" onClick="changeMap([wireless]);">Wireless Signal Strength<br>
         <input type="radio" name="toggleLayer" id="basemap8" onClick="changeMap([TalkingSigns]);">Talking Signs<br>
-		<input type="radio" name="toggleLayer" id="basemap1" onClick="changeMap([eateries]);">Campus Eateries<br>
-		<input type="radio" name="toggleLayer" id="basemap2" onClick="changeMap([ivEateries]);">Isla Vista Restaurants<br>
+		<input type="radio" name="toggleLayer" id="basemap9" onClick="changeMap([eateries]);">Campus Eateries<br>
+		<input type="radio" name="toggleLayer" id="basemap10" onClick="changeMap([ivEateries]);">Isla Vista Restaurants<br>
 		<br>
-		<input type="button" value="clear" onclick="window.hideDynamicLayers();">
+		<input type="button" value="clear" onclick="hideDynamicLayers();">
 	</div>
 	
 </body>

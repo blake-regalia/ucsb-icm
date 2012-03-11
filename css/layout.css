@@ -97,3 +97,8 @@ div.sideInfoWindow	{
 	vertical-align="middle";
 	font-color:black;
 }
+
+.zoommainIcon { background-image:url(http://earth.geog.ucsb.edu/icm/images/nav_maincampus.png); width:16px; height:16px; background-repeat:no-repeat; }
+.zoomfullextIcon { background-image:url(http://earth.geog.ucsb.edu/icm/images/nav_fullextent.png); width:16px; height:16px; background-repeat:no-repeat; }
+.zoomprevIcon { background-image:url(http://earth.geog.ucsb.edu/icm/images/nav_previous.png); width:16px; height:16px; background-repeat:no-repeat; }
+.zoomnextIcon { background-image:url(http://earth.geog.ucsb.edu/icm/images/nav_next.png); width:16px; height:16px; background-repeat:no-repeat; }
