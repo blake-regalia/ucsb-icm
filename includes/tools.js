@@ -25,7 +25,7 @@ ESRI_Map.ready(function(map) {
 	
 	//Functions to add/remove/swap layers.
 	window.hideDynamicLayers = function(layers) {
-		for (var j=2, jl=map.layerIds.length; j<jl; j++) {
+		for (var j=1, jl=map.layerIds.length; j<jl; j++) {
 			var layers = map.getLayer(map.layerIds[j]);
 			if (dojo.indexOf(layers) == -1) {
 				layers.hide();
