@@ -33,7 +33,7 @@ ESRI_Map.ready(function(map) {
 		}
 	}
 	window.changeMap = function(layers) {
-		hideDynamicLayers(layers);
+		window.hideDynamicLayers(layers);
 		for (var i=0; i<layers.length; i++) {
 			layers[i].show();
 			map.setExtent(layers[i].fullExtent); //use staff.fullExtent to set all layer views to parking's largest extent. For extent of each layer, use layers[i].fullExtent 
