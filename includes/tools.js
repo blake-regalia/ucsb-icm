@@ -17,10 +17,33 @@ ESRI_Map.ready(function(map) {
 		map.addLayer(layer);
 		return layer;
 	}
+	function initOpacLayer(url, id) {
+		var layer = new esri.layers.ArcGISDynamicMapServiceLayer(url, {id:id, opacity:0.8,visible:false});
+		map.addLayer(layer);
+		return layer;
+	}
+
 	
 	window.initLayers = function(){
 		recycling = initLayer("http://ags2.geog.ucsb.edu//arcgis/rest/services/icmRecyclingPoints/MapServer", "recycling");
 		BikeRepairStations = initLayer("http://ags2.geog.ucsb.edu//ArcGIS/rest/services/icmBicycleRepairStations2/MapServer", "BikeRepairStations");
+		eateries = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmEateries/MapServer", "eateries");
+		ivEateries = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/ICMIslaVistaEstablishmentSymbols/MapServer", "ivEateries");
+		recreation = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmRecreation/MapServer", "recreation");
+		emergencyPhones = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmEmergencyPhones/MapServer", "emergencyPhones");
+		Bike_Racks = initLayer("https://ags2.geog.ucsb.edu/arcgis/rest/services/Bike_Racks/MapServer", "Bike_Racks");
+		wireless = initOpacLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmWireless/MapServer", "wireless");
+		TalkingSigns = initOpacLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/TalkingSigns/MapServer", "TalkingSigns");
+		resources = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmResources/MapServer", "resources");
+		staff = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmParkingStaff/MapServer", "Staff");
+		faculty = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmParkingFaculty/MapServer", "Faculty");
+		visitorStudent = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmParkingVisitor/MapServer", "Visitor or Student");
+		resident = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmParkingResident/MapServer", "Resident");
+		metered = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmParkingMetered/MapServer", "Metered parking");
+		motorcycles = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmParkingMotorcycles/MapServer", "Motorcycles");
+		bus = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmBuslines/MapServer", "bus route");
+		busloop = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmBusloop/MapServer", "bus loop");
+		ada = initLayer("http://ags2.geog.ucsb.edu/arcgis/rest/services/icmParkingADA/MapServer", "ada");
 	}
 	
 	//Functions to add/remove/swap layers.
