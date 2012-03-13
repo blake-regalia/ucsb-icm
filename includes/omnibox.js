@@ -312,7 +312,7 @@ SearchItems.set(
 					}
 				}
 				else if(bz) {
-					var bzi = bz.index;
+					var bzi = bz.index+1;
 					if(!tiers[bzi]) {
 						tiers[bzi] = [];
 					}
@@ -388,7 +388,9 @@ SearchItems.set(
 						while(i--) {
 							var match_key = tier[i];
 							var result = SearchItems.result(match_key);
-							b += '<div class="search_result" link="'+match_key+'"><span class="title">'+result.string+'</span><span class="class">'+result.class_title+'</span></div>';
+							var string = result.string;
+							var show = string? string.substr(0,x)+'<b>'+string.substr(x,search_text.length)+'</b>'+string.substr(x+search_text.length): '';
+							b += '<div class="search_result" link="'+match_key+'"><span class="title">'+show+'</span><span class="class">'+result.class_title+'</span></div>';
 						}
 					}
 				}
