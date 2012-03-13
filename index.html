@@ -14,6 +14,8 @@
 	<link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css">
 	<!-- layout CSS -->
 	<link rel="stylesheet" type="text/css" href="css/layout.css">
+	<!-- omnibox CSS -->
+	<link rel="stylesheet" type="text/css" href="css/omnibox.css">
 	<style type="text/css">
 	a:link {color:#FFFFFF; text-decoration:none;}    /* unvisited link */
 	a:visited {color:#FFFFFF;} /* visited link */
@@ -62,6 +64,12 @@
 			<div>
 				<img src="http://earth.geog.ucsb.edu/icm/images/banner5.png" style="padding-top: 10px; padding-left: 15px;">
 				<img src="http://earth.geog.ucsb.edu/icm/images/ucsbLogo.png" style="position:absolute; right:15px; top:40px;">
+				
+				<!-- temporary omni box node --> 
+				<input id="omnibox" type="text"></input>
+				<div id="search_results"></div>
+				<!-- /temp -->
+				
 				<div>
 					<div class="zoommainIcon" style="position:absolute; padding:3px;right:250px; top:50px; z-index:99;" onClick="mainCampusExtent()"></div>
 					<div class="zoomfullextIcon" style="position:absolute; padding:3px;right:210px; top:50px; z-index:99;" onClick="fullCampusExtent();"></div>

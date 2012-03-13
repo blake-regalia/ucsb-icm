@@ -1,0 +1,29 @@
+.class {
+	position: absolute;
+	right: 0;
+	color: darkGreen;
+	font-style: italic;
+	margin-right: 12px;
+}
+
+.search_result {
+	cursor: pointer;
+}
+.search_result:hover {
+	background-color: LightGoldenRodYellow;
+}
+
+#search_results {
+	padding: 4px;
+}
+
+
+
+#search_results {
+	background-color: white;
+	position: fixed;
+	left: 200px;
+	height: 200px;
+	width: 400px;
+	overflow-y: scroll;
+}

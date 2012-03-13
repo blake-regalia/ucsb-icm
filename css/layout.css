@@ -58,7 +58,7 @@ div.sideInfoWindow	{
 	height: 84px;
 	
 	position: fixed;
-	z-index: 1;
+	z-index: 1024;
 }
 
 .div-box {

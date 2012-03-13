@@ -9,6 +9,7 @@
 		var inter_cycle = 0;
 		
 		var initial_loop_data = {};
+		var exec_on_start = function(){};
 		
 		// begin a cycle of the loop
 		var start = function() {
@@ -62,6 +63,7 @@
 			// initialize the loop data
 			delete self.loop;
 			self.loop = $.extend(true, {}, initial_loop_data);
+			exec_on_start.apply(self);
 			self.loop.start_time = (new Date()).getTime();
 			
 			// start the loop in a thread
@@ -77,6 +79,10 @@
 			
 			setLoopData: function(data) {
 				initial_loop_data = data;
+			},
+			
+			onStart: function(exec) {
+				exec_on_start = exec;
 			},
 			
 			// interupt the loop
