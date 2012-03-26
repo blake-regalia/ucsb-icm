@@ -342,7 +342,7 @@ SearchItems.set(
 //			console.log('performed '+num_comparisons+' comparisons; index: '+i+'; length: '+length);
 			
 			// store the value of the index back to the loop data
-			loop.index = i;
+			loop.index_minor = i;
 			
 			// continue executing this loop
 			this.cycle();

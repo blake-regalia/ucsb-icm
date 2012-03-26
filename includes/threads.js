@@ -77,6 +77,10 @@
 				cycle_time = ms;
 			},
 			
+			setSleepTime: function(ms) {
+				sleep_time = ms;
+			},
+			
 			setLoopData: function(data) {
 				initial_loop_data = data;
 			},
