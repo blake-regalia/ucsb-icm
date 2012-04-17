@@ -1,0 +1,33 @@
+
+.card {
+	width: 20%;
+	height: 75%;
+	
+	top: 84px;
+	right: 5%;
+	
+	position: fixed;
+	
+	margin-top: 30px;
+	
+	background-color: rgba(20, 10, 0, 0.8);
+	
+	-webkit-border-radius: $(card_border_radius)&unit;
+	-moz-border-radius:    $(card_border_radius)&unit;
+	border-radius:         $(card_border_radius)&unit;
+}
+
+.card_insert {
+	padding: 12.5px;
+}
+
+.card_title {
+	font-family: helvetica;
+	color: white;
+	text-align: center;
+}
+
+.card_title_heading {
+	color: white;
+	font-size: 26pt;
+}

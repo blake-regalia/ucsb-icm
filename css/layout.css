@@ -1,35 +1,107 @@
+/*************************************************************************
+** This stylesheet is only for the spatial attributes of root elements.
+
+** This sheet should only contain the following properties:
+** - top
+** - left
+** - bottom
+** - right
+** - width
+** - height
+** - margin
+** - padding
+** - overflow
+** - position
+** - z-index
+** 
+** 
+/************************************************************************/
+
+
 html, body {
-	height: 100%;
 	width: 100%;
+	height: 100%;
 	
 	margin: 0;
 	padding: 0;
 	
-	font-family: helvetica,arial,sans-serif;
 	overflow: hidden;
 }
 
-#header {
-        padding: 0px;
-		margin: auto;
-		border: 0px;
+
+#flush {
+	width: 100%;
+	height: 100%;
+	
+	top: 0px;
+	left: 0px;
+	
+	position: fixed;
+	
+	overflow: hidden;
 }
 
-#map {
-	padding:0;
+
+#header {
+	width: 100%;
+	height: $(header_innerHeight)&unit;
+	
 	position: absolute;
-	bottom: 0px;
-	left:0px;
-	right: 0px;
+	z-index: $(zindex_header);
+	
 	margin: auto;
-	border-color: #243C5F;
+	padding: 0px;
 }
+
+
+#header_corner {
+	width: $(header_corner_width)&unit;
+	height: 100%;
+	
+	right: 0;
+	bottom: 0;
+	
+	position: absolute;
+}
+
+
+.campus_logo {
+	right: $((89/2) + 12)px;
+	bottom: 12px;
+	
+	position: absolute;
+}
+
+
+
+#content {
+	width: 100%;
+	height: 100%;
+	
+	position: absolute;
+}
+
+
+#map {
+	width: 100%;
+	height: 100%;
+	
+	left:0px;
+	bottom: 0px;
+	
+	position: absolute;
+	
+	margin: auto;
+	padding:0;
+}
+
 
 .roundedCorners {
 		-moz-border-radius: 5px;
 		-webkit-border-radius: 5px;
 		-o-border-radius: 5px;
 }
+
 
 div.sideInfoWindow	{
 	border-radius: 7px 0px 0px 7px; 
@@ -46,6 +118,8 @@ div.sideInfoWindow	{
 	text-align:left;
 	z-index:10;
 }
+
+
 .navBar {
 	position:relative;
 	left:20px;
@@ -53,17 +127,11 @@ div.sideInfoWindow	{
 	font-size: 85%;
 }
 
-#header {
-	width: 100%;
-	height: 84px;
-	
-	position: fixed;
-	z-index: 1024;
-}
 
 .div-box {
 	background-color: white;
 }
+
 
 #searchDiv {
 	border-radius: 7px 7px 7px 7px; 
@@ -81,6 +149,8 @@ div.sideInfoWindow	{
 	z-index:100;
 	vertical-align="middle";
 }
+
+
 #layersDiv {
 	border-radius: 0px 7px 7px 7px; 
 	-moz-border-radius: 0px 0px 7px 7px; 
@@ -97,6 +167,7 @@ div.sideInfoWindow	{
 	vertical-align="middle";
 	font-color:black;
 }
+
 
 .zoommainIcon { background-image:url(http://earth.geog.ucsb.edu/icm/images/nav_maincampus.png); width:16px; height:16px; background-repeat:no-repeat; }
 .zoomfullextIcon { background-image:url(http://earth.geog.ucsb.edu/icm/images/nav_fullextent.png); width:16px; height:16px; background-repeat:no-repeat; }

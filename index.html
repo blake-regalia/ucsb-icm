@@ -4,51 +4,84 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=7,IE=9" />
 	
+	
 	<!--The viewport meta tag is used to improve the presentation and behavior of the samples on iOS devices-->
 	<!--<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>-->
 	
 	<title>UCSB Interactive Campus Map</title>
 	
-	<!-- BEGIN STYLESHEETS -->
-	<!-- default / basic CSS -->
-	<link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css">
-	<!-- layout CSS -->
-	<link rel="stylesheet" type="text/css" href="css/layout.css">
-	<!-- omnibox CSS -->
-	<link rel="stylesheet" type="text/css" href="css/omnibox.css">
-	<style type="text/css">
-	a:link {color:#FFFFFF; text-decoration:none;}    /* unvisited link */
-	a:visited {color:#FFFFFF;} /* visited link */
-	a:hover {color:#FFFFFF;}   /* mouse over link */
-	a:active {color:#FFFFFF;}  /* selected link */
-	</style>
-	<!-- END STYLESHEETS -->
+	
+	<!-- compiled CSS -->
+	<link rel="stylesheet" type="text/css" href="css/compile.php">
+	
 	
 	<!-- BEGIN JAVASCRIPT INCLUDES -->
-	<!--JavaScript includes are locally saved for Benchmarking purposes-->
+	
+	<!-- load the global CSS constants -->
+	<script type="text/javascript" src="css/compile.php?json=globals"></script>
+	
 	<!-- perform whatever needs to be done before loading arcgis api -->
-    <script type="text/javascript" src="includes/arcgis.preload.js"></script>
+    <script type="text/javascript" src="js/arcgis.preload.js"></script>
+    
 	<!-- ArcGIS API for JavaScript -->
-	<script type="text/javascript" src="includes/arcgis.js"></script>
-	<!-- jQuery -->
-	<!-- <script type="text/javascript" src="includes/jquery.js"></script> -->
+	<script type="text/javascript" src="js/arcgis.js"></script>
+	
 	<!-- javascript functionality tools -->
-	<script type="text/javascript" src="includes/unra.js"></script>
+	<script type="text/javascript" src="js/unra.js"></script>
+	
 	<!-- threads for doing multiple things -->
-	<script type="text/javascript" src="includes/threads.js"></script>
+	<script type="text/javascript" src="js/threads.js"></script>
+	
 	<!-- omnibox: for searching -->
-	<script type="text/javascript" src="includes/omnibox.js"></script>
+	<script type="text/javascript" src="js/omnibox.js"></script>
+	
 	<!-- interact with the esri map -->
-	<script type="text/javascript" src="includes/esri.map.js"></script>
+	<script type="text/javascript" src="js/esri.map.js"></script>
+	
 	<!-- dojo init -->
-	<script type="text/javascript" src="includes/dojo.init.js"></script>
+	<script type="text/javascript" src="js/dojo.init.js"></script>
+	
+	<!-- card -->
+	<script type="text/javascript" src="js/card.js"></script>
+	
 	<!-- this is where classes in development go -->
-	<script type="text/javascript" src="includes/tools.js"></script>
+	<script type="text/javascript" src="js/tools.js"></script>
+	
 	<!-- END JAVASCRIPT INCLUDES -->
 	
 </head>
 
 <body class="claro">
+
+	<div id="flush">
+		
+		<div id="header">
+		
+			<div id="omnibox_div">
+				<input id="omnibox" type="text"></input>
+				
+				<div id="omnibox_results" class="omnibox_results_containers" style="display:none;">
+				
+				</div>
+			</div>
+			
+			
+			<div id="header_corner">
+				<img class="campus_logo" src="http://ags2.geog.ucsb.edu/icm/images/ucsbLogo.png"></img>
+			</div>
+			
+		</div>
+		
+		<div id="omnibox_results_shadow" class="omnibox_results_containers" style="display:none;"></div>
+		
+		<div id="content">
+			<div id="map">
+			</div>
+		</div>
+		
+	</div>
+	
+	<!--
 
 	<div dojotype="dijit.layout.BorderContainer" style="width: 100%; height:100%; margin: auto; padding:0px;">
 	<div id="header" dojotype="dijit.layout.ContentPane" region="top"> 
@@ -65,10 +98,10 @@
 				<img src="http://earth.geog.ucsb.edu/icm/images/banner5.png" style="padding-top: 10px; padding-left: 15px;">
 				<img src="http://earth.geog.ucsb.edu/icm/images/ucsbLogo.png" style="position:absolute; right:15px; top:40px;">
 				
-				<!-- temporary omni box node --> 
+				
 				<input id="omnibox" type="text"></input>
 				<div id="search_results"></div>
-				<!-- /temp -->
+				
 				
 				<div>
 					<div class="zoommainIcon" style="position:absolute; padding:3px;right:250px; top:50px; z-index:99;" onClick="mainCampusExtent()"></div>
@@ -104,6 +137,8 @@
 		<br>
 		<input type="button" value="clear" onclick="hideDynamicLayers();">
 	</div>
+	
+	-->
 	
 </body>
 
