@@ -12,9 +12,12 @@
 	
 	background-color: rgba(20, 10, 0, 0.8);
 	
-	-webkit-border-radius: $(card_border_radius)&unit;
-	-moz-border-radius:    $(card_border_radius)&unit;
-	border-radius:         $(card_border_radius)&unit;
+	-webkit-border-radius: ${card_border_radius}&unit;
+	-moz-border-radius:    ${card_border_radius}&unit;
+	border-radius:         ${card_border_radius}&unit;
+	
+	-moz-transform-style: preserve-3d;
+	-moz-transition: all 0.8s ease-out;
 }
 
 .card_insert {
@@ -30,4 +33,34 @@
 .card_title_heading {
 	color: white;
 	font-size: 26pt;
+}
+
+.card_container {
+	-moz-perspective: 450px;
+	position: fixed;
+	
+	-moz-transition: all 0.2s ease-out;
+}
+
+.card_deckview {
+	-moz-transform: ${card_deckview_transform};
+	right: -150px;
+	cursor: pointer;
+	opacity: 0.9;
+	background-color: rgba(50, 50, 36, 1);
+}
+
+.card_deckview:hover,.hovering {
+	-moz-transform: ${card_deckview_hover_transform};
+	opacity: 1;
+	background-color: rgba(20, 10, 0, 0.8);;
+}
+
+#info_deck {
+	width: 25%;
+	height: 100%;
+	
+	position: fixed;
+	
+	margin-top: ${header_space}&unit;
 }

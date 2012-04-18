@@ -118,7 +118,8 @@ function macro_substitution($str, $macro_defs) {
 	$pointer = 0;
 	
 	
-	while(preg_match('/\$\((.*)\).*(?:\r\n?|$)/', $str, $matches, PREG_OFFSET_CAPTURE, $pointer)) {
+//	while(preg_match('/\$\((.*)\).*(?:\r\n?|$)/U', $str, $matches, PREG_OFFSET_CAPTURE, $pointer)) {
+	while(preg_match('/\${([^}]*)}/', $str, $matches, PREG_OFFSET_CAPTURE, $pointer)) {
 		
 		$meta = array();
 		
@@ -166,7 +167,7 @@ function macro_substitution($str, $macro_defs) {
 		
 		$eval = $sba->getString();
 		
-//		echo 'evaluating: '.$eval."\n";
+		//echo 'evaluating: '.$eval."\n";
 		
 		if(!preg_match('/[^\d\s\.\-\*\/+\(\)]/', $eval)) {
 			$eval = $math->evaluate($eval);
@@ -236,6 +237,90 @@ function parse_global_file($file) {
 	
 	return $assoc;
 }
+
+
+/*
+class Tokenizer {
+	
+	private $string;
+	
+	
+	
+	public function __construct($input) {
+		$string = $input;
+		
+		
+	}
+	
+	private function err($msg) {
+		die($msg);
+	}
+	
+	public function parse() {
+		
+		
+		$$     = 0;
+		$BEGIN = 1;
+		$ = 0;
+		
+		$start = -1;
+		
+		$len = strlen($str);
+		for($i=0; $i<$len; $i++) {
+			
+			$c = $str[$i];
+			
+			$b = '';
+			
+			switch($m) {
+				case $$:
+					if($c == "$") {
+						$start = $i;
+						$m = $BEGIN;
+					}
+					break;
+				case $BEGIN:
+					if($c == "(") {
+						$m = $ANY;
+					}
+					else {
+						$start = -1;
+						$m = $BEGIN;
+					}
+					break;
+				case $ANY:
+					if(preg_match('/[a-z_\$]/i', $c)) {
+						$b = $c;
+						$m = $VAR;
+					}
+					else if(preg_match('/[\.0-9]/', $c)) {
+						$b = $c;
+						$m = $NUM;
+					}
+					else if(preg_match('/[\+\-\*\/\^]/', $c)) {
+						$this->token($c, 'num');
+					}
+					else if($c == '(') {
+						
+					}
+					break;
+				case $VAR:
+					if(preg_match('/[a-z_\$0-9]/i', $c)) {
+						$b .= $c;
+					}
+					else {
+						$i -= 1;
+						$this->token($b, 'var');
+						$m = $ANY;
+					}
+					break;
+			}
+		}
+
+	}
+}
+
+*/
 
 
 ?>

@@ -152,8 +152,198 @@ Object.extend = function() {
 	return target;
 };
 
+
+
+
+// ported from jQuery
+Object.css = (function() {
+	var 
+	
+	// Matches dashed string for camelizing
+	rdashAlpha = /-([a-z]|[0-9])/ig,
+	rmsPrefix = /^-ms-/,
+	
+	curCSS = function() {
+		alert('unable to fetch css value from Object function: not implemented');
+	},
+	
+	// Add in style property hooks for overriding the default
+	// behavior of getting and setting a style property
+	cssHooks = {
+		opacity: {
+			get: function( elem, computed ) {
+				if ( computed ) {
+					// We should always get a number back from opacity
+					var ret = curCSS( elem, "opacity" );
+					return ret === "" ? "1" : ret;
+
+				} else {
+					return elem.style.opacity;
+				}
+			}
+		}
+	},
+	
+	// Exclude the following css properties to add px
+	cssNumber = {
+		"fillOpacity": true,
+		"fontWeight": true,
+		"lineHeight": true,
+		"opacity": true,
+		"orphans": true,
+		"widows": true,
+		"zIndex": true,
+		"zoom": true
+	},
+	
+	// Add in properties whose names you wish to fix before
+	// setting or getting the value
+	cssProps = {
+		// normalize float css property
+		"float": false ? "cssFloat" : "styleFloat"
+	},
+	
+	// Used by camelCase as callback to replace()
+	fcamelCase = function( all, letter ) {
+		return ( letter + "" ).toUpperCase();
+	},
+	
+	// Convert dashed to camelCase; used by the css and data modules
+	// Microsoft forgot to hump their vendor prefix (#9572)
+	camelCase = function( string ) {
+		return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
+	},
+
+	ralpha = /alpha\([^)]*\)/i,
+	ropacity = /opacity=([^)]*)/,
+	// fixed for IE9, see #8346
+	rupper = /([A-Z]|^ms)/g,
+	rnum = /^[\-+]?(?:\d*\.)?\d+$/i,
+	rnumnonpx = /^-?(?:\d*\.)?\d+(?!px)[^\d\s]+$/i,
+	rrelNum = /^([\-+])=([\-+.\de]+)/,
+	rmargin = /^margin/,
+
+	cssShow = { position: "absolute", visibility: "hidden", display: "block" },
+
+	// order is important!
+	cssExpand = [ "Top", "Right", "Bottom", "Left" ],
+
+	getComputedStyle,
+	currentStyle;
+	
+	
+	var self = {
+		
+		
+		// Get and set the style property on a DOM Node
+		style: function( elem, name, value, extra ) {
+			// Don't set styles on text and comment nodes
+			if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style ) {
+				return;
+			}
+	
+			// Make sure that we're working with the right name
+			var ret, type, origName = camelCase( name ),
+				style = elem.style, hooks = cssHooks[ origName ];
+	
+			name = cssProps[ origName ] || origName;
+	
+			// Check if we're setting a value
+			if ( value !== undefined ) {
+				type = typeof value;
+	
+				// convert relative number strings (+= or -=) to relative numbers. #7345
+				if ( type === "string" && (ret = rrelNum.exec( value )) ) {
+					value = ( +( ret[1] + 1) * +ret[2] ) + parseFloat( curCSS( elem, name ) );
+					// Fixes bug #9237
+					type = "number";
+				}
+	
+				// Make sure that NaN and null values aren't set. See: #7116
+				if ( value == null || type === "number" && isNaN( value ) ) {
+					return;
+				}
+	
+				// If a number was passed in, add 'px' to the (except for certain CSS properties)
+				if ( type === "number" && !cssNumber[ origName ] ) {
+					value += "px";
+				}
+	
+				// If a hook was provided, use that value, otherwise just set the specified value
+				if ( !hooks || !("set" in hooks) || (value = hooks.set( elem, value )) !== undefined ) {
+					// Wrapped to prevent IE from throwing errors when 'invalid' values are provided
+					// Fixes bug #5509
+					try {
+						style[ name ] = value;
+					} catch(e) {}
+				}
+	
+			} else {
+				// If a hook was provided get the non-computed value from there
+				if ( hooks && "get" in hooks && (ret = hooks.get( elem, false, extra )) !== undefined ) {
+					return ret;
+				}
+	
+				// Otherwise just get the value from the style object
+				return style[ name ];
+			}
+		},
+	
+		css: function( elem, name, extra ) {
+			var ret, hooks;
+	
+			// Make sure that we're working with the right name
+			name = camelCase( name );
+			hooks = cssHooks[ name ];
+			name = cssProps[ name ] || name;
+	
+			// cssFloat needs a special treatment
+			if ( name === "cssFloat" ) {
+				name = "float";
+			}
+	
+			// If a hook was provided get the computed value from there
+			if ( hooks && "get" in hooks && (ret = hooks.get( elem, true, extra )) !== undefined ) {
+				return ret;
+	
+			// Otherwise, if a way to get the computed value exists, use that
+			} else if ( curCSS ) {
+				return curCSS( elem, name );
+			}
+		},
+	
+		// A method for quickly swapping in/out CSS properties to get correct calculations
+		swap: function( elem, options, callback ) {
+			var old = {},
+				ret, name;
+	
+			// Remember the old values, and insert the new ones
+			for ( name in options ) {
+				old[ name ] = elem.style[ name ];
+				elem.style[ name ] = options[ name ];
+			}
+	
+			ret = callback.call( elem );
+	
+			// Revert the old values
+			for ( name in options ) {
+				elem.style[ name ] = old[ name ];
+			}
+	
+			return ret;
+		}
+	};
+
+	return self;
+	
+})();
+
+
+
+
 window.$ = window.jQuery? window.jQuery: {
 	extend: Object.extend,
+	style: Object.css.style,
 };
 
 

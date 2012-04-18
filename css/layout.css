@@ -44,10 +44,10 @@ html, body {
 
 #header {
 	width: 100%;
-	height: $(header_innerHeight)&unit;
+	height: ${header_innerHeight}&unit;
 	
 	position: absolute;
-	z-index: $(zindex_header);
+	z-index: ${zindex_header};
 	
 	margin: auto;
 	padding: 0px;
@@ -55,7 +55,7 @@ html, body {
 
 
 #header_corner {
-	width: $(header_corner_width)&unit;
+	width: ${header_corner_width}&unit;
 	height: 100%;
 	
 	right: 0;
@@ -66,7 +66,7 @@ html, body {
 
 
 .campus_logo {
-	right: $((89/2) + 12)px;
+	right: ${(89/2) + 12}px;
 	bottom: 12px;
 	
 	position: absolute;
@@ -97,9 +97,9 @@ html, body {
 
 
 .roundedCorners {
-		-moz-border-radius: 5px;
-		-webkit-border-radius: 5px;
-		-o-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-o-border-radius: 5px;
 }
 
 
