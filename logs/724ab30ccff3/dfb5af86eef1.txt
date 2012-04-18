@@ -429,3 +429,12 @@ dojo.init.js took 0.002s to load
 document load took 1.252s since script started
 map load took 0.678s since ESRI_Map() started
 map load took 1.942s since script started
+
+load: Tue Apr 17 2012 18:41:47 GMT-0700 (Pacific Daylight Time)
+arcgis.js took 0.058s to load
+unra.js took 0.001s to load
+esri.map.js took 0s to load
+dojo.init.js took 0.002s to load
+document load took 0.932s since script started
+map load took 0.458s since ESRI_Map() started
+map load took 1.401s since script started
