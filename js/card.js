@@ -45,6 +45,16 @@
 				};
 			},
 			
+			fold: function() {
+				var i = stack.length - 1;
+				
+				var elmt = stack[i].getElement();
+				
+				dojo.addClass(elmt, 'card_deckview');
+				var translate_y = i * card_spacing + deck_top;
+				$.style(elmt, 'margin-top', translate_y+'px');
+			},
+			
 			getElement: function() {
 				return deck_dom;
 			},
@@ -68,6 +78,13 @@
 })();
 
 
+var randomColor = function() {
+	return ['hsl(',
+		Math.round(Math.random()*360),',',
+		Math.round(Math.random()*70+30),'%,',
+		Math.round(Math.random()*30+70),'%',
+	')'].join('');
+};
 
 
 // Card
@@ -83,6 +100,8 @@
 			+'<div id="'+id+'" class="card">'
 				+'<div class="card_title">'
 				+'</div>'
+				+'<div class="card_heading_separator"></div>'
+				+'<div class="card_content"></div>'
 			+'</div>'
 		+'</div>';
 		
@@ -115,6 +134,25 @@
 						dojo.place('<span class="card_title_'+which+'">'+text+'</span>', card_title);
 						break;
 				}
+			},
+			
+			content: function(obj) {
+				var card_content = dojo.query('.card_content', card_dom)[0];
+				
+				var b = '';
+				for(var e in obj) {
+					var txt = (typeof obj[e] == 'string')? obj[e]: '<a href="#">'+obj[e].join('</a>, <a href="#">')+'</a>';
+					b += '<div>'
+							+'<span class="card-item">'+e+': </span>'
+							+'<span class="card-text">'+txt+'</span>'
+						+'</div>';
+				}
+				
+				b += '<div class="card-image" style="background-color: '+randomColor()+';"><div>Image</div></div>';
+				
+				console.log(b);
+				
+				dojo.place(b, card_content);
 			},
 			
 			getElement: function() {
@@ -157,6 +195,11 @@ ESRI_Map.ready(function() {
 		var self = {
 			create: function() {
 				card.title('heading', name);
+				card.content({
+					'Hours': '7:00am - 11:00pm',
+					'Phone': '(805) 893-7619',
+					'Departments': ['Geography','Geology','Art History'],
+				});
 			},
 		};
 		
@@ -167,6 +210,10 @@ ESRI_Map.ready(function() {
 		self.create();
 		
 		deck = infoDeck.push(card);
+		
+		dojo.connect(card.getElement(), 'onclick', function() {
+			infoDeck.fold();
+		});
 		
 		return card;
 	};

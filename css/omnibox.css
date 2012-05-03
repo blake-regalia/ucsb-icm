@@ -65,6 +65,7 @@
 	border-bottom: ${omnibox_results_border};
 	
 	overflow-y: scroll;
+	opacity: 0.8;
 	
 	z-index: ${zindex_omnibox - 2};
 }

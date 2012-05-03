@@ -428,10 +428,18 @@ SearchItems.set(
 			keyup: function(e) {
 				if(e.target.value != search_text) {
 					console.warn('prediction of "'+search_text+'" failed: "'+e.target.value+'"');
+					threaded_search.interupt();
+					search_text = e.target.value;
+					self.search();
 				}
 			},
 			keydown: function(e) {
 				threaded_search.interupt();
+				
+				if(e.keyCode == 13) {
+					SearchItems.lookup(dojo.attr(dojo.byId('omnibox_results').childNodes[0],'link')).execute();
+					return;
+				}
 				
 				var prediction = input_predictor(e);
 				
