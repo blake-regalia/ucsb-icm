@@ -1,0 +1,61 @@
+=======INSTALLATION======
+
+*********REQUIRED********
+
+-- phpQuery for PEAR: --
+
+  pear channel-discover phpquery-pear.appspot.com  
+  pear install phpquery/phpQuery 
+  
+------------------------
+
+
+*********REQUIRED********
+
+---- cURL for PEAR: ----
+  
+------------------------
+
+
+*********REQUIRED********
+
+--------- MySQL ---------
+
+-------------------------
+
+
+*********REQUIRED********
+
+-------- PHP 5.x --------
+
+-------------------------
+
+=========================
+
+
+
+
+
+
+======CONFIGURATION======
+
+-- database.config.php --
+
+  modify example given to match your database credentials
+
+-------------------------
+
+=========================
+
+
+
+
+
+
+========RUN TIME=========
+
+
+  php registrar.php --help
+
+
+=========================

@@ -3,17 +3,84 @@
 require "phpQuery.php";
 require "database.php";
 
-
-
-$limitOneDepartment = false;
-
-$param_qtr = '20122'; // spring 2012
-
-$db_table_name = 'spring-2012-ugrad';
-
 $param_level = 'Undergraduate';
-// or uncomment the line below to mine for graduate courses
-//$param_level = 'Graduate';
+$param_qtr = false;
+$db_table_name = false;
+
+foreach($argv as $argn => $arg) {
+	if($arg[0] == '-') {
+		$arg = strtolower($arg);
+		if($arg == '-u') {
+			$param_level = 'Undergraduate';
+		}
+		else if($arg == '-g') {
+			$param_level = 'Graduate';
+		}
+		else if(preg_match('/\-(.)([0-9]{2})/', $arg, $qtr)) {
+			$param_qtr = (2000+$qtr[2]);
+			switch($qtr[1]) {
+				case 'w':
+					$param_qtr .= '1'; break;
+				case 's':
+					$param_qtr .= '2'; break;
+				case 'm':
+					$param_qtr .= '3'; break;
+				case 'f':
+					$param_qtr .= '4'; break;
+				default:
+					die_input('quarter not recognized: "'.$qtr[1].'"');
+			}
+		}
+		else if($arg == '--help') {
+			die_input();
+		}
+		else {
+			die_input('argument not recognized: "'.$arg.'"');
+		}
+	}
+	else if($argn == $argc-1) {
+		$db_table_name = $arg;
+	}
+	else if($argn != 0) {
+		die_input('argument not recognized: "'.$arg.'"');
+	}
+}
+
+if($param_qtr === false) {
+	die_input('a quarter must be specified');
+}
+if($db_table_name === false || $db_table_name == '') {
+	die_input('a table name must be specified');
+}
+
+function die_input($remarks=false) {
+echo 'php '.$_SERVER['SCRIPT_FILENAME'].' [OPTION] -QUARTER TABLE_NAME
+Concrete options:
+  -u, [default]     undergraduate course levels only
+  -g,               graduate course levels only
+  
+To select a quarter, the format of the argument is: `-qyy`, Where `yy` are the last two digits of the year `20yy` and `q` is one of the following:
+  f,                fall
+  w,                winter
+  s,                spring
+  m,                summer
+
+eg:
+
+php registrar.php -u -s12 uqtr
+-- selects undergraduate courses from spring 2012 and stores them to table named `uqtr`
+
+php registrar.php -g -m10 smr-10
+-- selects graduate courses from summer 2010 and stores them to table named `smr-10`
+  
+';
+if($remarks !== false) {
+	echo 'ERROR: '.$remarks;
+}
+exit;
+}
+
+
 
 $regUrl = "http://my.sa.ucsb.edu/public/curriculum/coursesearch.aspx";
 
