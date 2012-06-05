@@ -1,0 +1,31 @@
+.power-search {
+	background-color: Silver;
+	border: 1px solid black;
+	height: 400px;
+	position: absolute;
+	width: 600px;
+}
+
+.power-search-title {
+	background-color: SteelBlue;
+	border-bottom: 1px solid black;
+	color: white;
+	font-family: Verdana;
+	height: 24px;
+	padding: 10px;
+	position: relative;
+}
+
+.power-search-content {
+	height: 100%;
+	margin-top: -42px;
+	position: absolute;
+	width: 100%;
+}
+
+.power-search-form {
+	height: 70%;
+	width: 100%;
+	top: 45px;
+	position: relative;
+}

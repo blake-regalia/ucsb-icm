@@ -1,235 +1,405 @@
-
-
-// CardDeck
-(function() {
-	var __func__ = 'CardDeck';
-	
-	var deck_top = -80;
-	var card_spacing = 35;
-	var zindex_base = 2048;
-	var zindex_plus = 0;
-	
-	var construct = function(deck_dom) {
-		
-		var stack = [];
-		
-		var self = {
-			
-		};
-		var public = function() {
-			
-		};
-		$.extend(public, {
-			push: function(card) {
-				
-				var index = stack.push(card) - 1;
-				
-				var element = card.getElement();
-				element.style.zIndex = zindex_base + zindex_plus++;
-				
-				var i = index;
-				var first = true;
-				while(i--) {
-					var elmt = stack[i].getElement();
-					
-					if(first) {
-						first = false;
-						dojo.addClass(elmt, 'card_deckview');
-					}
-					var translate_y = i * card_spacing + deck_top;
-					$.style(elmt, 'margin-top', translate_y+'px');
-				}
-				
-				return {
-					
-				};
-			},
-			
-			fold: function() {
-				var i = stack.length - 1;
-				
-				var elmt = stack[i].getElement();
-				
-				dojo.addClass(elmt, 'card_deckview');
-				var translate_y = i * card_spacing + deck_top;
-				$.style(elmt, 'margin-top', translate_y+'px');
-			},
-			
-			getElement: function() {
-				return deck_dom;
-			},
-		});
-		return public;
+var DomEventControl = function(link) {
+	return {
+		unbind: function() {
+			dojo.disconnect(link);
+		},
 	};
-	var global = window[__func__] = function() {
-		if(this !== window) {
-			var instance = construct.apply(this, arguments);
-			return instance;
-		}
-		else {
-			
-		}
-	};
-	$.extend(global, {
-		toString: function() {
-			return __func__+'()';
-		}
-	});
-})();
-
-
-var randomColor = function() {
-	return ['hsl(',
-		Math.round(Math.random()*360),',',
-		Math.round(Math.random()*70+30),'%,',
-		Math.round(Math.random()*30+70),'%',
-	')'].join('');
 };
 
 
-// Card
+/***
+
+new CardDeck('stack', dojo.byId('info_deck'));
+
+var courseId   = 'CS 185';
+var courseName = 'Human-Computer Interaction';
+
+
+var card = new Card(courseId+' - '+courseName, {
+	title: courseId,
+	subtitle: courseName,
+	daysOfWeek: 'MW',
+	timesOfDay: {
+		A: [480, 530],
+	},
+	content: {
+		'Description': 'This course offers blah blah blah...',
+		'Instructor': instructor,
+	},
+});
+
+
+CardDeck('stack').add(card);
+
+
+/* Card widgets *
+ - title
+ - subtitle
+ - daysOfWeek
+ - timesOfDay
+ - content
+/**/
+
+/***
+card.setup({
+	
+});
+
+CardDeck('stack').add(card);
+
+/**/
+
+
 (function() {
 	var __func__ = 'Card';
 	
-	var cardIdNum = 0;
-	var zIndexBase = 2048;
+	var own = {};
+	var cardId = 0;
 	
-	var insertCard = function(id, container) {
-		var html = 
-		  '<div id="'+id+'-container" class="card_container" style="z-index:'+zIndexBase+cardIdNum+';">'
-			+'<div id="'+id+'" class="card">'
-				+'<div class="card_title">'
+	var basicCardHTML = function(cardIdNum) {
+		var id = 'card_'+cardIdNum;
+		return '<div id="'+id+'" class="card">'
+				+'<div class="card-header">'
+					+'<span class="card-title"></span>'
+					+'<span class="card-subtitle"></span>'
 				+'</div>'
-				+'<div class="card_heading_separator"></div>'
-				+'<div class="card_content"></div>'
-			+'</div>'
-		+'</div>';
-		
-		return dojo.place(html, container);
+				+'<div class="card-heading_separator"></div>'
+				+'<div class="card-timeline">'
+					+'<div class="card-timeline-days"></div>'
+					+'<div class="card-timeline-times"></div>'
+				+'</div>'
+				+'<div class="card-heading_separator"></div>'
+				+'<div class="card-content"></div>'
+			+'</div>';
 	};
 	
-	var construct = function(container) {
+	
+	
+	var construct = function(key, setup) {
 		
-		var card_id = 'card_'+(++cardIdNum);
 		
-		var container_dom = insertCard(card_id, container)
-		var card_dom = dojo.byId(card_id);
-		
-		var html = '';
-		
-		var self = {
+		var my = {
+			
+			id: cardId,
+			
+			viewStatus: global.OPEN,
+			
+			// create a div element
+			dom: dojo.create('div', {
+				id: 'card-'+cardId,
+				class: 'card-container',
+				
+				innerHTML: basicCardHTML(cardId),
+			}),
+			
+			eventListeners: {
+				click: false,
+			},
 			
 		};
+		
+		cardId += 1;
+		
+		
+		var self = {
+			controlBinding: function(eventListenerName) {
+				return {
+					getIndex: function() {
+						return public.index;
+					},
+					unbind: function() {
+						dojo.disconnect(my.eventListeners[eventListenerName]);
+						my.eventListeners[eventListenerName] = false;
+					},
+				};
+			},
+		};
+		
 		
 		var public = function() {
 			
 		};
 		
+		
 		$.extend(public, {
 			
-			title: function(which, text) {
-				switch(which) {
-					case 'heading':
-						var card_title = dojo.query('.card_title', card_dom)[0];
-						dojo.place('<span class="card_title_'+which+'">'+text+'</span>', card_title);
-						break;
-				}
+			index: -1,
+			
+			// to be over-ridden by subclasses
+			onDraw: function() {
+				global.warn('onDraw meant to be over-ridden by extending subclass');
 			},
 			
-			content: function(obj) {
-				var card_content = dojo.query('.card_content', card_dom)[0];
-				
-				var b = '';
-				for(var e in obj) {
-					var txt = (typeof obj[e] == 'string')? obj[e]: '<a href="#">'+obj[e].join('</a>, <a href="#">')+'</a>';
-					b += '<div>'
-							+'<span class="card-item">'+e+': </span>'
-							+'<span class="card-text">'+txt+'</span>'
-						+'</div>';
-				}
-				
-				b += '<div class="card-image" style="background-color: '+randomColor()+';"><div>Image</div></div>';
-				
-				console.log(b);
-				
-				dojo.place(b, card_content);
+			isOpen: function() {
+				return (my.viewStatus == global.OPEN);
 			},
 			
+			// sets the cards view status 
+			open: function() {
+				my.viewStatus = global.OPEN;
+			},
+			
+			// sets the cards view status 
+			fold: function() {
+				my.viewStatus = global.FOLDED;
+			},
+			
+			
+			// fetch the dom element of this card
 			getElement: function() {
-				return card_dom;
+				return my.dom;
 			},
+			
+			// fetch the dom element of this card
+			getContainer: function() {
+				return my.dom.parentNode;
+			},
+			
+			
+			// setup the card element
+			setup: function(obj) {
+				// reference the widget array
+				var widgetArray = global.widget;
+				
+				// iterate through widget arguments
+				for(var each in obj) {
+					
+					// reference the widget function
+					var widget = widgetArray[each];
+					
+					// if the widget is not defined
+					if(!widget) {
+						
+						// if there isn't a user-defined function for the widget name
+						if(typeof obj[each] !== 'function') {
+							global.error('widget not found: "',each,'"');
+						}
+						// otherwise, execute user-defined function
+						else {
+							obj[each].apply(my, []);
+						}
+						continue;
+					}
+					
+					console.log(my.dom);
+					
+					// build the card by predefined widgets
+					widget.apply(my, [obj[each]]);
+				}
+			},
+			
+			
+			// allow another class to assign this dom an event
+			click: function(method) {
+				if(my.eventListeners.click) {
+					dojo.disconnect(my.eventListeners.click);
+					my.eventListeners.click = false;
+				}
+				my.eventListeners.click = dojo.connect(my.dom.firstChild, 'onclick', function() {
+					method.apply(self.controlBinding('click'), arguments);
+				})
+			},
+			
+			toString: function() {
+				return __func__+': '+key;
+			},
+			
 		});
+		
+		
+		// in case this was instantiated with the optional setup object
+		public.setup(setup);
+		
 		
 		return public;
 	};
 	
-	var global = window[__func__] = function() {
+	
+	
+	var global = window[__func__] = function(key) {
 		if(this !== window) {
 			var instance = construct.apply(this, arguments);
+			if(!own[key]) own[key] = [];
+			own[key].push(instance);
 			return instance;
 		}
 		else {
 			
 		}
 	};
+	
+	
+	
 	$.extend(global, {
+		
+		OPEN   : 0,
+		FOLDED : 1,
+	
 		toString: function() {
 			return __func__+'()';
-		}
-	});
-})();
-
-ESRI_Map.ready(function() {
-	window.infoDeck = new CardDeck(dojo.byId('info_deck'));
-});
-
-// BuildingCard extends Card
-(function() {
-	var __func__ = 'BuildingCard';
-	
-	var construct = function(name) {
+		},
 		
-		var card = new Card(infoDeck.getElement());
-		var deck = false;
+		warn: function() {
+			var args = Array.cast(arguments);
+			args.unshift(__func__+':');
+			console.error.warn(console, args);
+		},
 		
-		var self = {
-			create: function() {
-				card.title('heading', name);
-				card.content({
-					'Hours': '7:00am - 11:00pm',
-					'Phone': '(805) 893-7619',
-					'Departments': ['Geography','Geology','Art History'],
-				});
+		error: function() {
+			var args = Array.cast(arguments);
+			args.unshift(__func__+':');
+			console.error.apply(console, args);
+		},
+		
+		
+		widget: {
+			
+			// creates a main title
+			title: function(text) {
+				var e_dom = dojo.query('.card-header>.card-title', this.dom)[0];
+				dojo.place('<span class="card-title">'+text+'</span>', e_dom, 'replace');
 			},
-		};
-		
-		$.extend(card, {
 			
-		});
-		
-		self.create();
-		
-		deck = infoDeck.push(card);
-		
-		dojo.connect(card.getElement(), 'onclick', function() {
-			infoDeck.fold();
-		});
-		
-		return card;
-	};
-	
-	var global = window[__func__] = function() {
-		if(this !== window) {
-			var instance = construct.apply(this, arguments);
-			return instance;
-		}
-		else {
 			
-		}
-	};
-	$.extend(global, {
-		toString: function() {
-			return __func__+'()';
-		}
+			// creates a subtitle
+			subtitle: function(text) {
+				console.log(this.dom);
+				var e_dom = dojo.query('.card-header>.card-subtitle', this.dom)[0];
+				dojo.place('<span class="card-subtitle">'+text+'</span>', e_dom, 'replace');
+			},
+			
+			
+			// creates a view to indicate days of the week
+			days: function(dayString) {
+				
+				// referemce the target element
+				var e_dom = dojo.query('.card-timeline>.card-timeline-days', this.dom)[0];
+				
+				
+				var days = {
+					S:false,
+					M:false,
+					T:false,
+					W:false,
+					R:false,
+					F:false,
+					A:false,
+				};
+				
+				var len = dayString.length;
+				for(var i=0; i<len; i++) {
+					days[dayString[i].toUpperCase()] = true;
+				}
+				
+				// string builder for the days timeline
+				var b = '';
+				var c = '';
+				
+				for(var each in days) {
+					var on = days[each];
+					b += on? '<span class="day-on">'+each+'</span>': '<span>'+each+'</span>';
+				}
+				
+				// replace the html content of the days timeline
+				dojo.place('<span class="card-timeline-days">'
+						+'<div class="days-row">'+b+'</div>'
+					+'</span>', e_dom, 'replace');
+			},
+			
+			
+			// creates a view to indicate times of the days specified
+			times: function(obj) {
+				
+				
+				// referemce the target element
+				var e_dom = dojo.query('.card-timeline>.card-timeline-times', this.dom)[0];
+				
+				if(typeof obj === 'string') {
+					var timeMatch = /(\d+):(\d+)\s*([ap]m)\s*[\-]\s*(\d+):(\d+)\s*([ap]m)/i.exec(obj);
+					var startTime = {
+						hour: parseInt(timeMatch[1]),
+						minute: parseInt(timeMatch[2]),
+						ampm: timeMatch[3].toLowerCase(),
+					};
+					var endTime = {
+						hour: parseInt(timeMatch[4]),
+						minute: parseInt(timeMatch[5]),
+						ampm: timeMatch[6].toLowerCase(),
+					};
+					
+					
+				}
+				
+				// string builder for the days timeline
+				var b = '';
+				var c = '';
+				
+				var add;
+				var sub = 8;
+				var rng = 13;
+				add = startTime.ampm === 'pm'? 12: 0;
+				var stu = ((startTime.hour+add-sub)*60+startTime.minute) / (60*rng);
+				add = endTime.ampm === 'pm'? 12: 0;
+				var etu = ((endTime.hour+add-sub)*60+endTime.minute) / (60*rng);
+				
+				stu *= 100;
+				etu *= 100;
+				
+				
+				b += '<span style="left:'+(stu-5)+'%; position:inherit;" class="time-block">';
+					b += '<span style="left:'+stu+'%;" class="time-start">'+startTime.hour+':'+String.fill('00',startTime.minute)+' '+startTime.ampm+'-</span>';
+					b += '<span style="left:'+etu+'%;" class="time-end">'+endTime.hour+':'+String.fill('00',endTime.minute)+' '+endTime.ampm+'</span>';
+				b += '</span>';
+				
+				c += '<span style="left:'+stu+'%; width:'+(etu-stu)+'%"></span>';
+				
+				// replace the html content of the days timeline
+				dojo.place('<span class="card-timeline-times">'
+						+'<div class="times-row">'+b+'</div>'
+						+'<div class="blocks-row">'+c+'</div>'
+					+'</span>', e_dom, 'replace');
+			},
+			
+			
+			// fills the content view
+			content: function(obj) {
+				
+				var e_dom = dojo.query('.card-content', this.dom)[0];
+				
+				// string builder for the content html
+				var b = '';
+				
+				// iterate through the tags
+				for(var each in obj) {
+					
+					// switch on the target
+					var target = obj[each];
+					switch(typeof target) {
+						
+						// simple html
+						case 'string':
+							b += '<div>'
+									+'<span class="card-content-item">'+each+': </span>'
+									+'<span class="card-content-text">'+target+'</span>'
+								+'</div>';
+							break;
+							
+						// a functionable object
+						case 'object':
+							
+							break;
+					}
+				}
+				
+				// replace the html content of the card content
+				dojo.place(b, e_dom);
+			},
+			
+			// creates a view to indicate 1 graphic associated with this card
+			image: function(obj) {
+				var e_dom = dojo.query('.card-content-image', this.dom, 'replace')[0];
+			}
+		},
 	});
 })();
+

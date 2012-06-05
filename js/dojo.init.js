@@ -6,8 +6,7 @@ dojo.require('esri.map');
 
 dojo.addOnLoad(function() {
 	Benchmark.mark('document load','script');
-	new ESRI_Map(DefaultPackage);
-	new Omnibox(dojo.byId('omnibox'));
+	ToolManager.init();
 });
 
 Benchmark.stop('dojo.init.js','load');

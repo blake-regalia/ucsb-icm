@@ -32,17 +32,19 @@ window.UCSB_Campus_ags_dev = {
 
 window.DefaultPackage = UCSB_Campus_ags_dev;
 
-/** static ESRI_Map
+/** static class EsriMap
 *
 */
 (function() {
+	var __func__ = 'EsriMap';
 	var dom = false;
 	var map = false;
 	var listeners = [];
+	var coordinateSystem = new esri.SpatialReference({wkid: 4326});
 	var self = {
 		
 	};
-	var global = window.ESRI_Map = function(package) {
+	var global = window[__func__] = function(package) {
 		Benchmark.start(global);
 		
 		dom = dojo.byId('map');
@@ -73,7 +75,7 @@ window.DefaultPackage = UCSB_Campus_ags_dev;
 	};
 	$.extend(global, {
 		toString: function() {
-			return 'ESRI_Map()';
+			return __func__+'()';
 		},
 		
 		// for developers to test scripts
@@ -85,6 +87,12 @@ window.DefaultPackage = UCSB_Campus_ags_dev;
 		},
 		ready: function(callback) {
 			listeners.push(callback);
+		},
+		
+		setCenter: function(webMercatorCoordinatePair) {
+			console.log(webMercatorCoordinatePair);
+			var point = new esri.geometry.Point(webMercatorCoordinatePair.x, webMercatorCoordinatePair.y, coordinateSystem);
+			map.centerAt(point);
 		},
 	});
 })();

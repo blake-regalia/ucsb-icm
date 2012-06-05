@@ -36,6 +36,11 @@ String.prototype.substr = function(a, b) {
 	return str;
 };
 
+String.fill = function(pad, str) {
+	str = str+'';
+	return pad.substr(str.length)+str;
+};
+
 
 /** ******************** **/
 /** *****  ARRAY  ***** **/
@@ -50,6 +55,12 @@ Array.prototype.str = function() {
 	if(!arguments.length) return this.join('');
 	this.push(Array.prototype.slice.call(arguments).join(''));
 	return this;
+};
+
+Array.swap = function(a, b) {
+	var tmp = this[a];
+	this[a] = this[b];
+	this[b] = tmp;
 };
 
 
@@ -542,6 +553,22 @@ Math.parseNumber = function(str, weight) {
 	return num;
 };
 
+
+/** ******************* **/
+/** *****  ERROR  ***** **/
+/** ******************* **/
+Error.param = function(name, method) {
+	return 'call to '+method.name+' function missing argument: `'+name+'`';
+};
+
+
+Date.Sunday    = 1;
+Date.Monday    = 2;
+Date.Tuesday   = 4;
+Date.Wednesday = 8;
+Date.Thursday  = 16;
+Date.Friday    = 32;
+Date.Saturday  = 64;
 
 
 /** ******************* **/

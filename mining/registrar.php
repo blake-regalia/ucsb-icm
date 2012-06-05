@@ -184,7 +184,7 @@ function error($msg) {
 }
 
 function format($str) {
-	return preg_replace(array('/^\s+/','/\s+$/'),array('',''),$str);
+	return preg_replace(array('/^\s+/','/\s+$/','/\s+/'),array('','',' '),$str);
 }
 
 $records = array();
@@ -240,6 +240,9 @@ function extractRow($row) {
 	
 	// location
 	$location = format($tds->eq(8)->text());
+	if(preg_match('/^([A-Z]+)([0-9]+[A-Za-z]*)$/', $location, $locationFix)) {
+		$location = $locationFix[1].' '.$locationFix[2];
+	}
 	
 	// time of day codes
 	$enrolled = format($tds->eq(9)->text());

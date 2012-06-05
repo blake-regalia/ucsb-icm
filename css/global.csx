@@ -99,10 +99,10 @@ card_deckview_hover_rotation_x = ${card_deckview_rotation_x + 5}
 	
 card_deckview_hover_scale = ${card_deckview_scale * 1.02}
 
-card_deckview_hover_translate_x = -20
+card_deckview_hover_translate_x = -25
 	&unit = px
 
-card_deckview_hover_translate_y = -20
+card_deckview_hover_translate_y = -8
 	&unit = px
 
 card_deckview_hover_transform = rotateX( ${card_deckview_hover_rotation_x}&unit ) scale( ${card_deckview_hover_scale} ) translate( ${card_deckview_hover_translate_x}&unit , ${card_deckview_hover_translate_y}&unit)

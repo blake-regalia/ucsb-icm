@@ -15,6 +15,17 @@ blake douglas regalia
 blue-orange pieces of dodgy reeses
 
 
+Shortened Terms
+==========================
+search: csi
+/^c[^ ]*s[^ ]*i[^ ]+\b/
+first character matches, next character appears before last character before word boundary
+matches:
+compscience
+cmpsci-185
+congressional
+
+
 
 /******/
 
@@ -95,7 +106,7 @@ blue-orange pieces of dodgy reeses
 		},
 	};
 	var global = window[__func__] = function() {
-		
+		global.set.apply(this, arguments);
 	};
 	$.extend(global, {
 		add: function() {
@@ -178,65 +189,6 @@ blue-orange pieces of dodgy reeses
 	});
 })();
 
-
-// Buildings
-(function() {
-	var __func__ = 'Buildings';
-	var construct = function() {
-		var self = {
-			
-		};
-		var public = function() {
-			
-		};
-		$.extend(public, {
-			
-		});
-		return public;
-	};
-	var global = window[__func__] = function() {
-		if(this !== window) {
-			var instance = construct.apply(this, arguments);
-			return instance;
-		}
-		else {
-			
-		}
-	};
-	$.extend(global, {
-		toString: function() {
-			return __func__+'()';
-		},
-		lookup: function(id) {
-			new BuildingCard(id);
-		},
-	});
-})();
-
-
-SearchItems.set(
-	{
-		key: 'building.names',
-		title: 'Building',
-		select: Buildings.lookup,
-	},
-	{
-		key: 'geography.faculty.names',
-		title: 'Geography Faculty',
-	},
-	{
-		key: 'geography.staff.names',
-		title: 'Geography Staff',
-	},
-	{
-		key: 'geography.grads.names',
-		title: 'Geography Graduate',
-	},
-	{
-		key: 'geography.researchers.names',
-		title: 'Geography Researcher',
-	}
-);
 
 (function() {
 	var __func__ = 'InputPredictor';
@@ -321,9 +273,20 @@ SearchItems.set(
 			var matches = loop.matches;
 			var tiers = loop.sorted_tiers;
 			
+			
+			var splitText = text.toUpperCase().split('');
+			var textLength = text.length;
+			
 			var a = new RegExp('^'+text,'i');
+			
 			var b = new RegExp('[ \\.\\-_]'+text,'i');
-			var c = new RegExp();
+			
+//			var c = new RegExp('\\b'+splitText.join('[^ ]*')+'[^ ]+\\b');
+			
+			// (([^ \-]*[ -]+)*e[^ -]*)
+//			var d = new RegExp('\\b('+splitText.join('[^ \\-]*)(([^ \\-]*[ \\-]+)*')+'[^ \\-]*)', 'i');
+			
+			
 			
 			var search = SearchItems.data(map_index);
 			var power = SearchItems.power(map_index);
@@ -348,22 +311,24 @@ SearchItems.set(
 				var match = search[i];
 				
 				var test = match;
-				var az = a.exec(test);
-				var bz = b.exec(test);
+				var az, bz, cz, dz;
 				
-				if(az) {
+				//var az = a.exec(test);
+				//var bz = b.exec(test);
+				
+				if(az=a.exec(test)) {
 					var azi = az.index;
 					if(!tiers[azi]) {
 						tiers[azi] = [];
 					}
 					tiers[azi].push(power+i);
 					
-					// ~5% faster than Math.max
+					// ~5% faster than calling Math.max
 					if(azi > tiers.max) {
 						tiers.max = azi;
 					}
 				}
-				else if(bz) {
+				else if(bz=b.exec(test)) {
 					var bzi = bz.index+1;
 					if(!tiers[bzi]) {
 						tiers[bzi] = [];
@@ -437,7 +402,14 @@ SearchItems.set(
 				threaded_search.interupt();
 				
 				if(e.keyCode == 13) {
-					SearchItems.lookup(dojo.attr(dojo.byId('omnibox_results').childNodes[0],'link')).execute();
+					var link = dojo.attr(dojo.byId('omnibox_results').childNodes[0],'link');
+					
+					if(link) {
+						SearchItems.lookup(link).execute();
+					}
+					else {
+						SearchQuery(search_text);
+					}
 					return;
 				}
 				
@@ -470,7 +442,10 @@ SearchItems.set(
 				}
 				
 				if(c == 0) {
-					b += '<div class="search_result"><span class="title"></span><span class="class">no matches found</span></div>';
+					b += '<div class="search_result">'
+							+'<span class="title"></span>'
+							+'<span class="class">press enter to search</span>'
+						+'</div>';
 					c = 1;
 				}
 				
@@ -538,5 +513,73 @@ SearchItems.set(
 		dojo.connect(document, 'onkeydown', function() {
 			omnibox.focus();
 		});
+	});
+})();
+
+
+// Lectures
+(function() {
+	var __func__ = 'Lectures';
+	var construct = function() {
+		var self = {
+			
+		};
+		var public = function() {
+			
+		};
+		$.extend(public, {
+			
+		});
+		return public;
+	};
+	var global = window[__func__] = function() {
+		if(this !== window) {
+			var instance = construct.apply(this, arguments);
+			return instance;
+		}
+		else {
+			
+		}
+	};
+	$.extend(global, {
+		toString: function() {
+			return __func__+'()';
+		},
+		lookup: function(level) {
+			return function(id) {
+				new LectureCard(level, id);
+			};
+		},
+	});
+})();
+
+
+(function() {
+	var __func__ = 'SearchQuery';
+	var construct = function() {
+		var self = {
+			
+		};
+		var public = function() {
+			
+		};
+		$.extend(public, {
+			
+		});
+		return public;
+	};
+	var global = window[__func__] = function(query) {
+		dojo.xhrGet({
+			url: 'data/service.php?q='+query,
+			handleAs: 'json',
+			load: function(json) {
+				console.log(json);
+			},
+		});
+	};
+	$.extend(global, {
+		toString: function() {
+			return __func__+'()';
+		}
 	});
 })();

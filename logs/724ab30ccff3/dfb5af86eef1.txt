@@ -1014,3 +1014,12 @@ dojo.init.js took 0.002s to load
 document load took 0.532s since script started
 map load took 0.143s since ESRI_Map() started
 map load took 0.676s since script started
+
+load: Wed May 02 2012 21:29:13 GMT-0700 (Pacific Daylight Time)
+arcgis.js took 0.04s to load
+unra.js took 0s to load
+esri.map.js took 0s to load
+dojo.init.js took 0.002s to load
+document load took 0.713s since script started
+map load took 0.166s since ESRI_Map() started
+map load took 0.881s since script started
