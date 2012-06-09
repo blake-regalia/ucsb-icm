@@ -1,7 +1,7 @@
 <html>
 
-<script type="text/javascript" src="../../js/compile.php?debug"></script>
 <script type="text/javascript" src="../../js/.jquery.js"></script>
+<?php $DEBUG=TRUE; $PATH="../../js"; chdir('../../js'); require "compile.php"; ?>
 <link rel="stylesheet" href="../../css/power.css" type="text/css"/>
 <body>
 
@@ -29,14 +29,23 @@
 
 <div class="widget-menu">
 	<div class="widget-menu-pane">
-		<div class="widget-menu-icon">
+		<div class="widget-menu-icon" style="background-image:url('../../resource/widget.icon.directions.gif');">
 			<span class="widget-menu-icon-hover">directions</span>
 		</div>
-		<div class="widget-menu-icon">
+		<div class="widget-menu-icon" style="background-image:url('../../resource/widget.icon.courses.gif');">
 			<span class="widget-menu-icon-hover">courses</span>
 		</div>
-		<div class="widget-menu-icon">
+		<div class="widget-menu-icon" style="background-image:url('../../resource/widget.icon.bus.routes.jpg');">
 			<span class="widget-menu-icon-hover">bus routes</span>
+		</div>
+		<div class="widget-menu-icon" style="background-image:url('../../resource/widget.icon.parking.jpg');">
+			<span class="widget-menu-icon-hover">parking</span>
+		</div>
+		<div class="widget-menu-icon" style="background-image:url('../../resource/widget.icon.eateries.jpg');">
+			<span class="widget-menu-icon-hover">eateries</span>
+		</div>
+		<div class="widget-menu-icon" style="background-image:url('../../resource/widget.icon.environment.jpg');">
+			<span class="widget-menu-icon-hover">environment</span>
 		</div>
 	</div>
 </div>

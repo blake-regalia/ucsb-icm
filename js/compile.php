@@ -1,5 +1,10 @@
 <?php
 
+$path = 'js';
+if(isset($PATH)) {
+	$path = $PATH;
+}
+
 $PRIORITY = array(
     'arcgis.preload.js',
     'benchmark.js',
@@ -43,7 +48,7 @@ $i = sizeof($js_files);
 while($i--) {
 	$src = $js_files[$i];
 	if($DEBUG) {
-		echo '<script type="text/javascript" src="js/'.$src.'"></script>'."\n";
+		echo '<script type="text/javascript" src="'.$path.'/'.$src.'"></script>'."\n";
 	}
 	else {
 		readfile($src);

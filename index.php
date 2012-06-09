@@ -54,6 +54,29 @@
 			</div>
 			
 			<div id="info_deck"></div>
+			
+			<div class="widget-menu">
+				<div class="widget-menu-pane">
+					<div class="widget-menu-icon" style="background-image:url('resource/widget.icon.directions.gif');">
+						<span class="widget-menu-icon-hover">directions</span>
+					</div>
+					<div class="widget-menu-icon" style="background-image:url('resource/widget.icon.courses.gif');">
+						<span class="widget-menu-icon-hover">courses</span>
+					</div>
+					<div class="widget-menu-icon" style="background-image:url('resource/widget.icon.bus.routes.jpg');">
+						<span class="widget-menu-icon-hover">bus routes</span>
+					</div>
+					<div class="widget-menu-icon" style="background-image:url('resource/widget.icon.parking.jpg');">
+						<span class="widget-menu-icon-hover">parking</span>
+					</div>
+					<div class="widget-menu-icon" style="background-image:url('resource/widget.icon.eateries.jpg');">
+						<span class="widget-menu-icon-hover">eateries</span>
+					</div>
+					<div class="widget-menu-icon" style="background-image:url('resource/widget.icon.environment.jpg');">
+						<span class="widget-menu-icon-hover">environment</span>
+					</div>
+				</div>
+			</div>
 		</div>
 		
 	</div>

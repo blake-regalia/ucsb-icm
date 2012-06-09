@@ -1,0 +1,74 @@
+Databases {
+
+
+ucsb.facilites.building
+ucsb.facilites.room
+ucsb.facilites.parking
+
+ucsb.registrar.undergrad.lecture
+ucsb.registrar.undergrad.section
+
+ucsb.directory.faculty.professor
+ucsb.directory.staff
+ucsb.directory.student.graduate
+
+ucsb.department
+
+ucsb.college.engineering.major
+ucsb.college.engineering.major
+
+}
+
+
+
+facilities: {
+	building
+	room
+	parking
+},
+
+registrar: {
+	undergrad: {
+		lecture
+		section
+	},
+	graduate: {
+		lecture
+	},
+},
+
+directory: {
+	staff
+	faculty: {
+		professor
+		lecturer?
+		researcher
+	},
+	student: {
+		graduate
+		researcher
+	},
+},
+
+college: {
+	engr: {
+		major
+		department: {
+			computerScience
+			mechanicalEngineering
+		},
+	},
+	lns: {
+		major
+		department: {
+			geography,
+			geology,
+			arthistory,
+		},
+	},
+	cs: {
+		major
+		department
+	},
+},
+

@@ -27,3 +27,24 @@
 		}
 	});
 })();
+
+
+EsriMap.ready(function() {
+	setTimeout(function() {
+		console.log('WTF');
+		var a = dojo.query('.widget-menu-icon');
+		var i=a.length;
+		while(i--) {
+			dojo.connect(a[i], 'mouseover', function() {
+				dojo.query('.widget-menu-icon-hover',this).style({ display:"block" }); 
+			});
+			dojo.connect(a[i], 'mouseout', function() {
+				dojo.query('.widget-menu-icon-hover',this).style({ display:"none" });
+			});
+		}
+		
+		setTimeout(function() {
+			dojo.query('#map_zoom_slider').style({left: '200px'});
+		}, 1200);
+	}, 1000);
+});
