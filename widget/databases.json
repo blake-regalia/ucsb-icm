@@ -1,74 +1,79 @@
-Databases {
+::Databases::
 
-
-ucsb.facilites.building
-ucsb.facilites.room
-ucsb.facilites.parking
-
-ucsb.registrar.undergrad.lecture
-ucsb.registrar.undergrad.section
-
-ucsb.directory.faculty.professor
-ucsb.directory.staff
-ucsb.directory.student.graduate
-
-ucsb.department
-
-ucsb.college.engineering.major
-ucsb.college.engineering.major
-
+ucsb: {
+	facilities: {
+		room
+		building
+		parking
+		
+		door
+		restroom
+	},
+	
+	registrar: {
+		undergrad: {
+			lecture
+			section
+		},
+		graduate: {
+			lecture
+			section
+		},
+	},
+	
+	directory: {
+		staff
+		faculty: {
+			professor
+			lecturer
+			researcher
+		},
+		student: {
+			graduate
+			researcher
+		},
+	},
+	
+	college: {
+		engr: {
+			major
+			department
+		},
+		lns: {
+			major
+			department
+		},
+		cs: {
+			major
+			department
+		},
+	},
+	
+	campus: {
+		business
+		recycling
+		emergency
+		wifi
+		bike
+	},
+	
+	student: {
+		recreation
+		resource
+	},
+	
+	
+	wireless: {
+		
+	},
+	
 }
 
+iv: {
+	parcel
+	business
+}
 
-
-facilities: {
-	building
-	room
-	parking
-},
-
-registrar: {
-	undergrad: {
-		lecture
-		section
-	},
-	graduate: {
-		lecture
-	},
-},
-
-directory: {
-	staff
-	faculty: {
-		professor
-		lecturer?
-		researcher
-	},
-	student: {
-		graduate
-		researcher
-	},
-},
-
-college: {
-	engr: {
-		major
-		department: {
-			computerScience
-			mechanicalEngineering
-		},
-	},
-	lns: {
-		major
-		department: {
-			geography,
-			geology,
-			arthistory,
-		},
-	},
-	cs: {
-		major
-		department
-	},
-},
-
+sb: {
+	bus
+}

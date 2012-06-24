@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE widget>
+
+<widget name="salaries">
+	
+	
+	<!-- defines events for certain widget actions to bind to -->
+	<action>
+		<define id="main" />
+		<define id="select_search_item_dept" />
+		<define id="select_search_item_bldg" />
+	</action>
+	
+	
+	<!-- identifies permissions to access published/remote databases -->
+	<database>
+	
+		<!-- dataset translates to: database(edu.ucsb.geog.blake) table(salaries.2012) -->
+		<connect download src="blake@geog.ucsb.edu:salaries.2012" />
+		
+	</database>
+	
+	
+	<!-- parameters for the icm's vertical tab menu -->
+	<menu link="widget.action.main">
+		<title>UC salaries</title>
+		<icon
+			idle="draw/idle.gif"
+			hover="draw/hover.gif"
+			active="draw/active.gif"
+		/>
+	</menu>
+	
+	
+	<!-- adds items to be included in the omnibox search results -->
+	<search>
+	
+		<!-- add a search item to the omnibox that will activate this widget -->
+		<item link="widget.action.main">University of California Salaries</item>
+		
+		<!-- dataset translates to: database(edu.ucsb.geog.blake) table(salaries.2012) all different values from field(department) -->
+		<dataset src="blake@geog.ucsb.edu:salaries.2012#department">
+			<item link="widget.action.select_search_item_dept" key="$department">Department of $department Salaries</item>
+		</dataset>
+		
+		<!-- dataset translates to: database(edu.ucsb.geog.blake) table(salaries.2012) all different values from field(building) -->
+		<dataset src="blake@geog.ucsb.edu:salaries.2012#building">
+			<item link="widget.action.select_search_item_bldg" key="$building">Salary records for $building</item>
+		</dataset>
+		
+	</search>
+	
+	
+</widget>

@@ -63,13 +63,6 @@ class MySQL_Pointer {
 		return $this->attempt($sql);
 	}
 	
-	function fetchAssoc() {
-		$sql = "SELECT * FROM ".$this->path.";";
-		$res = $this->query($sql);
-		while(($resultArray[] = mysql_fetch_assoc($res)) || array_pop($resultArray));
-		return $resultArray;
-	}
-	
 	function fetchAssocOf($field) {
 		$sql = "SELECT * FROM ".$this->path.";";
 		$res = $this->query($sql);
@@ -82,29 +75,64 @@ class MySQL_Pointer {
 		return $resultArray;
 	}
 	
-	function fetchSizeWhereEquals($field, $value) {
-		$sql = "SELECT COUNT(*) FROM ".$this->path." WHERE `".$field."`='".$value."';";
-		return mysql_result($this->query($sql), 0);
+	function fetchSize($clause) {
+		$where = $this->resolveClause($clause);
+		$sql = "SELECT COUNT(*) FROM ".$this->path." WHERE ".$where.";";
+		$res = $this->query($sql);
+		if(is_bool($res)) {
+			echo $res.':'.print_r($clause,true)."\n";
+		}
+		return mysql_result($res, 0);
 	}
 	
-	function fetchRow($field, $value) {
-		$sql = "SELECT * FROM ".$this->path." WHERE `".$field."` = '".$value."';";
+	function fetchRow($clause) {
+		$where = $this->resolveClause($clause);
+		$sql = "SELECT * FROM ".$this->path." WHERE ".$where.";";
 		$res = $this->query($sql);
 		return mysql_fetch_assoc($res);
 	}
 	
-	function fetchAssocWhereEquals($field, $value) {
-		$sql = "SELECT * FROM ".$this->path." WHERE `".$field."` = '".$value."';";
+	function fetchAssoc($clause=false) {
+		if($clause) {
+			$where = $this->resolveClause($clause);
+			$sql = "SELECT * FROM ".$this->path." WHERE ".$where.";";
+		}
+		else {
+			$sql = "SELECT * FROM ".$this->path.";";
+		}
 		$res = $this->query($sql);
 		while(($resultArray[] = mysql_fetch_assoc($res)) || array_pop($resultArray));
 		return $resultArray;
 	}
 	
 	function insert($array) {
-		$fields = implode('`,`', array_keys($array));
-		$values = implode("','", array_values($array));
+		$fields = implode('`,`', $this->escapeField(array_keys($array)));
+		$values = implode("','", $this->escapeValue(array_values($array)));
 		$sql = "INSERT INTO ".$this->path." (`".$fields."`) VALUES('".$values."');";
 		return $this->query($sql);
+	}
+	
+	function update($clause, $data) {
+		$where = $this->resolveClause($clause);
+		$update = $this->resolveClause($data, ', ');
+		$sql = "UPDATE ".$this->path." SET ".$update." WHERE ".$where.";";
+		return $this->attempt($sql);
+	}
+	
+	function resolveClause($array, $glue=' AND ') {
+		$plode = '';
+		foreach($array as $key => $value) {
+			$plode[]= "`".$this->escapeField($key)."` = '".$this->escapeValue($value)."'";
+		}
+		return implode($glue, $plode);
+	}
+	
+	function escapeField($field) {
+		return preg_replace("/`/","\\`",$field);
+	}
+	
+	function escapeValue($value) {
+		return preg_replace("/'/","\\'",$value);
 	}
 	
 	function getTables() {
@@ -132,21 +160,33 @@ class MySQL_Pointer {
 		return mysql_fetch_row($this->query($sql));
 	}
 	
-	function createTable($tableName, $fieldArray=false, $otherTableStructure=false) {
-		if($fieldArray !== false) {
-			$fields = array();
-			foreach($fieldArray as $name => $type) {
-				$fields []= '`'.$name.'` '.$type;
-			}
-			$sql = "CREATE TABLE IF NOT EXISTS `".$tableName."` (".implode(',', $fields).");";
+	function createTable($tableName, $fieldArray, $and=false) {
+		$fields = array();
+		foreach($fieldArray as $name => $type) {
+			$fields []= '`'.$name.'` '.$type;
 		}
-		else if($otherTableStructure !== false) {
-			$sql = "CREATE TABLE IF NOT EXISTS `".$tableName."` LIKE `".$otherTableStructure."`;";
-		}
+		$sql = "CREATE TABLE IF NOT EXISTS `".$tableName."` (".implode(',', $fields).($and? ", ".$and: "").") ;";
 		return $this->attempt($sql);
 	}
 	
-	protected function error($say) {
+	function createTableLike($sourceDB=false, $sourceTable, $destTable) {
+		if($sourceDB == false) $sourceDB = $this->database;
+		$sql = "CREATE TABLE IF NOT EXISTS `".$this->database."`.`".$destTable."` LIKE `".$sourceDB."`.`".$sourceTable."`;";
+		return $this->attempt($sql);
+	}
+	
+	function cloneFrom($sourceDB=false, $sourceTable) {
+		if($sourceDB == false) $sourceDB = $this->database;
+		$sql = "INSERT INTO ".$this->path." SELECT * FROM `".$sourceDB."`.`".$sourceTable."`;";
+		return $this->attempt($sql);
+	}
+	
+	function reorderBy($fieldName, $asc=true) {
+		$sql = "ALTER TABLE ".$this->path." ORDER BY `".$fieldName."` ".($asc? "ASC": "DESC").";";
+		return $this->attempt($sql);
+	}
+	
+	function error($say) {
 		echo $say;
 		echo "\n".mysql_error();
 		exit;
