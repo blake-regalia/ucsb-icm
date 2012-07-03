@@ -92,6 +92,28 @@ class MySQL_Pointer {
 		return mysql_fetch_assoc($res);
 	}
 	
+	function selectConcat($array, $value) {
+		$concatArray = array();
+		
+		for($index=0; $index<sizeof($array); $index++) {
+			$str = $array[$index];
+			if($index%2 == 0) {
+				$concatArray[]= "'".$this->escapeValue($str)."'";
+			}
+			else {
+				$concatArray[]= "`".$this->escapeField($str)."`";
+			}
+		}
+		
+		$concat = implode(",", $concatArray);
+		
+		$sql = "SELECT * FROM ".$this->path." WHERE CONCAT(".$concat.") = '".$this->escapeValue($value)."';";
+		
+		$res = $this->query($sql);
+		while(($resultArray[] = mysql_fetch_assoc($res)) || array_pop($resultArray));
+		return $resultArray;
+	}
+	
 	function fetchAssoc($clause=false) {
 		if($clause) {
 			$where = $this->resolveClause($clause);
@@ -128,11 +150,17 @@ class MySQL_Pointer {
 	}
 	
 	function escapeField($field) {
-		return preg_replace("/`/","\\`",$field);
+		return preg_replace(
+			array("/`/", "/(\\\\)+/"),
+			array("\\`", "\\"),
+			$field);
 	}
 	
 	function escapeValue($value) {
-		return preg_replace("/'/","\\'",$value);
+		return preg_replace(
+			array("/'/", "/(\\\\)+/"),
+			array("\\'", "\\"),
+			$value);
 	}
 	
 	function getTables() {
@@ -160,6 +188,11 @@ class MySQL_Pointer {
 		return mysql_fetch_row($this->query($sql));
 	}
 	
+	function columnExists($field) {
+		$sql = "SHOW COLUMNS FROM ".$this->path." LIKE '".$field."';";
+		return (mysql_num_rows($this->query($sql)))? true: false;
+	}
+	
 	function createTable($tableName, $fieldArray, $and=false) {
 		$fields = array();
 		foreach($fieldArray as $name => $type) {
@@ -181,9 +214,8 @@ class MySQL_Pointer {
 		return $this->attempt($sql);
 	}
 	
-	function reorderBy($fieldNames, $asc=true) {
-		$asc = $asc? 'ASC': 'DESC';
-		$sql = "ALTER TABLE ".$this->path." ORDER BY `".implode("` ".$asc.",`",$fieldNames)."` ".$asc.";";
+	function reorderBy($fieldName, $asc=true) {
+		$sql = "ALTER TABLE ".$this->path." ORDER BY `".$fieldName."` ".($asc? "ASC": "DESC").";";
 		return $this->attempt($sql);
 	}
 	
@@ -212,6 +244,23 @@ class MySQL_Pointer {
 		}
 	}
 	
+	static function getDatabases() {
+		$databases = array();
+		$res = mysql_query("SHOW DATABASES");
+		while($row = mysql_fetch_assoc($res)) {
+			$databases[]= $row['Database'];
+		}
+		return $databases;
+	}
+	
+	static function getDatabasesAsKeys() {
+		$databases = array();
+		$res = mysql_query("SHOW DATABASES");
+		while($row = mysql_fetch_assoc($res)) {
+			$databases[$row['Database']] = 1;
+		}
+		return $databases;
+	}
 }
 
 MySQL_Pointer::init(

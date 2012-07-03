@@ -57,8 +57,9 @@ congressional
 			};
 		},
 		download: function(key, power) {
+			var uriKey = key.replace('#','%2523');
 			dojo.xhrGet({
-				url: 'data/'+key+'.json',
+				url: 'data/'+uriKey+'.json',
 				handleAs: 'json',
 				load: function(json) {
 					
@@ -93,7 +94,7 @@ congressional
 				// pending download
 				case 0:
 					class_target.state += 1;
-					self.download(class_target.key, i);
+					self.download(class_target.dataset, i);
 					break;
 				// downloading
 				case 1:
@@ -124,12 +125,13 @@ congressional
 				
 				// the front of the classes list has lowest priority, push later arguments to the front
 				classes.unshift({
-					key: arg.key,
+					key: arg.dataset,
+					dataset: arg.dataset,
 					title: arg.title,
 					state: 0,
 				});
 				
-				table.lookup[arg.key] = {
+				table.lookup[arg.dataset] = {
 					hash: power,
 					select: arg.select || function(){}
 				};
@@ -515,6 +517,17 @@ congressional
 		});
 	});
 })();
+
+
+
+
+
+
+Contacts = {
+	lookup: function(fullName) {
+		new ContactCard(fullName);
+	},
+};
 
 
 // Lectures

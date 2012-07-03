@@ -49,7 +49,7 @@ echo 'reordering table:'.$vTable.' by field '.$vField."\n";
 echo '-----------------------'."\n";
 
 $db->selectTable($table);
-if(!$db->reorderBy($field, $ASC)) {
+if(!$db->reorderBy(array($field), $ASC)) {
 	$db->error('ERROR: could not alter table.');
 	exit(1);
 }

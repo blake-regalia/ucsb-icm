@@ -53,11 +53,11 @@ $cmds = array(
 	// reorder registrar by field "courseTitle"
 	'php table.order.php "'.$base_table.'" "courseTitle"',
 
-	/**
 	// split tables by field "courseType"
 	'php table.split.php "'.$base_table_undergrad.'" "courseType"',
 	'php table.split.php "'.$base_table_graduate.'" "courseType"',
 	
+	/**
 	// split subtables by field "department"
 	'php table.split.php "'.$base_table_undergrad.'.lecture" "department"',
 	'php table.split.php "'.$base_table_undergrad.'.section" "department"',

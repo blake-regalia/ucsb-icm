@@ -69,6 +69,7 @@ CardDeck('stack').add(card);
 					+'<div class="card-timeline-times"></div>'
 				+'</div>'
 				+'<div class="card-heading_separator"></div>'
+				+'<div class="card-content-image" style="display:none;"></div>'
 				+'<div class="card-content"></div>'
 			+'</div>';
 	};
@@ -397,7 +398,22 @@ CardDeck('stack').add(card);
 			
 			// creates a view to indicate 1 graphic associated with this card
 			image: function(obj) {
-				var e_dom = dojo.query('.card-content-image', this.dom, 'replace')[0];
+				//var e_dom = dojo.query('.card-content-image', this.dom, 'replace')[0];
+				var e_dom = dojo.query('.card-content-image', this.dom)[0];
+				e_dom.style.display = 'block';
+				
+				console.log(e_dom);
+				
+				if(obj.google && !obj.google.demo) {
+					GoogleImageSearch(obj.google.args[0], function(url) {
+						var img = '<img src="'+url+'" style="max-width:320px; max-height:200px;"/>';
+						dojo.place(img, e_dom);
+					});
+				}
+				else if(obj.url) {
+					var img = '<img src="'+obj.url+'" style="max-width:320px; max-height:200px;"/>';
+					dojo.place(img, e_dom);
+				}
 			}
 		},
 	});

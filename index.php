@@ -17,6 +17,8 @@
 	
 	<!-- BEGIN JAVASCRIPT INCLUDES -->
 	
+	<script src="https://www.google.com/jsapi"></script>
+	
 	<!-- load the global CSS constants -->
 	<script type="text/javascript" src="css/compile.php?json=globals"></script>
 	

@@ -31,7 +31,6 @@
 
 EsriMap.ready(function() {
 	setTimeout(function() {
-		console.log('WTF');
 		var a = dojo.query('.widget-menu-icon');
 		var i=a.length;
 		while(i--) {
