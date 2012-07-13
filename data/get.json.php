@@ -53,10 +53,11 @@ if(preg_match('/^([a-z_]+(?:\\.[a-z_]+)*)(?:([#@])(.+))?$/', $query, $uri)) {
 			
 			
 			// string concatenation of values
-			if(preg_match('/^\\(([^\\)]+)\\)(?:=(.+))?$/', $format_str, $format_inner)) {
+			if(preg_match('/^\\(([^\\)]+)\\)(?:(=|like |regexp )(.+))?$/', $format_str, $format_inner)) {
 				
-				$format_f = $format_inner[1];
-				$format_opt_value = $format_inner[2];
+				$format_f            = $format_inner[1];
+				$format_opt_operator = strtoUpper($format_inner[2]);
+				$format_opt_value    = $format_inner[3];
 				
 				// check that the format follows conventions
 				$format = array('');
@@ -86,7 +87,7 @@ if(preg_match('/^([a-z_]+(?:\\.[a-z_]+)*)(?:([#@])(.+))?$/', $query, $uri)) {
 					
 					case '@':
 					
-						$records = $db->selectConcat($format, $format_opt_value);
+						$records = $db->selectConcat($format, $format_opt_operator, $format_opt_value);
 						break;
 						
 				

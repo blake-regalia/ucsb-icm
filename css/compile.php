@@ -1,7 +1,7 @@
 <?php
 
 
-include('../php/evalmath.class.php');
+include('evalmath.class.php');
 $math = new EvalMath();
 
 

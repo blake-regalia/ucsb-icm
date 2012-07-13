@@ -38,7 +38,7 @@
 		var args = arguments;
 		if(typeof arguments[0] === 'string') {
 			setName = arguments[0];
-			args = arguments.slice(1);
+			args = Array.cast(arguments).slice(1);
 			if(!download_set[setName]) {
 				download_set[setName] = {
 					full: 0,

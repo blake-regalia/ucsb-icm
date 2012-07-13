@@ -92,6 +92,13 @@
 			// draw a folded card from the stack, bring it to the top
 			draw: function(index) {
 				
+				if(typeof index !== 'number') {
+					return global.error('draw method requires index argument to be integer');
+				}
+				if(index < 0 || index > stack.length) {
+					global.error(index,' is out of bounds for ',stack);
+				}
+				
 				if(my.card_drawn) {
 					public.fold(top);
 				}

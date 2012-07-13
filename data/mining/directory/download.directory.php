@@ -49,6 +49,8 @@ $pdb->createTable($people_table, array(
 	'website'        => 'varchar(255)',
 	'mailcode'       => 'varchar(255)',
 	'photo'          => 'varchar(255)',
+	'instructs'       => 'varchar(255)',
+	'mined'          => 'varchar(64)',
 ), 'INDEX `name` (`lastName`, `firstName`)');
 
 $pdb->selectTable($people_table);
@@ -253,6 +255,7 @@ function handle_department_page_row($row, $dept) {
 				$update = array(
 					'title' => $title,
 					'branch' => $serial_subgroup,
+					'mined' => 'commserv',
 				);
 				$pdb->update($contact, $update);
 				echo "\t\t*";
@@ -460,6 +463,7 @@ function handle_people($str, $singlePerson=false) {
 					'location'   => $person['street1'],
 					'website'    => $person['url'],
 					'mailcode'   => $person['mailcode'],
+					'mined'      => 'peoplefinder',
 				));
 				
 			}

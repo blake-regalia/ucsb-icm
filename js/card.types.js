@@ -5,7 +5,7 @@
 	
 	var construct = function(name) {
 		
-		var card = new Card(infoDeck.getElement());
+		var card = new Card('building:'+infoDeck.getElement());
 		var deck = false;
 		
 		var self = {
@@ -72,17 +72,23 @@
 	
 *****/
 	
-	var construct = function(level, name) {
+	var construct = function(name) {
 		
-		var card = new Card(level+':'+name);
+		var card = new Card('course:'+name);
+		
+		console.log(card.index);
+		if(card.index !== -1) {
+			CardDeck('stack').draw(card.index);
+			return;
+		}
 		
 		var lecture = false;
 		var pendingOnDrawAction = false;
 		
-		var courseTitle = name.substr(0, name.indexOf(' - '));
+		var courseTitle = name;
 		
 		dojo.xhrGet({
-			url: 'data/ucsb.registrar.'+level+"%2523[`courseTitle`='"+courseTitle+"'].json",
+			url: 'data/ucsb.registrar.lecture'+"%2523[`courseTitle`='"+courseTitle+"'].json",
 			handleAs: 'json',
 			load: function(json) {
 				lecture = json[0];
@@ -90,11 +96,13 @@
 				card.setup({
 					title: lecture.courseTitle,
 					subtitle: lecture.fullTitle,
+					references: {
+						'Instructor': new Reference.contact(String.splitNoEmpty(lecture.people,';'), lecture.instructor),
+					},
 					content: {
 						'Description': lecture.description,
 						'Days': lecture.days,
 						'Time': lecture.time,
-						'Instructor': lecture.instructor,
 					},
 					days: lecture.days,
 					times: lecture.time,
@@ -202,24 +210,35 @@
 	
 	var construct = function(fullName) {
 		
-		var card = new Card(fullName);
+		var card = new Card('contact:'+fullName);
 		
+		if(card.index !== -1) {
+			CardDeck('stack').draw(card.index);
+			return;
+		}
 		
 		var pendingOnDrawAction = false;
 		
 		dojo.xhrGet({
-			url: "data/ucsb.directory@(`firstName` `lastName`)="+fullName.replace("'","\\'")+".json",
+			url: "data/ucsb.directory.people@(`firstName` `lastName`)="+fullName.replace("'","\\'")+".json",
 			handleAs: 'json',
 			load: function(json) {
 				contact = json[0];
+				
+				var references = {};
+				if(contact.instructs.length) {
+					references = {
+						'Instructs': new Reference.course(String.splitNoEmpty(contact.instructs)),
+					};
+				}
 				
 				card.setup({
 					title: contact.firstName+' '+contact.lastName,
 					subtitle: contact.title,
 					content: {
-						'Department': contact.department,
+						'Department': new Reference.department(contact.department),
 						'Title': contact.title,
-						'Email': contact.email,
+						'Email': new Reference.email(contact.email),
 					},
 					image: {
 						google: {
@@ -228,11 +247,135 @@
 						},
 						url: 'http://www.excursionclubucsb.org/Excursion_Club_at_UCSB/bio/blake.jpg',
 					},
+					references: references,
 				});
 				
 				if(card.isOpen() && pendingOnDrawAction) {
 					card.onDraw();
 				}
+			},
+		});
+		
+		var deck = false;
+		
+		var self = {
+			create: function() {
+			},
+		};
+		
+		$.extend(card, {
+			
+			// what to do when this card is brought to the top of the stack
+			onDraw: function() {
+			},
+		});
+		
+		self.create();
+		
+		CardDeck('stack').add(card);
+		
+		return card;
+	};
+	
+	var global = window[__func__] = function() {
+		if(this !== window) {
+			var instance = construct.apply(this, arguments);
+			return instance;
+		}
+		else {
+			
+		}
+	};
+	$.extend(global, {
+		toString: function() {
+			return __func__+'()';
+		},
+		
+		warn: function() {
+			var args = Array.cast(arguments);
+			args.unshift(__func__+': ');
+			console.warn.apply(console, args);
+		},
+		
+		error: function() {
+			var args = Array.cast(arguments);
+			args.unshift(__func__+': ');
+			console.error.apply(console, args);
+		},
+	});
+})();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// DepartmentCard extends Card
+(function() {
+	var __func__ = 'DepartmentCard';
+	
+	var construct = function(departmentName) {
+		
+		var card = new Card('department:'+departmentName);
+		
+		if(card.index !== -1) {
+			CardDeck('stack').draw(card.index);
+			return;
+		}
+		
+		var pendingOnDrawAction = false;
+		
+		dojo.xhrGet({
+			url: "data/ucsb.directory.department@(`departmentName`)="+departmentName+".json",
+			handleAs: 'json',
+			load: function(json) {
+				dept = json[0];
+				
+				var content = {};
+				if(dept.abrv) {
+					content[departmentName+' courses'] = new Reference.widget('edu.ucsb.geog.icm-widget.courses', {
+						'department': dept.abrv,
+					});
+					content[departmentName+' instructors'] = new Reference.widget('edu.ucsb.geog.icm-widget.courses', {
+						'instructor': {
+							'department': dept.abrv,
+						},
+					});
+				}
+				
+				card.setup({
+					title: dept.departmentName,
+					content: content,
+				});
+				
+				if(card.isOpen() && pendingOnDrawAction) {
+					card.onDraw();
+				}
+			},
+		});
+		
+		dojo.xhrGet({
+			url: "data/ucsb.directory.people@(`mined`;`department`)=commserv;"+departmentName+".json",
+			handleAs: 'json',
+			load: function(json) {
+				var people = json;
+				console.log(people);
+				
+				var references = {
+					'Instructors': Reference.widget('edu.ucsb.geog.icm-widget.courses', {
+						
+					}),
+				};
 			},
 		});
 		

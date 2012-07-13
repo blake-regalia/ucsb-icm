@@ -36,6 +36,18 @@ String.prototype.substr = function(a, b) {
 	return str;
 };
 
+String.splitNoEmpty = function(str, delim) {
+	var a = -1, i = 0, p = [], tmp;
+	while((i = str.indexOf(delim, a+1)) !== -1) {
+		tmp = str.substr(a+1, i-a-1);
+		if(tmp.length) p.push(tmp);
+		a = i;
+	}
+	tmp = str.substr(a+1);
+	if(tmp.length) p.push(tmp);
+	return p;
+};
+
 String.fill = function(pad, str) {
 	str = str+'';
 	return pad.substr(str.length)+str;
@@ -61,6 +73,12 @@ Array.swap = function(a, b) {
 	var tmp = this[a];
 	this[a] = this[b];
 	this[b] = tmp;
+};
+
+DOM_Event = {
+	noBubble: function(e) {
+		e.stopPropagation();
+	},
 };
 
 

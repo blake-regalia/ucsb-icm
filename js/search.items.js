@@ -52,18 +52,19 @@ SearchItems(
 	// Registrar
 	
 	{
-		dataset: 'ucsb.registrar.undergrad.lecture#(`courseTitle` - `fullTitle`)',
+		dataset: 'ucsb.registrar.lecture.undergrad#(`courseTitle` - `fullTitle`)',
 		title: 'Undergrad Lecture',
-		select: Lectures.lookup('undergrad.lecture'),
+		select: Lectures.lookup('lecture.undergrad'),
 	},
 	
 	{
-		dataset: 'ucsb.registrar.graduate.lecture#(`courseTitle` - `fullTitle`)',
+		dataset: 'ucsb.registrar.lecture.graduate#(`courseTitle` - `fullTitle`)',
 		title: 'Graduate Lecture',
+		select: Lectures.lookup('lecture.graduate'),
 	},
 	
 	{
-		dataset: 'ucsb.directory#(`firstName` `lastName`)',
+		dataset: 'ucsb.directory.people#(`firstName` `lastName`)',
 		title: 'Contact',
 		select: Contacts.lookup,
 	}

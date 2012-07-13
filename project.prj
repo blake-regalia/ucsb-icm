@@ -1,0 +1,26 @@
+<project version="Crimson Editor 3.60">
+	<localfile path="D:\HTTP\remote\icm\benchmark.php" />
+	<localfile path="D:\HTTP\remote\icm\database.config.php" />
+	<localfile path="D:\HTTP\remote\icm\database.php" />
+	<localfile path="D:\HTTP\remote\icm\index.php" />
+	<localfile path="D:\HTTP\remote\icm\project.prj" />
+	<localfile path="D:\HTTP\remote\icm\README" />
+	<localfile path="D:\HTTP\remote\icm\rehash.php" />
+</project>
+
+<workspace version="Crimson Editor 3.60">
+	<localfile path="D:\HTTP\remote\icm\data\testing\directory.people.names.php" linenum="1" placement="0:1:-1:-1:-9:-38:270:288:777:877" />
+	<localfile path="D:\HTTP\remote\icm\data\process\link.directory.people.php" linenum="228" placement="0:1:-1:-1:-9:-38:0:0:511:593" />
+	<localfile path="D:\HTTP\remote\icm\data\process\update.registrar.php" linenum="70" placement="0:1:-1:-1:-9:-38:30:32:541:625" />
+	<localfile path="D:\HTTP\remote\icm\js\download.js" linenum="25" placement="0:1:-1:-1:-9:-38:90:96:601:689" />
+	<localfile path="D:\HTTP\remote\icm\js\card.js" linenum="395" placement="0:1:-1:-1:-9:-38:120:128:631:721" />
+	<localfile path="D:\HTTP\remote\icm\css\card.css" linenum="128" placement="0:1:-1:-1:-9:-38:180:192:691:785" />
+	<localfile path="D:\HTTP\remote\icm\css\global.csx" linenum="14" placement="0:1:-1:-1:-9:-38:30:32:541:625" />
+	<localfile path="D:\HTTP\remote\icm\js\reference.js" linenum="116" placement="0:1:-1:-1:-9:-38:60:64:571:657" />
+	<localfile path="D:\HTTP\remote\icm\js\unra.js" linenum="40" placement="0:1:-1:-1:-9:-38:90:96:601:689" />
+	<localfile path="D:\HTTP\remote\icm\js\ucsb.department.js" linenum="22" placement="0:1:-1:-1:-9:-38:150:160:661:753" />
+	<localfile path="D:\HTTP\remote\icm\data\get.json.php" linenum="59" placement="0:1:-1:-1:-9:-38:180:192:691:785" />
+	<localfile path="D:\HTTP\remote\icm\data\database.php" linenum="110" placement="0:1:-1:-1:-9:-38:210:224:721:817" />
+	<localfile path="D:\HTTP\remote\icm\js\card.types.js" linenum="161" placement="2:3:-1:-1:-9:-38:240:256:751:849" />
+</workspace>
+

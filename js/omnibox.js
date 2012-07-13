@@ -560,7 +560,7 @@ Contacts = {
 		},
 		lookup: function(level) {
 			return function(id) {
-				new LectureCard(level, id);
+				new LectureCard(id.substr(0, id.indexOf(' - ')));
 			};
 		},
 	});

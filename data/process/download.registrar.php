@@ -158,7 +158,7 @@ if($limitOneDepartment) {
 
 $db = new MySQL_Pointer($AUTOUPDATE_DATABASE);
 
-$db->dropTable($db_table_name);
+//$db->dropTable($db_table_name);
 
 $db->createTable($db_table_name, array(
 	'courseTitle'    => 'varchar(255)',
@@ -183,6 +183,7 @@ $db->createTable($db_table_name, array(
 	'enrolled'       => 'varchar(255)',
 	'courseType'     => 'varchar(8)',
 	'courseLevel'    => 'varchar(16)',
+	'people'         => 'varchar(255)',
 ));
 
 $db->selectTable($db_table_name);

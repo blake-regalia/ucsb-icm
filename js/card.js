@@ -68,12 +68,17 @@ CardDeck('stack').add(card);
 					+'<div class="card-timeline-days"></div>'
 					+'<div class="card-timeline-times"></div>'
 				+'</div>'
+				+'<div class="card-references"></div>'
 				+'<div class="card-heading_separator"></div>'
 				+'<div class="card-content-image" style="display:none;"></div>'
 				+'<div class="card-content"></div>'
 			+'</div>';
 	};
 	
+	
+	var lowerAlphaNum = function(str) {
+		return str.toLowerCase().replace(/[^\w]/g,'_');
+	};
 	
 	
 	var construct = function(key, setup) {
@@ -220,8 +225,14 @@ CardDeck('stack').add(card);
 	var global = window[__func__] = function(key) {
 		if(this !== window) {
 			var instance = construct.apply(this, arguments);
-			if(!own[key]) own[key] = [];
-			own[key].push(instance);
+			console.log(key,' :: ',own);
+			if(own[key]) {
+				console.log(global,' owns ',key);
+				return own[key];
+			}
+			//if(!own[key]) own[key] = [];
+			//own[key].push(instance);
+			own[key] = instance;
 			return instance;
 		}
 		else {
@@ -243,7 +254,7 @@ CardDeck('stack').add(card);
 		warn: function() {
 			var args = Array.cast(arguments);
 			args.unshift(__func__+':');
-			console.error.warn(console, args);
+			console.warn.apply(console, args);
 		},
 		
 		error: function() {
@@ -379,21 +390,65 @@ CardDeck('stack').add(card);
 						
 						// simple html
 						case 'string':
-							b += '<div>'
+							dojo.place(
+								'<div>'
 									+'<span class="card-content-item">'+each+': </span>'
 									+'<span class="card-content-text">'+target+'</span>'
-								+'</div>';
+								+'</div>',
+								e_dom,
+								'last'
+							);
 							break;
 							
 						// a functionable object
+						case 'function':
 						case 'object':
+							if(target.isReference) {
+								dojo.place(
+									target.build({
+										title: each+': ',
+										class: 'card-content-'+each.toLowerCase().replace(/[^\w]/g,'_'),
+									}),
+									e_dom,
+									'last'
+								);
+								
+							}
 							
 							break;
 					}
 				}
+			},
+			
+			references: function(obj) {
 				
-				// replace the html content of the card content
-				dojo.place(b, e_dom);
+				// get the node to put the elements in
+				var e_dom = dojo.query('.card-references', this.dom)[0];
+				
+				// iterate through the tags
+				for(var each in obj) {
+					
+					console.log(each);
+							
+					// reference the item
+					var item = obj[each];
+					
+					// check the item is a reference object
+					if(!item.isReference) {
+						global.warn('"',each,'" item is not a reference object: ',item);
+						continue;
+					}
+					
+					// build an element
+					b = item.build({
+						title: each+': ',
+						class: 'card-reference-'+lowerAlphaNum(each),
+					});
+					
+					// append it to the parent node
+					dojo.place(b, e_dom, 'last');
+				}
+				
 			},
 			
 			// creates a view to indicate 1 graphic associated with this card

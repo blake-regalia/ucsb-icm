@@ -2,6 +2,22 @@
 
 /** header **/
 
+/**
+header: {
+	innerHeight: '84px',
+	borderWidth: {
+		top:    '1px',
+		bottom: '1px',
+	},
+	shadow: {
+		default: '0 0 10px 4px #2C2C2C',
+		focus:   '0 0 10px 4px orange',
+	},
+	
+	$space: this.innerHeight + this.borderWidth.top + this.borderWidth.bottom,
+}
+**/
+
 header_innerHeight = 84
 	&unit = px
 
@@ -46,6 +62,23 @@ omnibox_space = ${omnibox_height + omnibox_padding_topOrBottom + omnibox_border_
 zindex_omnibox = 128
 
 
+/**
+
+omnibox = {
+	width:  '38px',
+	height: header.innerHeight * (2/5),
+	top:    (header.innerHeight * 0.5) - (this.height * 0.5),
+	left:   '12px',
+	padding: {
+		top: 0,
+		bottom: 0,
+	},
+	borderWidth: '1px',
+	borderColor: 'black',
+},
+
+**/
+
 
 /** omnibox results **/
 
@@ -83,7 +116,7 @@ card_border_radius = 40
 
 
 /** card deck_view transformation **/
-card_deckview_rotation_x = -40
+card_deckview_rotation_x = 0
 	&unit = deg
 	
 card_deckview_scale = 0.6
@@ -93,19 +126,19 @@ card_deckview_transform = rotateX( ${card_deckview_rotation_x}&unit ) scale( ${c
 
 
 /** card deck_view:hover transformation **/
-card_deckview_hover_rotation_x = ${card_deckview_rotation_x + 5}
+card_deckview_hover_rotation_z = -5
 	&unit = deg
 
 	
 card_deckview_hover_scale = ${card_deckview_scale * 1.02}
 
-card_deckview_hover_translate_x = -25
+card_deckview_hover_translate_x = -19
 	&unit = px
 
-card_deckview_hover_translate_y = -8
+card_deckview_hover_translate_y = -30
 	&unit = px
 
-card_deckview_hover_transform = rotateX( ${card_deckview_hover_rotation_x}&unit ) scale( ${card_deckview_hover_scale} ) translate( ${card_deckview_hover_translate_x}&unit , ${card_deckview_hover_translate_y}&unit)
+card_deckview_hover_transform = rotateZ( ${card_deckview_hover_rotation_z}&unit ) scale( ${card_deckview_hover_scale} ) translate( ${card_deckview_hover_translate_x}&unit , ${card_deckview_hover_translate_y}&unit)
 
 
 
@@ -116,6 +149,9 @@ omnibox {
 	width: 80px;
 	height: ${header.innerHeight * (2/5))px;
 	top: ${header.innerHeight * (1/2) - omnibox.height * (1/2))px;
+	
+	width: '80px',
+	height: header.innerHeight,
 
 }
 

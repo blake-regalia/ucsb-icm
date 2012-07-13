@@ -51,8 +51,19 @@
 	color: black;
 }
 
-.card-text>a {
+[class|="card-reference"] {
+	color: darkGray;
+}
+
+[class|="card"] a,button {
 	color: cornflowerBlue;
+	text-decoration: underline;
+	cursor: pointer;
+	border: none;
+	background-color: transparent;
+	margin: 0;
+	font-family: helvetica, arial, sans-serif;
+	font-size: 12pt;
 }
 
 .card-special {
@@ -103,10 +114,12 @@
 	opacity: 0.9;
 	-moz-user-select: none;
 	-moz-transform: ${card_deckview_transform};
+	
 }
 
 .card_deckview:hover {
 	-moz-transform: ${card_deckview_hover_transform};
+	/*-moz-transform: rotateX(0deg) rotateY(0deg) rotateZ(-5deg) scale(0.612) translate(-19px, -30px);*/
 }
 
 .card_deckview>.card {

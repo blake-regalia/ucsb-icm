@@ -92,7 +92,7 @@ class MySQL_Pointer {
 		return mysql_fetch_assoc($res);
 	}
 	
-	function selectConcat($array, $value) {
+	function selectConcat($array, $operator, $value) {
 		$concatArray = array();
 		
 		for($index=0; $index<sizeof($array); $index++) {
@@ -107,7 +107,7 @@ class MySQL_Pointer {
 		
 		$concat = implode(",", $concatArray);
 		
-		$sql = "SELECT * FROM ".$this->path." WHERE CONCAT(".$concat.") = '".$this->escapeValue($value)."';";
+		$sql = "SELECT * FROM ".$this->path." WHERE CONCAT(".$concat.") ".$operator." '".$this->escapeValue($value)."';";
 		
 		$res = $this->query($sql);
 		while(($resultArray[] = mysql_fetch_assoc($res)) || array_pop($resultArray));
