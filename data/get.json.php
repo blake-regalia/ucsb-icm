@@ -9,6 +9,8 @@ $query = $_GET['q'];
 
 $databases = MySQL_Pointer::getDatabasesAsKeys();
 
+$query = preg_replace('/:/', ';', $query);
+
 
 if(preg_match('/^([a-z_]+(?:\\.[a-z_]+)*)(?:([#@])(.+))?$/', $query, $uri)) {
 	
@@ -51,7 +53,7 @@ if(preg_match('/^([a-z_]+(?:\\.[a-z_]+)*)(?:([#@])(.+))?$/', $query, $uri)) {
 			// use it for consequent operations
 			$db->selectTable($table_name);
 			
-			
+				
 			// string concatenation of values
 			if(preg_match('/^\\(([^\\)]+)\\)(?:(=|like |regexp )(.+))?$/', $format_str, $format_inner)) {
 				
@@ -126,6 +128,7 @@ if(preg_match('/^([a-z_]+(?:\\.[a-z_]+)*)(?:([#@])(.+))?$/', $query, $uri)) {
 				echo $json;	
 			}
 			
+			// 
 			else if(preg_match('/^\\[([^\\]]+)\\]$/', $format_str, $format_inner)) {
 				
 				if(preg_match_all("/`([^`]+)`='([^']+)',?/", $format_inner[1], $arg_param, PREG_SET_ORDER)) {
@@ -145,6 +148,50 @@ if(preg_match('/^([a-z_]+(?:\\.[a-z_]+)*)(?:([#@])(.+))?$/', $query, $uri)) {
 					
 					json_headers();
 					echo $json;
+				}
+			}
+			
+			else if(preg_match('/^\\{([^\\}]+)\\}$/', $format_str, $format_inner)) {
+				if(preg_match('/^`([^`]+)`(?:(;|=>)`([^`]+)`)?$/', $format_inner[1], $arg_param)) {
+					
+					list(,$key,$operator,$value) = $arg_param;
+					
+					$json = '{}';
+					
+					switch($operator) {
+						
+						case ';':
+							$records = $db->fetchAssocSelect(
+								array($key, $value)
+							);
+							
+							$unique = array();
+							foreach($records as $row) {
+								$unique[$row[$key]] = $row[$value];
+							}
+							
+							$json = json_encode($unique);
+							break;
+							
+						default:
+							$records = $db->fetchAssocSelect(
+								array($key)
+							);
+							
+							$json = json_encode($records);
+							break;
+					}
+					
+					if($json != '{}') {
+						// save the query to a file
+						//file_put_contents($query.'.json', $json);
+					}
+					
+					json_headers();
+					echo $json;
+					
+					exit;
+					
 				}
 			}
 			

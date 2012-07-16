@@ -60,6 +60,7 @@ CardDeck('stack').add(card);
 		var id = 'card_'+cardIdNum;
 		return '<div id="'+id+'" class="card">'
 				+'<div class="card-header">'
+					+'<div class="card-icon"></div>'
 					+'<span class="card-title"></span>'
 					+'<span class="card-subtitle"></span>'
 				+'</div>'
@@ -187,8 +188,6 @@ CardDeck('stack').add(card);
 						continue;
 					}
 					
-					console.log(my.dom);
-					
 					// build the card by predefined widgets
 					widget.apply(my, [obj[each]]);
 				}
@@ -225,9 +224,7 @@ CardDeck('stack').add(card);
 	var global = window[__func__] = function(key) {
 		if(this !== window) {
 			var instance = construct.apply(this, arguments);
-			console.log(key,' :: ',own);
 			if(own[key]) {
-				console.log(global,' owns ',key);
 				return own[key];
 			}
 			//if(!own[key]) own[key] = [];
@@ -275,9 +272,14 @@ CardDeck('stack').add(card);
 			
 			// creates a subtitle
 			subtitle: function(text) {
-				console.log(this.dom);
 				var e_dom = dojo.query('.card-header>.card-subtitle', this.dom)[0];
 				dojo.place('<span class="card-subtitle">'+text+'</span>', e_dom, 'replace');
+			},
+			
+			// sets the icon image
+			icon: function(url) {
+				var e_dom = dojo.query('.card-icon', this.dom)[0];
+				dojo.place('<img src="'+url+'" height="40px"></img>', e_dom, 'last');
 			},
 			
 			
@@ -427,8 +429,6 @@ CardDeck('stack').add(card);
 				
 				// iterate through the tags
 				for(var each in obj) {
-					
-					console.log(each);
 							
 					// reference the item
 					var item = obj[each];
@@ -456,8 +456,6 @@ CardDeck('stack').add(card);
 				//var e_dom = dojo.query('.card-content-image', this.dom, 'replace')[0];
 				var e_dom = dojo.query('.card-content-image', this.dom)[0];
 				e_dom.style.display = 'block';
-				
-				console.log(e_dom);
 				
 				if(obj.google && !obj.google.demo) {
 					GoogleImageSearch(obj.google.args[0], function(url) {

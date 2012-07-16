@@ -15,6 +15,7 @@ $PRIORITY = array(
 	'threads.js',
 	'omnibox.js',
 	'building.js',
+	'department.js',
 	'search.items.js',
 	'esri.map.js',
 	'dojo.init.js',

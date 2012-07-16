@@ -70,21 +70,21 @@ congressional
 						
 						// round up to the nearest power of 2
 						matrix_width = Math.pow(2,Math.ceil(Math.log(json.length)/Math.LN2));
+					}
 						
-						// OR this download status bit into place
-						var bit = 1 << power;
-						download_status |= bit;
-						
-						// if all the downloads are complete
-						if(download_status === download_full) {
-							self.downloads_ready();
-						}
+					// OR this download status bit into place
+					var bit = 1 << power;
+					download_status |= bit;
+					
+					// if all the downloads are complete
+					if(download_status === download_full) {
+						self.downloads_ready();
 					}
 				},
 			});
 		},
 		downloads_ready: function() {
-			console.log(global, classes);
+			//console.info(global, 'downloads ready:', classes);
 		},
 		update_classes: function() {
 			var i=classes.length;

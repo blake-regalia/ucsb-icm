@@ -146,7 +146,6 @@
 					setTimeout((function() {
 						var elmt = this.card_dom;
 						return function() {
-							console.log(elmt);
 							dojo.addClass(elmt, 'settled');
 						}
 					}).apply({card_dom:card_dom}), 600);

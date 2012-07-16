@@ -56,6 +56,80 @@
 	
 	$.extend(global, {
 		
+		administration: function(people) {
+			
+			var instance = construct.apply(this, arguments);
+			
+			instance.build = function(args) {
+				
+				// prepare to generate an html string
+				var html = '';
+				
+				var i = people.length;
+				while(i--) {
+					var person = people[i];
+					html += '<div><button link="'+person.firstName+' '+person.lastName+'">'+person.title+'</button></div>';
+				}
+				
+				// construct a standard reference dom node
+				var e_dom = refer(args, html);
+				
+				// bind events to the nodes
+				dojo.query('button', e_dom).forEach( function(elmt) {
+					dojo.connect(
+						elmt,
+						'click',
+						function(e) {
+							e.stopPropagation();
+							new ContactCard(
+								dojo.attr(elmt, 'link')
+							);
+						}
+					);
+				});
+				
+				// return the constructed element
+				return e_dom;
+			};
+			
+			// return an object instance
+			return instance;
+		},
+		
+		building: function(buildingId) {
+			
+			var instance = construct.apply(this, arguments);
+			
+			instance.build = function(args) {
+				
+				// prepare to generate an html string
+				var html;
+				
+				html = '<button>'+(new Building(buildingId)).getName()+'</button>';
+				
+				// construct a standard reference dom node
+				var e_dom = refer(args, html);
+				
+				// bind events to the nodes
+				dojo.query('button', e_dom).forEach( function(elmt) {
+					dojo.connect(
+						elmt,
+						'click',
+						function(e) {
+							e.stopPropagation();
+							new BuildingCard(buildingId);
+						}
+					);
+				});
+				
+				// return the constructed element
+				return e_dom;
+			};
+			
+			// return an object instance
+			return instance;
+		},
+		
 		
 		contact: function(people, names) {
 			
@@ -195,16 +269,11 @@
 			
 			instance.build = function(args) {
 				
-				// assert the required attributes have values
-				$.extend({
-					class: '',
-				}, args);
+				// build the html string
+				var html = '<a href="mailto:'+str+'">'+str+'</a>';
 				
-				// create the element
-				var e_dom = dojo.create('span', {
-					class: args.class,
-					innerHTML: args.title+'<a href="mailto:'+str+'">'+str+'</a>',
-				});
+				// construct a standard reference dom node
+				var e_dom = refer(args, html);
 				
 				// bind events to the node
 				dojo.connect(e_dom, 'click', DOM_Event.noBubble);
@@ -218,13 +287,109 @@
 		},
 		
 		
-		location: function() {
+		location: function(str) {
 			
+			// fetch the interested part of the string
+			var match = /^([A-Z]{1,5}) (\d\w*)$/.exec(str);
+			
+			if(match == null) return {};
+			
+			var buildingName = match[1];
+			var roomNumber   = match[2];
+			
+			// attempt to resolve the location by abrv
+			var buildingId = Building.abrvToId(match[1]);
+			
+			// if it resolved
+			if(buildingId !== -1) {
+				
+				// instantiate an object to retrieve building info
+				var building = new Building(buildingId);
+				
+				// update the name
+				buildingName = building.getName();
+			}
+			else {
+				global.warn('Unknown buildingName: ',buildingName);
+			}
+			
+			
+			var instance = construct.apply(this, arguments);
+			
+			instance.build = function(args) {
+				
+				// build the html string
+				var html = '<button>'+buildingName+'</button> <em>'+roomNumber+'</em>';
+				
+				// construct a standard reference dom node
+				var e_dom = refer(args, html);
+				
+				// bind events to the node
+				dojo.connect(dojo.query('button', e_dom)[0], 'click', function(e) {
+					e.stopPropagation();
+					new BuildingCard(buildingId);
+				});
+				
+				// return the constructed element
+				return e_dom;
+			};
+			
+			// return an object instance
+			return instance;
+			
+		},
+		
+		
+		website: function(url) {
+			
+			var instance = construct.apply(this, arguments);
+			
+			instance.build = function(args) {
+				
+				// build the html string
+				var html = '<a href="'+url+'">'+url+'</a>';
+				
+				// construct a standard reference dom node
+				var e_dom = refer(args, html);
+				
+				// bind events to the node
+				dojo.connect(e_dom, 'click', DOM_Event.noBubble);
+				
+				// return the constructed element
+				return e_dom;
+			};
+			
+			// return an object instance
+			return instance;
 		},
 		
 		
 		widget: function(namespace, data) {
 			
+			var instance = construct.apply(this, arguments);
+			
+			instance.build = function(args) {
+				
+				// build the html string
+				var html = '<button>'+args.title+'</button>';
+				
+				args.title = '';
+				
+				// construct a standard reference dom node
+				var e_dom = refer(args, html);
+				
+				// bind events to the node
+				dojo.connect(e_dom, 'click', function(e) {
+					e.stopPropagation();
+					console.info(namespace, data);
+				});
+				
+				// return the constructed element
+				return e_dom;
+			};
+			
+			// return an object instance
+			return instance;
 		},
 		
 		

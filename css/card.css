@@ -51,6 +51,18 @@
 	color: black;
 }
 
+.card-icon {
+	border-bottom: 1px solid gray;
+	border-right: 1px solid gray;
+	height: 40px;
+	width: 45px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-radius: 10px 0 10px 0;
+	background-color: rgba(255,255,255,0.2);
+}
+
 [class|="card-reference"] {
 	color: darkGray;
 }
@@ -68,6 +80,11 @@
 
 .card-special {
 	color: cornflowerBlue;
+}
+
+.card-title { 
+	text-align: left;
+	margin-left: 48px;
 }
 
 

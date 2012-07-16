@@ -41,6 +41,10 @@ window.DefaultPackage = UCSB_Campus_ags_dev;
 	var map = false;
 	var listeners = [];
 	var coordinateSystem = new esri.SpatialReference({wkid: 4326});
+	
+	
+	var highlightLayer = new esri.layers.GraphicsLayer(); 
+	
 	var self = {
 		
 	};
@@ -57,6 +61,9 @@ window.DefaultPackage = UCSB_Campus_ags_dev;
 		map.addLayer(
 			new esri.layers.ArcGISTiledMapServiceLayer(package.basemap.url)
 		);
+		
+		// Add highlight layer
+		map.addLayer( highlightLayer );
 		
 		var i = listeners.length;
 		while(i--) {
@@ -89,10 +96,31 @@ window.DefaultPackage = UCSB_Campus_ags_dev;
 			listeners.push(callback);
 		},
 		
+		
+		
 		setCenter: function(webMercatorCoordinatePair) {
 			console.log(webMercatorCoordinatePair);
 			var point = new esri.geometry.Point(webMercatorCoordinatePair.x, webMercatorCoordinatePair.y, coordinateSystem);
 			map.centerAt(point);
+		},
+		
+		focus: function(wmcp) {
+			global.setCenter(wmcp.getPoint());
+			var ext = wmcp.getExtent();
+			var extent = new esri.geometry.Extent(ext[0], ext[1], ext[2], ext[3], coordinateSystem);
+			
+			var outline = new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID, new dojo.Color([255, 215, 0, 1]), 3);
+			var symbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, outline, new dojo.Color([255, 215, 0, 0.5]));
+			var extGraphic = new esri.Graphic(ext, symbol);
+			
+			highlightLayer.add(extGraphic);
+			
+			map.addLayer(highlightLayer);
+			
+			/*
+			var featureSet = new esri.tasks.FeatureSet();
+			featureSet.features = [extGraphic];
+			*/
 		},
 	});
 })();

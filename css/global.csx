@@ -111,8 +111,7 @@ header_corner_width = ${100 - omnibox_width}
 
 /** card **/
 
-card_border_radius = 40
-	&unit = px
+card_border_radius = 20px 40px 40px 40px
 
 
 /** card deck_view transformation **/

@@ -127,6 +127,32 @@ class MySQL_Pointer {
 		return $resultArray;
 	}
 	
+	function fetchAssocSelect($select=array(), $clause=false) {
+		
+		$orderBy = "";
+		$only = "*";
+		
+		if(sizeof($select) != 0) {
+			$plode = array();
+			$orderBy = "ORDER BY ".$select[0];
+			foreach($select as $each) {
+				$plode []= "`".$each."`";
+			}
+			$only = implode(",",$plode);
+		}
+		
+		if($clause) {
+			$where = $this->resolveClause($clause);
+			$sql = "SELECT ".$only." FROM ".$this->path." WHERE ".$where." ".$orderBy.";";
+		}
+		else {
+			$sql = "SELECT ".$only." FROM ".$this->path.";";
+		}
+		$res = $this->query($sql);
+		while(($resultArray[] = mysql_fetch_assoc($res)) || array_pop($resultArray));
+		return $resultArray;
+	}
+	
 	function insert($array) {
 		$fields = implode('`,`', $this->escapeField(array_keys($array)));
 		$values = implode("','", $this->escapeValue(array_values($array)));

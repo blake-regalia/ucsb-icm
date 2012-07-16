@@ -1,35 +1,60 @@
 
+
+
 // BuildingCard extends Card
 (function() {
 	var __func__ = 'BuildingCard';
 	
-	var construct = function(name) {
+	var construct = function(bid) {
 		
-		var card = new Card('building:'+infoDeck.getElement());
+		var card = new Card('building:'+bid);
+		
+		if(card.index !== -1) {
+			CardDeck('stack').draw(card.index);
+			return;
+		}
+		
+		var pendingOnDrawAction = false;
+		
+		dojo.xhrGet({
+			url: "data/ucsb.facilities.building@(`buildingId`)="+bid+".json",
+			handleAs: 'json',
+			load: function(json) {
+				var bldg = json[0];
+				
+				var references = {};
+				
+				card.setup({
+					title: bldg.buildingName,
+					subtitle: bldg.buildingAbrv,
+					icon: 'resource/card.icon.building.png',
+					content: {
+					},
+				});
+				
+				if(card.isOpen() && pendingOnDrawAction) {
+					card.onDraw();
+				}
+			},
+		});
+		
 		var deck = false;
 		
 		var self = {
 			create: function() {
-				card.title('heading', name);
-				card.content({
-					'Hours': '7:00am - 11:00pm',
-					'Phone': '(805) 893-7619',
-					'Departments': ['Geography','Geology','Art History'],
-				});
 			},
 		};
 		
 		$.extend(card, {
 			
+			// what to do when this card is brought to the top of the stack
+			onDraw: function() {
+			},
 		});
 		
 		self.create();
 		
-		deck = infoDeck.push(card);
-		
-		dojo.connect(card.getElement(), 'onclick', function() {
-			infoDeck.fold();
-		});
+		CardDeck('stack').add(card);
 		
 		return card;
 	};
@@ -46,10 +71,21 @@
 	$.extend(global, {
 		toString: function() {
 			return __func__+'()';
-		}
+		},
+		
+		warn: function() {
+			var args = Array.cast(arguments);
+			args.unshift(__func__+': ');
+			console.warn.apply(console, args);
+		},
+		
+		error: function() {
+			var args = Array.cast(arguments);
+			args.unshift(__func__+': ');
+			console.error.apply(console, args);
+		},
 	});
 })();
-
 
 
 // LectureCard extends Card
@@ -96,8 +132,10 @@
 				card.setup({
 					title: lecture.courseTitle,
 					subtitle: lecture.fullTitle,
+					icon: 'resource/card.icon.course.gif',
 					references: {
 						'Instructor': new Reference.contact(String.splitNoEmpty(lecture.people,';'), lecture.instructor),
+						'Location': new Reference.location(lecture.location),
 					},
 					content: {
 						'Description': lecture.description,
@@ -130,10 +168,10 @@
 					global.warn('lecture data not downloaded yet');
 					return;
 				}
-				console.log(lecture.location);
 				var room = RoomLocator.search(lecture.location);
 				if(room && room.exists) {
-					EsriMap.setCenter(room.getPoint());
+					EsriMap.focus(room);
+					//EsriMap.setCenter(room.getPoint());
 				}
 				else {
 					global.error('unable to resolve location: ',lecture.location);
@@ -188,25 +226,9 @@
 
 
 
-// LectureCard extends Card
+// ContactCard extends Card
 (function() {
 	var __func__ = 'ContactCard';
-	
-	
-		
-	/****
-	
-	Time / Day Indicator
-	
-<div>
-	<div class="card_heading_separator">
-	<div style="position: absolute; background-color: red; height: 3px; left: 60%; width: 9%;" class="time_span">
-	</div>
-	</div>
-	<div style="color: red; position: relative; font-size: 10pt; left: 51%; width: 105px; padding-left: 5px; border-radius: 5px 5px 5px 5px; background-color: rgba(240, 240, 180, 0.2); margin-top: 2px;">3:30pm - 4:45pm</div>
-</div>
-	
-*****/
 	
 	var construct = function(fullName) {
 		
@@ -235,6 +257,7 @@
 				card.setup({
 					title: contact.firstName+' '+contact.lastName,
 					subtitle: contact.title,
+					icon: 'resource/card.icon.contact.jpg',
 					content: {
 						'Department': new Reference.department(contact.department),
 						'Title': contact.title,
@@ -341,8 +364,11 @@
 			load: function(json) {
 				dept = json[0];
 				
-				var content = {};
+				var content = {
+					'Website': new Reference.website(dept.website),
+				};
 				if(dept.abrv) {
+					content['Advisor Office'] = new Reference.location(dept.location);
 					content[departmentName+' courses'] = new Reference.widget('edu.ucsb.geog.icm-widget.courses', {
 						'department': dept.abrv,
 					});
@@ -355,6 +381,8 @@
 				
 				card.setup({
 					title: dept.departmentName,
+					subtitle: dept.abrv,
+					icon: 'resource/card.icon.department.png',
 					content: content,
 				});
 				
@@ -369,13 +397,14 @@
 			handleAs: 'json',
 			load: function(json) {
 				var people = json;
-				console.log(people);
 				
 				var references = {
-					'Instructors': Reference.widget('edu.ucsb.geog.icm-widget.courses', {
-						
-					}),
+					'Administration': new Reference.administration(people),
 				};
+				
+				card.setup({
+					references: references,
+				});
 			},
 		});
 		
@@ -427,3 +456,7 @@
 		},
 	});
 })();
+
+
+
+

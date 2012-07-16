@@ -45,9 +45,16 @@ SearchItems(
 	{
 		dataset: 'ucsb.facilities.building#(`buildingName`)',
 		title: 'Building',
-		select: Building.lookup,
+		select: Building.newCard,
 	},
 	
+	// Departments
+	
+	{
+		dataset: 'ucsb.directory.department.academic#(`departmentName`)',
+		title: 'Department',
+		select: Department.newCard,
+	},
 	
 	// Registrar
 	
@@ -68,6 +75,7 @@ SearchItems(
 		title: 'Contact',
 		select: Contacts.lookup,
 	}
+	
 	
 
 );

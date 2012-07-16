@@ -137,6 +137,22 @@
 				return global.error(Error.param('urls', global.json));
 			}
 			
+			
+			/*********/
+			/*** needs to be optimized!!! very inefficient ***/
+			/*********/
+			var invalidChars = /[#\\:>]/;
+			for(var e in obj.urls) {
+				var url = obj.urls[e].split('');
+				var i = url.length;
+				while(i--) {
+					if(invalidChars.test(url[i])) {
+						url[i] = '%25'+encodeURIComponent(url[i]).substr(1);
+					}
+				}
+				obj.urls[e] = url.join('');
+			}
+			
 			for(var downloadId in obj.urls) {
 				var opt = {
 					url: obj.urls[downloadId],
