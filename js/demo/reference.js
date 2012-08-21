@@ -292,20 +292,13 @@
 			// fetch the interested part of the string
 			var match = /^([A-Z]{1,5}) (\d\w*)$/.exec(str);
 			
-			if(match == null) {
-				var match = /^(\d+) (\d\w*)$/.exec(str);
-				if(match == null) return {};
-				
-				var buildingId = parseInt(match[1]);
-				var roomNumber = match[2];
-			}
-			else {
-				var buildingName = match[1];
-				var roomNumber   = match[2];
-				
-				// attempt to resolve the location by abrv
-				var buildingId = Building.abrvToId(match[1]);
-			}
+			if(match == null) return {};
+			
+			var buildingName = match[1];
+			var roomNumber   = match[2];
+			
+			// attempt to resolve the location by abrv
+			var buildingId = Building.abrvToId(match[1]);
 			
 			// if it resolved
 			if(buildingId !== -1) {

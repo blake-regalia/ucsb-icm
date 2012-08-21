@@ -254,19 +254,11 @@
 					};
 				}
 				
-				
-					
-					if(contact.location.length)
-						var resolveLoc = /^(\d\w+) (.*)$/.exec(contact.location);
-					//resolveLoc[2] resolveLoc[1]
-					
-				
 				card.setup({
 					title: contact.firstName+' '+contact.lastName,
 					subtitle: contact.title,
 					icon: 'resource/card.icon.contact.jpg',
 					content: {
-						'Office': contact.location.length? new Reference.location(Building.nameToId(resolveLoc[2])+' '+resolveLoc[1]): '',
 						'Department': new Reference.department(contact.department),
 						'Title': contact.title,
 						'Email': new Reference.email(contact.email),

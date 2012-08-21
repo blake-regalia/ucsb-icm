@@ -9,7 +9,16 @@ $query = $_GET['q'];
 
 $databases = MySQL_Pointer::getDatabasesAsKeys();
 
-$query = preg_replace('/:/', ';', $query);
+
+$query = preg_replace('/:/',';', $query);
+	
+	
+//$query = preg_replace('/%23/', '#', $query);
+//$query = preg_replace('/%3A/', ';', $query);
+
+//$query = preg_replace('/\.json$/','', $query);
+
+
 
 
 if(preg_match('/^([a-z_]+(?:\\.[a-z_]+)*)(?:([#@])(.+))?$/', $query, $uri)) {
@@ -211,6 +220,8 @@ if(preg_match('/^([a-z_]+(?:\\.[a-z_]+)*)(?:([#@])(.+))?$/', $query, $uri)) {
 	
 }
 else {
+	die($_GET['q'].'!');
+	
 	header("HTTP/1.0 404 Not Found");
 	die('<h2>404</h2>File Not Found.');
 	exit;

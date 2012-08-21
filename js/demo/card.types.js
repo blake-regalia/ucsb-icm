@@ -17,7 +17,7 @@
 		var pendingOnDrawAction = false;
 		
 		dojo.xhrGet({
-			url: "data/ucsb.facilities.building@(`buildingId`)="+bid+".json",
+			url: "data/get.json.php?u=ucsb.facilities.building@(`buildingId`)="+bid+".json",
 			handleAs: 'json',
 			load: function(json) {
 				var bldg = json[0];
@@ -124,7 +124,7 @@
 		var courseTitle = name;
 		
 		dojo.xhrGet({
-			url: 'data/ucsb.registrar.lecture'+"%2523[`courseTitle`='"+courseTitle+"'].json",
+			url: 'data/get.json.php?q=ucsb.registrar.lecture+"%2523[`courseTitle`='"+courseTitle+"'].json",
 			handleAs: 'json',
 			load: function(json) {
 				lecture = json[0];
@@ -242,7 +242,7 @@
 		var pendingOnDrawAction = false;
 		
 		dojo.xhrGet({
-			url: "data/ucsb.directory.people@(`firstName` `lastName`)="+fullName.replace("'","\\'")+".json",
+			url: "data/get.json.php?q=ucsb.directory.people@(`firstName` `lastName`)="+fullName.replace("'","\\'")+".json",
 			handleAs: 'json',
 			load: function(json) {
 				contact = json[0];
@@ -254,19 +254,11 @@
 					};
 				}
 				
-				
-					
-					if(contact.location.length)
-						var resolveLoc = /^(\d\w+) (.*)$/.exec(contact.location);
-					//resolveLoc[2] resolveLoc[1]
-					
-				
 				card.setup({
 					title: contact.firstName+' '+contact.lastName,
 					subtitle: contact.title,
 					icon: 'resource/card.icon.contact.jpg',
 					content: {
-						'Office': contact.location.length? new Reference.location(Building.nameToId(resolveLoc[2])+' '+resolveLoc[1]): '',
 						'Department': new Reference.department(contact.department),
 						'Title': contact.title,
 						'Email': new Reference.email(contact.email),
@@ -367,7 +359,7 @@
 		var pendingOnDrawAction = false;
 		
 		dojo.xhrGet({
-			url: "data/ucsb.directory.department@(`departmentName`)="+departmentName+".json",
+			url: "data/get.json.php?u=ucsb.directory.department@(`departmentName`)="+departmentName+".json",
 			handleAs: 'json',
 			load: function(json) {
 				dept = json[0];
@@ -401,7 +393,7 @@
 		});
 		
 		dojo.xhrGet({
-			url: "data/ucsb.directory.people@(`mined`;`department`)=commserv;"+departmentName+".json",
+			url: "data/get.json.php?q=ucsb.directory.people@(`mined`;`department`)=commserv;"+departmentName+".json",
 			handleAs: 'json',
 			load: function(json) {
 				var people = json;
