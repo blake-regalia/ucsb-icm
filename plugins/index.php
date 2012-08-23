@@ -13,7 +13,7 @@ header('Content-Type:text/html; charset=UTF-8');
 readfile('page.head.html');
 
 $merge_files = array(
-	'js' => false,
+	'js' => true,
 	'css' => true,
 );
 
@@ -34,12 +34,19 @@ if($merge_files['css']) {
 ***************/
 if($merge_files['js']) {
 	echo "\t",'<script type="text/javascript">',"\n";
-	echo File_manifest::merge('js/manifest.txt', "/************************\n** %PATH%\n************************/");
+	echo File_manifest::merge('js/manifest.txt', "/************************\n** %PATH%\n************************/\nBenchmark.start('%PATH%');", "Benchmark.stop('%PATH%','load');");
 	echo "\n",'</script>'."\n";
 }
 else {
 	echo File_manifest::gen('js/manifest.txt', '<script type="text/javascript" src="js/%PATH%"></script>')."\n";
 }
+
+
+echo "\t",'<script type="text/javascript">',"\n";
+echo "Benchmark.stop('all scripts','load');\n";
+echo File_manifest::merge('js/plugin/manifest.txt', "/************************\n** %PATH%\n************************/\n(function(window) {", "\n}).apply({});");
+echo "\n",'</script>'."\n";
+
 
 
 // commit all the CSS values into the javascript CSS object

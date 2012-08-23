@@ -1,0 +1,68 @@
+
+
+database/table
+	@(
+		[`column1` `column2`]=concat_value,
+		`column3`=value,
+		length()
+	) #[`column-return` `]
+	
+	
+	
+	
+directory/people
+	|(
+		`role`='reasearcher',
+		`role`='professor',
+	)
+	@(
+		[`firstName` `lastName`]='John Doe',
+		`role`='researcher',
+		length(`phone`)!='0'
+	) #[`lastName`, `firstName`]
+	
+	
+	
+	
+directory/people
+	#(`lastName`,`firstName`,`role`)
+	
+	
+	
+	
+ucsb/registrar.lecture@(`courseTitle`='CMPSC 24')
+
+
+
+ucsb/registrar.lecture.undergrad#[`courseTitle` - `fullTitle`]
+
+
+
+ucsb/facilities.building
+	#{
+		`buildingId`:{`roomNumber`: [`x0`,`y0`,`x1`,`y1`]}
+	}
+
+<?php
+	$assoc = array();
+	$rows = mysql_query("SELECT * FROM `ucsb`.`facilities.building`");
+	foreach($rows as $row) {
+		if(!is_array( $assoc[ $row['buildingId'] ] )) {
+			$assoc[ $row['buildingId'] ] = array();
+		}
+		$assoc[ $row['buildingId'] ][ $row['roomNumber'] ] = array(
+			$row['x0'],
+			$row['y0'],
+			$row['x1'],
+			$row['y1'],
+		);
+	}
+?>
+
+{
+	"560": {
+		"215": [120, 32, 131, 36],
+		...
+	},
+	...
+}
