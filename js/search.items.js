@@ -43,7 +43,7 @@
 SearchItems(
 
 	{
-		dataset: 'ucsb.facilities.building#(`buildingName`)',
+		dataset: 'ucsb.facilities.building#[`buildingName`]',
 		title: 'Building',
 		select: Building.newCard,
 	},
@@ -51,7 +51,7 @@ SearchItems(
 	// Departments
 	
 	{
-		dataset: 'ucsb.directory.department.academic#(`departmentName`)',
+		dataset: 'ucsb.directory.department.academic#[`departmentName`]',
 		title: 'Department',
 		select: Department.newCard,
 	},
@@ -59,19 +59,19 @@ SearchItems(
 	// Registrar
 	
 	{
-		dataset: 'ucsb.registrar.lecture.undergrad#(`courseTitle` - `fullTitle`)',
+		dataset: 'ucsb.registrar.lecture.undergrad#[`courseTitle` - `fullTitle`]',
 		title: 'Undergrad Lecture',
 		select: Lectures.lookup('lecture.undergrad'),
 	},
 	
 	{
-		dataset: 'ucsb.registrar.lecture.graduate#(`courseTitle` - `fullTitle`)',
+		dataset: 'ucsb.registrar.lecture.graduate#[`courseTitle` - `fullTitle`]',
 		title: 'Graduate Lecture',
 		select: Lectures.lookup('lecture.graduate'),
 	},
 	
 	{
-		dataset: 'ucsb.directory.people#(`firstName` `lastName`)',
+		dataset: 'ucsb.directory.people#[`firstName` `lastName`]',
 		title: 'Contact',
 		select: Contacts.lookup,
 	}

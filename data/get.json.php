@@ -17,9 +17,9 @@ $query = preg_replace('/:/',';', $query);
 
 
 // if this query has already been cached, return the file
-if(file_exists($db_name.'/'.$query.'.json')) {
+if(!$do_not_cache && file_exists($db_name.'/'.$query.'.json')) {
 	json_headers();
-	readfile($query.'.json');
+	readfile($db_name.'/'.$query.'.json');
 	exit;
 }
 
@@ -59,6 +59,17 @@ if(preg_match('/^([a-z_-][a-z_-]*(?:\\.[a-z_-][a-z_-]*)*)(.*)$/i', $query, $uri)
 				$json['sql'] = $result['sql'];
 				$json['data'] = $result['data'];
 				$json['path'] = $db_name.'/'.$query.'.json';
+				
+				if(strlen($sql_part['array'])) {
+					$repstr = $sql_part['array'];
+					foreach($json['data'] as $index => $row) {
+						$tmpstr = $repstr;
+						foreach($row as $key => $value) {
+							$tmpstr = preg_replace('/`'.$key.'`/',$value,$tmpstr);
+						}
+						$json['data'][$index] = $tmpstr;
+					}
+				}
 				
 				$json_str = json_encode($json);
 				
@@ -248,11 +259,15 @@ function die_json_encode($json) {
 }
 
 function die_json($json_str) {
+	json_headers();
+	echo $json_str;
+	exit;
+}
+
+function json_headers() {
 	header('Cache-Control: no-cache, must-revalidate');
 	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 	header('Content-type: application/json');
-	echo $json_str;
-	exit;
 }
 
 ?>

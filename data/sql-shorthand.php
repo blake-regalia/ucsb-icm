@@ -15,8 +15,11 @@ class sql_shorthand {
 	private $error = '';
 	private $errsrc = 0;
 	
-	private $select = '*';
+	
 	private $sql = '';
+	private $select = '*';
+	private $array_return = '';
+	
 	
 	private function err($pos, $type, $say='') {
 	
@@ -68,6 +71,7 @@ class sql_shorthand {
 		return array(
 			'select' => $this->select,
 			'how' => $this->sql,
+			'array' => $this->array_return,
 		);
 	}
 	
@@ -78,9 +82,11 @@ class sql_shorthand {
 		$strlen = strlen($str);
 		
 		$vars = array();
-		$expr = array();
+		
 		$stmt = array();
+		$expr = array();
 		$selw = array();
+		$concat = array();
 		
 		$escape = false;
 		$fname = '';
@@ -121,11 +127,23 @@ class sql_shorthand {
 								case 'RETURN':
 									$mode = 'json-format';
 									break;
+								default:
+									if(!strlen($fname))	$this->err($i,'nfg');
+									else				$this->err($i,'fnf',$fname);
+									break;
 							}
 							break;
 							
 						case '[':
-							$fname = 'C';
+							switch($fname) {
+								case 'RETURN':
+									$mode = 'array-format-str';
+									break;
+								default:
+									if(!strlen($fname))	$this->err($i,'nfg');
+									else				$this->err($i,'fnf',$fname);
+									break;
+							}
 							break;
 							
 						default:
@@ -151,6 +169,11 @@ class sql_shorthand {
 							$mode = 'body-column';
 							break;
 							
+						case '[':
+							$fname = $fname.';body-operator';
+							$mode = 'concat-str';
+							break;
+							
 						case ')':
 							if(strlen($rltv)) {
 								return $this->err($i,'se','cannot have relational operator ('.$rltv.') at end of function body');
@@ -159,6 +182,7 @@ class sql_shorthand {
 							
 								case 'WHERE':
 									$stmt []= 'WHERE ('.implode('', $expr).')';
+									$expr = array();
 									break;
 									
 								case 'RETURN':
@@ -179,9 +203,11 @@ class sql_shorthand {
 					}
 					
 						$rltv = '';
+						/*
 						$cname = '';
 						$oper  = '';
 						$value = '';
+						*/
 					break;
 				
 				case 'body-column':
@@ -307,15 +333,120 @@ class sql_shorthand {
 						default:
 							return $this->err($i,'ue','nothing to do yet for that function');
 					}
+						$cname = '';
+						$oper  = '';
+						$value = '';
 					break;
 			
 				case 'json-format':
 					return $this->err($i-1,'ue','json-format');
 					break;
+					
+				case 'concat-str':
+					if($escape) {
+						$value .= $chr;
+						$escape = false;
+						break;
+					}
+					switch($chr) {
+						case '\\': $escape = true; break;
+						case ']':
+							if(strlen($value)) {
+								$concat []= '\''.$value.'\'';
+								$value = '';
+							}
+							if(preg_match('/;/',$fname)) {
+								$origin = preg_split('/;/',$fname);
+								$fname = $origin[0];
+								$mode = $origin[1];
+							}
+							else {
+								$mode = 'func';
+							}
+							switch($fname) {
+								case 'WHERE':
+									$cname = 'CONCAT('.implode(',',$concat).')';
+									break;
+								case 'RETURN':
+									$stmt []= 'CONCAT('.implode(',',$concat).')';
+									break;
+								default:
+									break;
+							}
+							$concat = array();
+							break;
+						case '`':
+							if(strlen($value)) {
+								$concat []= '\''.$value.'\'';
+								$value = '';
+							}
+							$mode = 'concat-column';
+							break;
+						case '\'': $value .= '\\'.$chr; break;
+						default: $value .= $chr; break;
+					}
+					break;
+					
+				case 'concat-column':
+					switch($chr) {
+						case '`':
+							$concat []= '`'.$value.'`';
+							$value = '';
+							$mode = 'concat-str';
+							break;
+						default: $value .= $chr; break;
+					}
+					break;
+					
+				case 'array-format-str':
+					if($escape) {
+						$cname .= $chr;
+						$escape = false;
+						break;
+					}
+					switch($chr) {
+						case '\\': $escape = true; break;
+						case ']':
+							if(strlen($cname)) {
+								$concat []= '\''.$cname.'\'';
+								$cname = '';
+							}
+							switch($fname) {
+								case 'RETURN':
+									$this->array_return = implode('', $concat);
+									break;
+								default:
+									$this->err($i,'se','wtf');
+									break;
+							}
+							break;
+						case '`':
+							if(strlen($cname)) {
+								$concat []= $cname;
+								$cname = '';
+							}
+							$mode = 'array-format-column';
+							break;
+						case '\'': $cname .= '\\'.$chr; break;
+						default: $cname .= $chr; break;
+					}
+					break;
+				
+				case 'array-format-column':
+					switch($chr) {
+						case '`':
+							$selw []= '`'.$cname.'`';
+							$concat []= '`'.$cname.'`';
+							$cname = '';
+							$mode = 'array-format-str';
+							break;
+						default: $cname .= $chr; break;
+					}
+					break;
 			}
 		}
 		
-		$this->sql = implode(' AND ',$stmt);
+		$this->sql = implode(' ',$stmt);
 		$this->select = count($selw)? implode(',',$selw): '*';
 	}
 }

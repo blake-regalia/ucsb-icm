@@ -112,10 +112,12 @@
 			nameToBid: 'data/ucsb/facilities.building#{`buildingName`:`buildingId`}.json',
 			abrvToBid: 'data/ucsb/facilities.building#{`buildingAbrv`:`buildingId`}.json',
 			bidToName: 'data/ucsb/facilities.building#{`buildingId`:`buildingName`}.json',
-			extents: 'data/ucsb/facilities.building#{`buildingId`=[`ymin`,`xmin`,`ymax`,`xmax`]}.json',
+			extents: 'data/ucsb/facilities.building#{`buildingId`:[`ymin`,`xmin`,`ymax`,`xmax`]}.json',
 		},
 		each: function(id, json) {
-			database[id] = json;
+			if(!json.error) {
+				database[id] = json.data;
+			}
 		},
 		ready: function() {
 			downloadsReady = true;
