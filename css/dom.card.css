@@ -1,0 +1,202 @@
+/** <csx> **/
+
+
+
+/** </csx> **/
+
+
+.card_insert {
+	padding: 12.5px;
+}
+
+.card-header {
+	font-family: helvetica;
+	color: white;
+	text-align: center;
+}
+
+.card-title {
+	color: white;
+	font-size: 26pt;
+	display: block;
+}
+
+.card-subtitle {
+	color: white;
+	font-size: 18pt;
+	display: block;
+}
+
+.card-heading_separator {
+	width: 100%;
+	background-color: rgba(240,231,250, 0.2);
+	height: 2px;
+}
+
+.card-content {
+	padding: 12px;
+	color: darkGray;
+}
+
+.card-content-item {
+}
+
+.card-content-text {
+	color: burlyWood;
+}
+
+.card-content-image {
+	background-color: transparent;
+	height: 200px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 5%;
+	width: 90%;
+	text-align: center;
+	font-size: 14pt;
+	color: black;
+}
+
+.card-icon {
+	border-bottom: 1px solid gray;
+	border-right: 1px solid gray;
+	height: 40px;
+	width: 45px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-radius: 10px 0 10px 0;
+	background-color: rgba(255,255,255,0.2);
+}
+
+[class|="card-reference"] {
+	color: darkGray;
+}
+
+[class|="card"] a,button {
+	color: cornflowerBlue;
+	text-decoration: underline;
+	cursor: pointer;
+	border: none;
+	background-color: transparent;
+	margin: 0;
+	font-family: helvetica, arial, sans-serif;
+	font-size: 12pt;
+}
+
+.card-special {
+	color: cornflowerBlue;
+}
+
+.card-title { 
+	text-align: left;
+	margin-left: 48px;
+}
+
+
+.card {
+	width: 100%;
+	height: 100%;
+	
+	top: 0;
+	left: 0;
+	
+	margin-top: 10px;
+	
+	position: absolute;
+	
+	background-color: rgba(26, 15, 0, 0.9);
+	border: 3px solid black;
+	
+	-webkit-border-radius: 20px 40px 40px 40px;
+	-moz-border-radius:    20px 40px 40px 40px;
+	border-radius:         20px 40px 40px 40px;
+	
+	-moz-transform-style: preserve-3d;
+	-moz-transition: all 0.8s ease-out;
+}
+
+
+.card-container {
+	width: 75%;
+	height: 80%;
+	
+	max-height: 600px;
+	
+	left: 0;
+	top: 0;
+	
+	position: absolute;
+	
+	-moz-transition: all 0.5s ease-out;
+}
+
+.card_deckview {
+	left: 50%;
+	cursor: pointer;
+	opacity: 0.9;
+	-moz-user-select: none;
+	-moz-transform: scale(0.6);
+	
+}
+
+.card_deckview:hover {
+	-moz-transform: rotateZ(-5deg) scale(0.612) translate(-19px, -30px);
+	/*-moz-transform: rotateX(0deg) rotateY(0deg) rotateZ(-5deg) scale(0.612) translate(-19px, -30px);*/
+}
+
+.card_deckview>.card {
+	background-color: rgba(50, 50, 36, 1);
+	border: 3px solid black;
+}
+
+.card_deckview.settled>.card:hover {
+	opacity: 1;
+}
+
+.card_deckview.settled>.card:hover {
+	background-color: rgba(20, 10, 0, 0.8);
+	border: 3px solid orange;
+}
+
+#info-deck {
+	width: 25%;
+	height: 100%;
+	
+	top: 0;
+	right: 0;
+	
+	position: fixed;
+	
+	margin-top: @header.space.y;
+	-moz-perspective: 450px;
+}
+
+.card-timeline>.card-timeline-days>.days-row>span {
+	margin: 0 15pt;
+}
+
+.card-timeline>.card-timeline-days>.days-row>.day-on {
+	color: red;
+}
+
+
+.card-timeline>.card-timeline-times>.times-row {
+	color: gold;
+}
+
+.card-timeline>.card-timeline-times>.blocks-row {
+	background-color: gray;
+	width: 100%;
+	height: 2px;
+}
+
+.card-timeline>.card-timeline-times>.time-block{
+	position: absolute;
+}
+
+.card-timeline>.card-timeline-times>.blocks-row>span {
+	height: 2px;
+	background-color: red;
+	position: absolute;
+}

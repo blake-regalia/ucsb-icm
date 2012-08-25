@@ -1,0 +1,4 @@
+global.*.css
+document.*.css
+page.*.css
+dom.*.css

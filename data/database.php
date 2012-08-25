@@ -127,6 +127,18 @@ class MySQL_Pointer {
 		return $resultArray;
 	}
 	
+	function execAssoc($select='*', $sql_after_select) {
+		$sql = "SELECT ".$select." FROM ".$this->path." ".$sql_after_select.";";
+		$return = array('sql'=>$sql);
+		$res = $this->query($sql);
+		$resultArray = array();
+		if($res) {
+			while(($resultArray[] = mysql_fetch_assoc($res)) || array_pop($resultArray));
+		}
+		$return['data'] = $resultArray;
+		return $return;
+	}
+	
 	function fetchAssocSelect($select=array(), $clause=false) {
 		
 		$orderBy = "";

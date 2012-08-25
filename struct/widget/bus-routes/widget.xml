@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE widget>
+
+<widget name="bus-routes">
+	
+	<action>
+		<define id="main" />
+		<define id="route" />
+	</action>
+	
+	<menu link="widget.action.main">
+		<title>bus routes</title>
+		<icon
+			idle="draw/idle.gif"
+			hover="draw/hover.gif"
+			active="draw/active.gif"
+		/>
+	</menu>
+	
+	<search>
+		<item link="widget.action.main">Bus Routes</item>
+		
+		<dataset>
+			<item link="widget.action.view-line" key="$line">$title</item>
+		</dataset>
+		
+		<!--
+			<item link="widget.action.route" key="15x">Line 15x - SBCC / UCSB Express</item>
+			<item link="widget.action.route" key="24x">Line 24x - UCSB Express</item>
+			<item link="widget.action.route" key="27" >Line 27 - Isla Vista Shuttle</item>
+		-->
+	</search>
+	
+</widget>

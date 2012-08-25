@@ -4,57 +4,40 @@
 // IMPORTANT SECURITY TEST: single quotes not properly escaped
 
 require "database.php";
+require "sql-shorthand.php";
 
-$query = $_GET['q'];
+$bang    = $_GET['b'];
+$db_name = $_GET['d'];
+$query   = $_GET['q'];
 
 $databases = MySQL_Pointer::getDatabasesAsKeys();
 
-
+$do_not_cache = ($bang === '!');
 $query = preg_replace('/:/',';', $query);
-	
-	
-//$query = preg_replace('/%23/', '#', $query);
-//$query = preg_replace('/%3A/', ';', $query);
-
-//$query = preg_replace('/\.json$/','', $query);
 
 
+// if this query has already been cached, return the file
+if(file_exists($db_name.'/'.$query.'.json')) {
+	json_headers();
+	readfile($query.'.json');
+	exit;
+}
 
 
-if(preg_match('/^([a-z_]+(?:\\.[a-z_]+)*)(?:([#@])(.+))?$/', $query, $uri)) {
+if(preg_match('/^([a-z_-][a-z_-]*(?:\\.[a-z_-][a-z_-]*)*)(.*)$/i', $query, $uri)) {
 	
-	// if this query has already been computed, return the file
-	if(file_exists($query.'.json')) {
-		json_headers();
-		readfile($query.'.json');
-		exit;
-	}
+	$table_name = $uri[1];
+	$query_str  = $uri[2];
 	
-	$namespace_str = $uri[1];
-	$operator = $uri[2];
-	$format_str = $uri[3];
-	
-	$names = preg_split('/\./', $namespace_str);
-	
-	// prepare to search the namespace
-	$space_index = 0;
-	$names_len = sizeof($names);
-	
-	$db = false;
-	
-	// find a matching database name if one exists
-	$db_name = $names[0];
-	while($space_index < $names_len) {
-		if($databases[$db_name] == 1) {
-			$db = new MySQL_Pointer($db_name);
-			break;
-		}
-		$db_name .= '.'.$names[++$space_index];
-	}
+	$db = new MySQL_Pointer($db_name);
 	
 	// if a database was found
 	if($db !== false) {
-		$table_name = implode('.', array_slice($names, $space_index+1));
+	
+		// if the database isn't a directory yet
+		if(!is_dir($db_name)) {
+			@mkdir($db_name);
+		}
 		
 		// if the table exists
 		if($db->tableExists($table_name)) {
@@ -62,6 +45,40 @@ if(preg_match('/^([a-z_]+(?:\\.[a-z_]+)*)(?:([#@])(.+))?$/', $query, $uri)) {
 			// use it for consequent operations
 			$db->selectTable($table_name);
 			
+			$json = array();
+			$items = array();
+			
+			$ss = new sql_shorthand($query_str);
+			if($ss->failed()) {
+				$json['error'] = $ss->error();
+				die_json_encode($json);
+			}
+			else {
+				$sql_part = $ss->sql();
+				$result = $db->execAssoc($sql_part['select'],$sql_part['how']);
+				$json['sql'] = $result['sql'];
+				$json['data'] = $result['data'];
+				$json['path'] = $db_name.'/'.$query.'.json';
+				
+				$json_str = json_encode($json);
+				
+				// save the query results to a file
+				if(!$do_not_cache) {
+					file_put_contents($db_name.'/'.$query.'.json', $json_str);
+				}
+				
+				die_json($json_str);
+			}
+			
+			exit;
+			
+			/*
+			else {
+				$items = $db->fetchAssoc();
+			}
+			exit;
+			
+			$json['a'] = $items;
 				
 			// string concatenation of values
 			if(preg_match('/^\\(([^\\)]+)\\)(?:(=|like |regexp )(.+))?$/', $format_str, $format_inner)) {
@@ -205,6 +222,7 @@ if(preg_match('/^([a-z_]+(?:\\.[a-z_]+)*)(?:([#@])(.+))?$/', $query, $uri)) {
 			}
 			
 			exit;
+*/
 		}
 		else {
 			echo '{"error":"No such table: `'.$table_name.'`"}';
@@ -220,17 +238,21 @@ if(preg_match('/^([a-z_]+(?:\\.[a-z_]+)*)(?:([#@])(.+))?$/', $query, $uri)) {
 	
 }
 else {
-	die($_GET['q'].'!');
-	
 	header("HTTP/1.0 404 Not Found");
 	die('<h2>404</h2>File Not Found.');
 	exit;
 }
 
-function json_headers() {
+function die_json_encode($json) {
+	die_json(json_encode($json));
+}
+
+function die_json($json_str) {
 	header('Cache-Control: no-cache, must-revalidate');
 	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 	header('Content-type: application/json');
+	echo $json_str;
+	exit;
 }
 
 ?>

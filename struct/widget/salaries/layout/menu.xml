@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE layout>
+
+<!-- user interface layout for icm menu window -->
+<layout name="menu">
+
+	<!-- identifies access permissions to published/remote databases -->
+	<database>
+	
+		<!-- establish intent to access database(edu.geog.ucsb.blake) -->
+		<connect src="blake@geog.ucsb.edu">
+			
+			<!-- reference the table(salaries.2012) by a global name, "salaray" -->
+			<reference table="salaries.2012" name="salary" />
+			
+		</connect>
+		
+	</database>
+	
+	
+	<!-- generate advanced ui elements using a proprietary "interactive campus markup language" -->
+	<icml>
+	
+	
+		<!-- example of allowing some stylistic customization -->
+		<titlebar style="backgroundColor:orange;">
+			<title style="color:black;">UCSB Campus Salaries</title>
+		</titlebar>
+		
+		
+		<!-- the heart of generating ui elements -->
+		<content>
+		
+			<h3>Filter Salaries</h3>
+			<note>
+				This data comes from the public database <a href="http://url.com/example">found here</a>
+			</note>
+			
+			
+			<block>Income:</block>
+			
+			<!-- generates a range-slider that automatically binds & fitlers to the on-screen map features -->
+			<!--     the dataset parameter translates to: database(edu.ucsb.geog.blake) table(salaries.2012) filter all records by field(income) -->
+			<slider range filter dataset="@salary#income" unit="currency.dollars">
+			
+				<!-- the range of values is set automatically by the minimum and maximum values of the given field -->
+				<range default />
+				
+				<!-- the initial values of the slider -->
+				<default min="$35,000" max="$80,000" />
+				
+			</slider>
+
+			
+			<block>Department(s):</block>
+			
+			<!-- generates an unordered combinational list that will automatically filter map layer by the selected values
+			<!--    populated by: database(edu.ucsb.geog.blake) table(salaries.2012) all different values found in field(department) -->
+			<list optional filter dataset="@salary#department" height="5">
+			</list>
+			
+			
+			<block>Person:</block>
+			
+			<!-- generates an unordered combinational list that will automatically filter map layer by the selected values
+			<!--    populated by: database(edu.ucsb.geog.blake) table(salaries.2012) all different values found in field(fullName) -->
+			<list optional filter dataset="@salary#fullName" length="1">
+			</list>
+			
+			
+			<block>Opacity:</block>
+			
+			<!-- generates a track-slider that wil automatically control the opacity property of the salary layer -->
+			<slider control="layer.opacity@salary">
+				<range low="15%" high="100%" />
+				<default value="75%" />
+			</slider>
+			
+		</content>
+		
+	</icml>
+	
+</layout

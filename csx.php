@@ -70,14 +70,30 @@ class GlobalFunctions {
 	}
 	
 	public static function linearGradient($args) {
-		$standard = $args[0]['value'].' '.$args[1]['value'].','.$args[2]['value'].' '.stringify($args[3]).','.$args[4]['value'].' '.stringify($args[5]);
+		$a0=''; $a1=''; $b0=''; $b1='';
 		
-		$opposite = array(
-			'left' => 'right',
-			'right' => 'left',
-			'top' => 'bottom',
-			'bottom' => 'top',
-		);
+		switch(stringify($args[0])) {
+			case 'top-down':
+				$ab = 'top';
+				$a0 = 'top'; $a1 = 'left';
+				$b0 = 'bottom'; $b1 = 'left';
+				break;
+		}
+		
+		$strs = array();
+		for($i=1; $i<count($args); $i++) {
+			$strs []= stringify($args[$i]);
+		}
+		
+		$standard = $ab.','.implode(',', $strs);
+		$colorStops = array();
+		$colorStart = false; $colorEnd = '';
+		foreach($strs as $str) {
+			$split = preg_split('/\b\s+\b/', $str);
+			if(!$colorStart) $colorStart = $split[0];
+			$colorEnd = $split[0];
+			$colorStops []= 'color-stop('.$split[1].','.$split[0].')';
+		}
 		
 		return array(
 			'type' => 'browser-specific',
@@ -86,7 +102,8 @@ class GlobalFunctions {
 				'-moz-linear-gradient'    => $standard,
 				'-o-linear-gradient'      => $standard,
 				'-webkit-linear-gradient' => $standard,
-				'-webkit-gradient' => 'linear, '.$args[1]['value'].' '.$args[0]['value'].','.$opposite[$args[1]['value']].' '.$opposite[$args[0]['value']].',color-stop('.($args[3]['value']/100).','.stringify($args[2]).'), color-stop('.($args[5]['value']/100).','.stringify($args[4]).')',
+				'-webkit-gradient' => 'linear, '.$a1.' '.$a0.', '.$b1.' '.$b0.', '.implode(',',$colorStops),
+				//'filter' => "progid:DXImageTransform.Microsoft.gradient(startColorstr='".$colorStart."', endColorstr='".$colorEnd."',GradientType=0",
 			),
 		);
 	}
@@ -400,7 +417,7 @@ class Lexer {
 		while(1) {
 			$token = $this->nextToken();
 			
-			if($token['type'] == 'comma' || $token['type'] == 'closeparen') {
+			if($token['type'] == 'comma' || $token['type'] == 'closeparen' || $token['type'] == 'closebracket') {
 				break;
 			}
 			
@@ -496,6 +513,13 @@ class Lexer {
 			
 			$token = $this->assert($this->values);
 			$tree[] = $this->expression();
+			
+			$token = $this->nextToken();
+			if($token['type'] == 'closebracket') {
+				$this->consume();
+				return $tree;
+			}
+			
 			$this->consume('comma');
 		}
 	}
@@ -942,6 +966,7 @@ class Lookup {
 			switch($key) {
 				case 'user-select':
 				case 'transition':
+				case 'box-shadow':
 					$str []= $key.': '           .$rule['value'].$unit.';';
 					$str []= '-moz-'.$key.': '   .$rule['value'].$unit.';';
 					$str []= '-webkit-'.$key.': '.$rule['value'].$unit.';';

@@ -1,0 +1,71 @@
+/** <csx> **/
+
+header: {
+	position: 'absolute',
+	
+	width: '100%',
+	height: '84px',
+	
+	margin: 'auto',
+	padding: 0,
+
+	$borderTopWidth: 1,
+	$borderBottomWidth: 1,
+	$borderColor: '#2E2E2E',
+	borderTop: [this.$borderTopWidth,'px solid ',this.$borderColor],
+	bottomBottom: [this.$borderBottomWidth,'px solid ', this.$borderColor],
+	
+	backgroundColor: '#ECE8FF',
+	background: linearGradient('top-down', '#b8e1fc 1%', '#b8d3ed 43%', '#afc8e0 51%', '#ece8ff 91%', '#aca9ba 100%'),
+	filter: ['progid:DXImageTransform.Microsoft.gradient( startColorstr="#b8e1fc", endColorstr="#aca9ba",GradientType=0 )'],
+	
+	$boxShadow: '0 0 10px 4px ',
+	boxShadow: [this.$boxShadow, '#2C2C2C'],
+	
+	zIndex: 64,
+	
+	space: {
+		y: header.height + header.$borderTopWidth + header.$borderBottomWidth,
+	},
+	
+	focus: {
+		boxShadow: [header.$boxShadow, 'orange',],
+	},
+	
+	corner: {
+		position: 'absolute',
+		
+		width: 0,
+		height: '100%',
+		
+		right: 0,
+		bottom: 0,
+	},
+},
+
+campusLogo: {
+	position: 'absolute',
+	
+	right: 89*0.5 + 12,
+	bottom: 12,
+},
+
+/** </csx> **/
+
+
+#header {
+	background: #b8e1fc; /* Old browsers */
+	@header;
+}
+
+#header.focus {
+	@header.focus;
+}
+
+#header-corner {
+	@header-corner;
+}
+
+.campus-logo {
+	@campusLogo;
+}

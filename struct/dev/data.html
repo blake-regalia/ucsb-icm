@@ -1,0 +1,66 @@
+<html>
+<script src="jquery.js"></script> 
+<script src="data.js"></script> 
+<style> 
+.debug {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 58%;
+	height: 95%;
+}
+.script {
+	position: absolute;
+	top: 10px;
+	left: 60%;
+	width: 38%;
+	height: 65%;
+}
+.inputs {
+	position: absolute;
+	top: 70%;
+	left: 75%;
+}
+</style> 
+<body> 
+
+<textarea class="debug"></textarea><br /> 
+<textarea class="script">
+eval(['window.registrar=[',$('.debug').val(),'];'].join(''));
+var a = registrar;
+var b = [], c = [];
+var t = new Date(2011,4,21,0,0,0,0);
+for(var i=0; i<a.length; i++) {
+	b.length = 0;
+	for(var k=0; k<a[k].length; k++) {
+		switch(k) {
+			case 1:
+			case 2:
+				var date = new Date(t.getTime()+parseInt(a[i][k])*60*1000);
+				var hours = date.getHours();
+				var ampm = (hours < 12)? 'am':'pm';
+				if(hours > 12) hours -= 12;
+				var min = String.fill('00',date.getMinutes()+'');
+				b.push(hours+':'+min+ampm);
+				break;
+			case 3:
+				b.push(a[i][4]);
+				b.push(a[i][3]);
+				k += 1;
+				break;
+			default:
+				b.push(a[i][k]);
+		}
+	}
+	c.push(b.join('\t'));
+}
+$('.debug').val(c.join('\n'));
+
+</textarea>
+<div class="inputs">
+<input type="button" class="run" value="run script"/>
+<input type="button" class="update" value="update data"/>
+</div>
+
+</body> 
+</html>

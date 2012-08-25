@@ -8,6 +8,23 @@ s == X && d != F	query(s,X).not(d,F)
 s != X || d != Y	query.not( query.or({s:X, d:Y}) )
 
 
+Q(
+	Q('first','like','blake%').and('last','=','regalia')
+)
+.or(
+	Q('first','bruce').and('last','!=','wayne')
+);
+
+
+Q(
+	Q('first','like','blake%').and('last','=','regalia'),
+		'or',
+	Q('first','bruce').and('last','!=','wayne')
+);
+
+@(`first`like'blake%',`last`='regalia'^`first`='bruce',`last`='wayne')
+
+
 
 **/
 (function() {
@@ -71,7 +88,7 @@ s != X || d != Y	query.not( query.or({s:X, d:Y}) )
 	
 	
 	argResolver_operator = new ArgumentResolver(
-		'string key, value',
+		'string key, [string oper], value',
 		'object set'
 	);
 	

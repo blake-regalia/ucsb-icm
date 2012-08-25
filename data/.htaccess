@@ -1,2 +1,2 @@
 RewriteEngine On
-RewriteRule ([^/]+)\.json$ get.json.php?q=$1
+RewriteRule ^([a-zA-Z_.-][a-zA-Z0-9_.-]*)/([^/]+)\.json(!?)$ get.json.php?d=$1&q=$2&b=$3

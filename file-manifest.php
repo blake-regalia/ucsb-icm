@@ -105,7 +105,7 @@ class File_manifest {
 	}
 	
 	
-	public static function merge($manifest_filename, $header_format) {
+	public static function merge($manifest_filename, $header_format, $footer_format) {
 		
 		$info = self::read($manifest_filename);
 		
@@ -121,11 +121,20 @@ class File_manifest {
 		// iterate over every manifest file
 		foreach($manifest_files as $filepath) {
 			
+			$filename = substr($filepath, $parent_dir_strlen);
+			
 			// show the start of a file
-			$merge []= preg_replace('/%PATH%/', substr($filepath, $parent_dir_strlen), $header_format);
+			if(!preg_match('/^preload\./', $filename)) {
+				$merge []= preg_replace('/%PATH%/', $filename, $header_format);
+			}
 			
 			// add the contents to the array
 			$merge []= file_get_contents($filepath);
+			
+			// append any post-content
+			if(!preg_match('/^preload\./', $filename)) {
+				$merge []= preg_replace('/%PATH%/', $filename, $footer_format);
+			}
 		}
 		
 		

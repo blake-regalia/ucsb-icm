@@ -1,0 +1,130 @@
+/** <csx> **/
+
+omnibox: {
+	position: 'absolute',
+	
+	width: '38%',
+	height: header.height * 0.4,
+	
+	left: '12px',
+	top: header.height*0.5 - this.height*0.5,
+	
+	input: {
+		width: '100%',
+		height: '100%',
+		
+		padding: '0 0',
+		
+		borderWidth: '1px',
+		borderStyle: 'solid',
+		borderColor: 'black',
+		
+		fontSize: '100%',
+		fontFamily: 'Verdana,Sans-serif',
+		textIndent: '5pt',
+	},
+	
+	space: {
+		y: omnibox.height + omnibox.input.borderWidth*2,
+	},
+	
+	zIndex: 128,
+		
+	results: {
+		position: 'absolute',
+		
+		width: '100%',
+		height: '200px',
+		
+		padding: '0 6px',
+		
+		backgroundColor: 'white',
+		
+		borderTopWidth: '1px',
+		borderTopStyle: 'solid',
+		borderTopColor: 'rgba(128,128,128,0.36)',
+		borderTop: [this.borderTopWidth,this.borderTopStyle,this.borderTopColor],
+		
+		$borderOther: '1px solid grey',
+		borderLeft: this.$borderOther,
+		borderRight: this.$borderOther,
+		borderBottomWidth: '1px',
+		borderBottom: this.$borderOther,
+		
+		overflowY: 'scroll',
+		opacity: 0.8,
+		
+		space: {
+			y: omnibox.results.height + omnibox.results.borderTopWidth + omnibox.results.borderBottomWidth,
+		},
+		
+		zIndex: omnibox.zIndex-2,
+		
+		shadow: {
+			position: 'fixed',
+			
+			width:  omnibox.width,
+			height: omnibox.top + omnibox.space.y + omnibox.results.height - header.space.y,
+			
+			top: header.space.y,
+			left: omnibox.left,
+			
+			paddingRight: '12px',
+			
+			border: omnibox.results.$borderOther,
+			borderTop: omnibox.results.borderTop,
+			
+			boxShadow: '0 0 32px 4px black',
+			
+			zIndex: header.zIndex-2,
+		},
+	},
+	
+	searchResult: {
+		cursor: 'pointer',
+		
+		hover: {
+			backgroundColor: 'LightGoldenRodYellow',
+		},
+	},
+
+},
+
+header: {
+	corner: {
+		width: 100 - omnibox.width,
+	},
+},
+
+/** </csx> **/
+
+#omnibox {
+	@omnibox;
+}
+
+#omnibox-input {
+	@omnibox.input;
+}
+
+#omnibox-results {
+	@omnibox.results;
+}
+
+#omnibox-results-shadow {
+	@omnibox.results.shadow;
+}
+
+.search_result {
+	@omnibox.searchResult;
+}
+.search_result:hover {
+	@omnibox.searchResult.hover;
+}
+
+.class {
+	position: absolute;
+	right: 0;
+	color: darkGreen;
+	font-style: italic;
+	margin-right: 12px;
+}

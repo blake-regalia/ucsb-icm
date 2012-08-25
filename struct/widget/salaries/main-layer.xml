@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE layer>
+
+<!-- create a map layer based upon a database table -->
+<layer name="salary" dataset="blake@geog.ucsb.edu:salaries.2012">
+
+	<!-- perform a select operation on the table to only use a portion of the data -->
+	<select>WHERE `income` >= '0' AND `income` != NULL AND `campus` = 'UCSB'</select>
+	
+	<!-- identify the fields of the table that contain spatial information -->
+	<spatial>
+		<latitude field="#lat" />
+		<longitude field="#lon" />
+	</spatial>
+	
+	<!-- for every row in the table, create a "point" on the map, append a scale to the legend -->
+	<feature hasLegend type="point" unit="currency.dollars.thousands">
+	
+		<!-- set the color property of the point based upon the value found in this row's field(income) -->
+		<color value="#income">
+		
+			<!-- set color with respect to a gradient color scheme -->
+			<gradient range="#income">
+				<stop at="0"  value="brown"/>
+				<stop at=".3" value="yellow"/>
+				<stop at="1"  value="green"/>
+			</gradient>
+			
+		</color>
+		
+	</feature>
+	
+</layer>
+			
