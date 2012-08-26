@@ -1,0 +1,1 @@
+{"sql":"SELECT * FROM `ucsb`.`directory.department` WHERE (`departmentName` = 'Geography');","data":[{"departmentName":"Geography","buildingId":"563","location":"ELLSN 1832","category":"academic","description":null,"website":"www.geog.ucsb.edu","abrv":"GEOG"}],"path":"ucsb\/directory.department@(`departmentName`='Geography').json"}

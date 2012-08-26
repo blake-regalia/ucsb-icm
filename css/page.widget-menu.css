@@ -1,0 +1,22 @@
+/** <csx> **/
+
+widgetMenu: {
+	position: 'fixed',
+	
+	width: '116px',
+	height: '1000px',
+	
+	left: '0',
+	top: '84px',
+	
+	borderWidth: '1px',
+	borderStyle: 'solid',
+	borderColor: 'black',
+	
+	space: {
+		x: widgetMenu.width + widgetMenu.borderWidth*2,
+	},
+},
+
+/** </csx> **/
+

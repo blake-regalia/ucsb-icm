@@ -1,81 +1,223 @@
+
+
 (function() {
 	
-	var mclass = {};
-	var powerIndex = 0;
-	var matrix_width = 0;
-	var ready = false;
+	var __func__ = 'SearchItems';
+	var instance = false;
 	
-	var self = {
-		
-		reduce: function(key) {
-			var major = 0;
-			while(key > matrix_width) {
-				major += 1;
-				key -= matrix_width;
-			}
-			return {
-				major: major,
-				minor: key,
-			};
+	var subjects = {
+		'Building': {
+			url: 'data/ucsb/facilities.building#<[`buildingName`].json',
+			select: Building.newCard('`buildingName`'),
+		},
+		'Department': {
+			url: 'data/ucsb/directory.department.academic#<[`departmentName`].json',
+			select: Department.newCard,//('`department`'),
+		},
+		'Undergrad Lecture': {
+			url: 'data/ucsb/registrar.lecture.undergrad#<[`courseTitle` - `fullTitle`]$.json',
+			select: function(){}, //Lectures.lookup('lecture.undergrad'),
+		},
+		'Graduate Lecture': {
+			url: 'data/ucsb/registrar.lecture.graduate#<[`courseTitle` - `fullTitle`]$.json',
+			select: function() {}, //Lectures.lookup('lecture.graduate'),
+		},
+		'Contact': {
+			url: 'data/ucsb/directory.people#<[`firstName` `lastName`].json',
+			select: Contact.newCard('`firstName` `lastName`'),
 		},
 	};
 	
-	window.SearchItems = {
-		data: function(index) {
-			return mclass[index].data;
-		},
-		power: function(index) {
-			return matrix_width * index;
-		},
-		size: function() {
-			return powerIndex;
-		},
-		expose: function() {
-			return mclass;
-		},
+	
+	
+	var construct = function() {
+		
+		/**
+		* private:
+		**/
+		
+		var itemClass = {};
+		var listSize = 0;
+		var matrix_width = 0;
+		var ready = false;
+		
+		
+		/**
+		* protected:
+		**/
+		var self = {
+			
+			/**
+			* NOT IN USE: intended for constant-sized maps
+			**
+			reduce: function(key) {
+				var major = 0;
+				while(key > matrix_width) {
+					major += 1;
+					key -= matrix_width;
+				}
+				return {
+					major: major,
+					minor: key,
+				};
+			},
+			/***/
+			
+			expand: function(key) {
+				var count = 0, pcount = 0;
+				for(var e in itemClass) {
+					count += itemClass[e].data.length;
+					if(key < count) {
+						return {
+							major: parseInt(e),
+							minor: key - pcount,
+						};
+					}
+					pcount = count;
+				}
+				return console.error('SearchItems(): index out of bounds, '+key);
+			},
+		};
+		
+		
+		
+		/**
+		* public operator() ();
+		**/
+		var public = function() {
+			
+		};
+		
+		
+		/**
+		* public:
+		**/
+		$.extend(public, {
+			
+			items: function(index) {
+				return itemClass[index].data;
+			},
+			
+			size: function() {
+				return listSize;
+			},
+			
+			power: function(key) {
+				var c = 0;
+				for(var e in itemClass) {
+					if(!key--) break;
+					c += itemClass[e].data.length;
+				}
+				return c;
+			},
+			
+			get: function(key) {
+				var count = 0, pcount = 0;
+				for(var e in itemClass) {
+					count += itemClass[e].data.length;
+					if(key < count) {
+						return {
+							string: itemClass[e].data[key-pcount],
+							classTitle: itemClass[e].title,
+						}
+					}
+					pcount = count;
+				}
+				return console.error('SearchItems(): index out of bounds, '+key);
+			},
+			
+			lookup: function(key) {
+				var crd = self.expand(key);
+				var set = itemClass[crd.major];
+				var str = set.data[crd.minor];
+				set.select.apply(set.select, [str.replace("'","\\'")]);
+				return str;
+			},
+			
+			expose: function() {
+				return itemClass;
+			},
+			
+			expand: function(key) {
+				return self.expand(key);
+			},
+		});
+		
+
+		/**
+		*
+		**/
+		var subjectUrls = {};
+		for(var e in subjects) {
+			subjectUrls[e] = subjects[e].url;
+		}
+		
+		Download.json({
+			
+			urls: subjectUrls,
+			
+			each: function(key, json) {
+				
+				var pi = listSize++;
+				
+				itemClass[pi] = {
+					data: json,
+					title: key,
+					select: subjects[key].select,
+				};
+			},
+			
+			ready: function() {
+				ready = true;
+				console.info('Search Items finished downloading');
+			},
+			
+		});
+		
+		
+		return public;
+		
 	};
 	
-	var methods = {
-		'Building': Building.newCard,
-		'Department': Department.newCard,
-		'Undergrad Lecture': Lectures.lookup('lecture.undergrad'),
-		'Graduate Lecture': Lectures.lookup('lecture.graduate'),
-		'Contact': Contacts.lookup,
+	
+	/**
+	* public static operator() ()
+	**/
+	var global = window[__func__] = function() {
+		if(this !== window) {
+			instance = construct.apply(this, arguments);
+			return instance;
+		}
+		else {
+			return instance;
+		}
 	};
 	
-	Download.json({
+	
+	/**
+	* public static:
+	**/
+	$.extend(global, {
 		
-		
-		urls: {
-			'Building':   'data/ucsb/facilities.building#<[`buildingName`].json',
-			'Department': 'data/ucsb/directory.department.academic#<[`departmentName`].json',
-			'Undergrad Lecture':  'data/ucsb/registrar.lecture.undergrad#<[`courseTitle` - `fullTitle`]$.json',
-			'Graduate Lecture':   'data/ucsb/registrar.lecture.graduate#<[`courseTitle` - `fullTitle`]$.json',
-			'Contact':   'data/ucsb/directory.people#<[`firstName` `lastName`].json',
+		//
+		toString: function() {
+			return __func__+'()';
 		},
 		
-		
-		each: function(key, json) {
-			
-			var pi = powerIndex++;
-			
-			if(json.data.length > matrix_width) {
-				// round up to the nearest power of 2
-				matrix_width = Math.pow(2,Math.ceil(Math.log(json.data.length)/Math.LN2));
-			}
-			
-			mclass[pi] = {
-				data: json.data,
-				title: key,
-				select: methods[key],
-			};
+		//
+		error: function() {
+			var args = Array.cast(arguments);
+			args.unshift(__func__+':');
+			console.error.apply(console, args);
 		},
 		
-		ready: function() {
-			ready = true;
-			console.info('Search Items finished downloading');
+		//
+		warn: function() {
+			var args = Array.cast(arguments);
+			args.unshift(__func__+':');
+			console.warn.apply(console, args);
 		},
-		
 	});
+	
 	
 })();

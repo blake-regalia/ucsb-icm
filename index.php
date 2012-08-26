@@ -13,7 +13,7 @@ header('Content-Type:text/html; charset=UTF-8');
 readfile('page.head.html');
 
 $merge_files = array(
-	'js' => false,
+	'js' => true,
 	'css' => true,
 );
 

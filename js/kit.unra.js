@@ -372,6 +372,7 @@ Object.css = (function() {
 window.$ = window.jQuery? window.jQuery: {
 	extend: Object.extend,
 	style: Object.css.style,
+	css: Object.css.css,
 };
 
 

@@ -62,3 +62,86 @@ EsriMap.ready(function() {
 	}
 	
 });
+
+
+
+
+
+
+
+
+
+
+Contacts = {
+	lookup: function(fullName) {
+		new ContactCard(fullName);
+	},
+};
+
+
+// Lectures
+(function() {
+	var __func__ = 'Lectures';
+	var construct = function() {
+		var self = {
+			
+		};
+		var public = function() {
+			
+		};
+		$.extend(public, {
+			
+		});
+		return public;
+	};
+	var global = window[__func__] = function() {
+		if(this !== window) {
+			var instance = construct.apply(this, arguments);
+			return instance;
+		}
+		else {
+			
+		}
+	};
+	$.extend(global, {
+		toString: function() {
+			return __func__+'()';
+		},
+		lookup: function(level) {
+			return function(id) {
+				new LectureCard(id.substr(0, id.indexOf(' - ')));
+			};
+		},
+	});
+})();
+
+
+(function() {
+	var __func__ = 'SearchQuery';
+	var construct = function() {
+		var self = {
+			
+		};
+		var public = function() {
+			
+		};
+		$.extend(public, {
+			
+		});
+		return public;
+	};
+	var global = window[__func__] = function(query) {
+		dojo.xhrGet({
+			url: 'data/service.php?q='+query,
+			handleAs: 'json',
+			load: function(json) {
+				console.log(json);
+			},
+		});
+	};
+	$.extend(global, {
+		toString: function() {
+			return __func__+'()';
+		}
+	});
+})();

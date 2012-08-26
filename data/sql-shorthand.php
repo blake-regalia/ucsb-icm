@@ -233,6 +233,7 @@ class sql_shorthand {
 					switch($chr) {
 						case '`':
 							if(!strlen($cname)) return $this->err($i,'ecn');
+							$cname = '`'.$cname.'`';
 							$mode = 'body-operator';
 							break;
 							
@@ -316,18 +317,18 @@ class sql_shorthand {
 						case 'WHERE':
 							if(strlen($oper)) {
 								if(strlen($wrap)) {
-									$expr []= $wrap.'(`'.$cname.'`) '.$oper.' \''.$value.'\'';
+									$expr []= $wrap.'('.$cname.') '.$oper.' \''.$value.'\'';
 								}
 								else {
-									$expr []= '`'.$cname.'` '.$oper.' \''.$value.'\'';
+									$expr []= $cname.' '.$oper.' \''.$value.'\'';
 								}
 							}
 							else {
 								if(strlen($wrap)) {
-									$expr []= $wrap.'(`'.$cname.'`) != \'\'';
+									$expr []= $wrap.'('.$cname.') != \'\'';
 								}
 								else {
-									$expr []= '`'.$cname.'` != \'\'';
+									$expr []= $cname.' != \'\'';
 								}
 							}
 							$wrap = '';

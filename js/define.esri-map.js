@@ -52,6 +52,13 @@ window.DefaultPackage = UCSB_Campus_ags2;
 		
 		dom = dojo.byId('map');
 		
+		$.style(dom, 'width',
+			dojo.position(document.body).w - CSS('widgetMenu.space.x').pixels()
+		);
+		$.style(dom, 'height',
+			dojo.position(document.body).h - CSS('header.space.y').pixels()
+		);
+		
 		map = new esri.Map('map', {
 			extent: new esri.geometry.Extent(package.extent),
 		});

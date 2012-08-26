@@ -967,6 +967,9 @@ class Lookup {
 				case 'user-select':
 				case 'transition':
 				case 'box-shadow':
+				case 'transform-style':
+				case 'perspective':
+				case 'transform':
 					$str []= $key.': '           .$rule['value'].$unit.';';
 					$str []= '-moz-'.$key.': '   .$rule['value'].$unit.';';
 					$str []= '-webkit-'.$key.': '.$rule['value'].$unit.';';

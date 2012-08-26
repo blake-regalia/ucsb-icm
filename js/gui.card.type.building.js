@@ -1,14 +1,40 @@
+/**
+*
+* public class BuildingCard extends Card
+*
+**/
 (function() {
 	
-	var __func__ = 'Instance';
+	var __func__ = 'BuildingCard';
 	
 	
 	
-	var construct = function() {
+	var construct = function(building) {
+		
+		// super's constructor
+		var card = new Card('building:'+building.id);
+		
+		// if this card already exists in the stack
+		if(card.index !== -1) {
+			CardDeck('stack').draw(card.index);
+			return;
+		}
+		
 		
 		/**
 		* private:
 		**/
+		var raw = building();
+		var references = {};
+		
+		// setup the format of the card
+		card.setup({
+			title: raw.buildingName,
+			subtitle: raw.buildingAbrv,
+			icon: 'resource/card.icon.building.png',
+			content: {
+			},
+		});
 		
 		
 		/**
@@ -20,22 +46,19 @@
 		
 		
 		/**
-		* public operator() ();
-		**/
-		var public = function() {
-			
-		};
-		
-		
-		/**
 		* public:
 		**/
-		$.extend(public, {
+		$.extend(card, {
 			
+			// must be over-ridden
+			onDraw: function(){},
 		});
 		
 		
-		return public;
+		// add this card to the stack
+		CardDeck('stack').add(card);
+		
+		return card;
 		
 	};
 	

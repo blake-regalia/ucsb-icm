@@ -73,7 +73,7 @@ SearchItems(
 	{
 		dataset: 'ucsb/directory.people#<[`firstName` `lastName`]',
 		title: 'Contact',
-		select: Contacts.lookup,
+		select: Contact.newCard('`firstName` `lastName`'),
 	}
 	
 	

@@ -112,8 +112,18 @@
 		},
 		
 		
-		error: function(msg) {
-			console.error(__func__+': ',msg);
+		//
+		error: function() {
+			var args = Array.cast(arguments);
+			args.unshift(__func__+':');
+			console.error.apply(console, args);
+		},
+		
+		//
+		warn: function() {
+			var args = Array.cast(arguments);
+			args.unshift(__func__+':');
+			console.warn.apply(console, args);
 		},
 		
 		
@@ -133,7 +143,16 @@
 						global.error(e);
 					},
 					load: function(json) {
-						scn.apply(url,[json]);
+						if(json.error) {
+							global.warn('error response from: ',id,' ["',this.url,'"]');
+							global.error(json.error);
+						}
+						else if(json.data) {
+							scn.apply(url,[json.data]);
+						}
+						else {
+							scn.apply(url,[json]);
+						}
 					},
 				};
 				return dojo.xhrGet(opt);
@@ -161,7 +180,7 @@
 					url: obj.urls[downloadId],
 					handleAs: 'json',
 					error: function(e) {
-						global.error('Could not parse JSON from response: "',downloadId,'"');
+						global.error('Could not parse JSON from response: ',downloadId,' ["',this.url,'"]');
 						global.error(e);
 					},
 				};
@@ -169,10 +188,23 @@
 				(function() {
 					var id = this.id;
 					opt.load = function(json) {
-						obj.each.apply(obj, [id, json]);
-						dlc += 1;
-						if(dll === dlc && obj.ready) {
-							obj.ready.apply(obj, [dlc]);
+						if(json.error) {
+							global.warn('error response from: ',id,' ["',this.url,'"]');
+							global.error(json.error);
+						}
+						else if(json.data) {
+							obj.each.apply(obj, [id, json.data]);
+							dlc += 1;
+							if(dll === dlc && obj.ready) {
+								obj.ready.apply(obj, [dlc]);
+							}
+						}
+						else {
+							obj.each.apply(obj, [id, json]);
+							dlc += 1;
+							if(dll === dlc && obj.ready) {
+								obj.ready.apply(obj, [dlc]);
+							}
 						}
 					};
 				}).apply({id:downloadId});

@@ -1,0 +1,22 @@
+/** <csx> **/
+
+map: {
+	position: 'absolute',
+	
+	width: 'auto',
+	height: 'auto',
+	
+	left: widgetMenu.space.x,
+	top: header.space.y,
+	
+	margin: 'auto',
+	padding: 0,
+	
+	borderColor: '#243C5F',
+},
+
+/** </csx> **/
+
+#map {
+	@map;
+}

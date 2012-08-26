@@ -66,7 +66,7 @@ omnibox: {
 			width:  omnibox.width,
 			height: omnibox.top + omnibox.space.y + omnibox.results.height - header.space.y,
 			
-			top: header.space.y,
+			top: header.height,
 			left: omnibox.left,
 			
 			paddingRight: '12px',
@@ -114,10 +114,10 @@ header: {
 	@omnibox.results.shadow;
 }
 
-.search_result {
+.search-result {
 	@omnibox.searchResult;
 }
-.search_result:hover {
+.search-result:hover {
 	@omnibox.searchResult.hover;
 }
 

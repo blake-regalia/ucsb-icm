@@ -9,29 +9,6 @@ var DomEventControl = function(link) {
 
 /***
 
-new CardDeck('stack', dojo.byId('info_deck'));
-
-var courseId   = 'CS 185';
-var courseName = 'Human-Computer Interaction';
-
-
-var card = new Card(courseId+' - '+courseName, {
-	title: courseId,
-	subtitle: courseName,
-	daysOfWeek: 'MW',
-	timesOfDay: {
-		A: [480, 530],
-	},
-	content: {
-		'Description': 'This course offers blah blah blah...',
-		'Instructor': instructor,
-	},
-});
-
-
-CardDeck('stack').add(card);
-
-
 /* Card widgets *
  - title
  - subtitle
@@ -64,13 +41,13 @@ CardDeck('stack').add(card);
 					+'<span class="card-title"></span>'
 					+'<span class="card-subtitle"></span>'
 				+'</div>'
-				+'<div class="card-heading_separator"></div>'
+				+'<div class="card-header-separator"></div>'
 				+'<div class="card-timeline">'
 					+'<div class="card-timeline-days"></div>'
 					+'<div class="card-timeline-times"></div>'
 				+'</div>'
 				+'<div class="card-references"></div>'
-				+'<div class="card-heading_separator"></div>'
+				+'<div class="card-header-separator"></div>'
 				+'<div class="card-content-image" style="display:none;"></div>'
 				+'<div class="card-content"></div>'
 			+'</div>';
@@ -78,7 +55,7 @@ CardDeck('stack').add(card);
 	
 	
 	var lowerAlphaNum = function(str) {
-		return str.toLowerCase().replace(/[^\w]/g,'_');
+		return str.toLowerCase().replace(/[^\w]/g,'-');
 	};
 	
 	
