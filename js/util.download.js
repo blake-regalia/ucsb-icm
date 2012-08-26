@@ -1,6 +1,7 @@
 (function() {
 	var __func__ = 'Download';
-	var framework = dojo;
+	
+	var noop = function(){};
 	
 	// keep track of the download status' with 32-bit integers
 	var download_set = {
@@ -55,20 +56,8 @@
 			// reference to this xml-http-request objective
 			var xhrd = args[i];
 			
-			console.log(i, args);
-			
-			// if a method wasn't specified
-			if(!xhrd.$) {
-				console.log(xhrd);
-				return global.error('a framework function was not specified for the XML-HTTP-Request');
-			}
-			
 			// keep track of this download
 			set.full |= 1 << set.length;
-			
-			// reference the method, and remove it from the options object
-			var fun = xhrd.$;
-			xhrd.$ = undefined;
 			
 			// extend a default option
 			var opt = $.extend({
@@ -79,7 +68,7 @@
 			(function() {
 				var power = this.power;
 				var error = this.error;
-				var success = this.success;
+				var load = this.load;
 				
 				// override options
 				opt.error = function(e) {
@@ -87,10 +76,9 @@
 					error.apply(this, arguments);
 				};
 				
-				// [success / load]: depends on framework (jquery / dojo) respectively
-				opt[framework==jQuery?'success':'load'] = function() {
+				opt.load = function() {
 					// perform callback
-					success.apply(this, arguments);
+					load.apply(this, arguments);
 					
 					// OR this download status bit into place
 					var bit = 1 << power;
@@ -103,26 +91,25 @@
 				};
 			}).apply({
 				power: set.length++,
-				error: opt.error? opt.error: $.noop,
-				success: opt.success? opt.success: $.noop,
+				error: opt.error? opt.error: noop,
+				load: opt.load? opt.load: noop,
 			});
 			
-			// framework dependent ajax call
-			if(framework == dojo) {
-				dojo['xhr'+opt.type[0].toUpperCase()+opt.substr(1).toLowerCase()].apply(dojo, [opt]);
-			}
-			else if(framework == jQuery) {
-				jQuery[fun].apply(jQuery, [opt]);
-			}
+			var fun = 'xhrGet';
+			if(opt.type == 'POST') fun = 'xhrPost';
+			dojo[fun].apply(dojo, [opt]);
 		}
 		
 		return chain(setName);
 	};
+	
+	
 	$.extend(global, {
+		
+		
 		toString: function() {
 			return __func__+'()';
 		},
-		
 		
 		
 		error: function(msg) {
@@ -130,34 +117,51 @@
 		},
 		
 		
-		
-		json: function(obj) {
+		json: function(obj, scn) {
+			
+			if(typeof obj === 'string' && typeof scn === 'function') {
+				var url = obj;
+				url = url.replace(/#/g,'%2523');
+				url = url.replace(/:/g,'%253A');
+				url = url.replace(/</g,'%253C');
+				url = url.replace(/>/g,'%253E');
+				var opt = {
+					url: url,
+					handleAs: 'json',
+					error: function(e) {
+						global.error('Could not parse JSON from response: "',url,'"');
+						global.error(e);
+					},
+					load: function(json) {
+						scn.apply(url,[json]);
+					},
+				};
+				return dojo.xhrGet(opt);
+			}
 			
 			if(!obj.urls) {
 				return global.error(Error.param('urls', global.json));
 			}
 			
-			
-			/*********/
-			/*** needs to be optimized!!! very inefficient ***/
-			/*********/
-			var invalidChars = /[#\\:>]/;
-			for(var e in obj.urls) {
-				var url = obj.urls[e].split('');
-				var i = url.length;
-				while(i--) {
-					if(invalidChars.test(url[i])) {
-						url[i] = '%25'+encodeURIComponent(url[i]).substr(1);
-					}
-				}
-				obj.urls[e] = url.join('');
+			var dll = 0;
+			var obj_urls = obj.urls;
+			for(var e in obj_urls) {
+				dll += 1;
+				var url = obj_urls[e];
+				url = url.replace(/#/g,'%2523');
+				url = url.replace(/:/g,'%253A');
+				url = url.replace(/</g,'%253C');
+				url = url.replace(/>/g,'%253E');
+				obj_urls[e] = url;
 			}
 			
+			var dlc = 0;
 			for(var downloadId in obj.urls) {
 				var opt = {
 					url: obj.urls[downloadId],
 					handleAs: 'json',
 					error: function(e) {
+						global.error('Could not parse JSON from response: "',downloadId,'"');
 						global.error(e);
 					},
 				};
@@ -166,6 +170,10 @@
 					var id = this.id;
 					opt.load = function(json) {
 						obj.each.apply(obj, [id, json]);
+						dlc += 1;
+						if(dll === dlc && obj.ready) {
+							obj.ready.apply(obj, [dlc]);
+						}
 					};
 				}).apply({id:downloadId});
 				

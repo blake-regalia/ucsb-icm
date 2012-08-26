@@ -6,14 +6,17 @@
 require "database.php";
 require "sql-shorthand.php";
 
-$bang    = $_GET['b'];
 $db_name = $_GET['d'];
 $query   = $_GET['q'];
+$format  = $_GET['f'];
+$bang    = $_GET['b'];
 
 $databases = MySQL_Pointer::getDatabasesAsKeys();
 
 $do_not_cache = ($bang === '!');
 $query = preg_replace('/:/',';', $query);
+$query = preg_replace('/</',',', $query);
+$query = preg_replace('/>/','.', $query);
 
 
 // if this query has already been cached, return the file
@@ -50,25 +53,119 @@ if(preg_match('/^([a-z_-][a-z_-]*(?:\\.[a-z_-][a-z_-]*)*)(.*)$/i', $query, $uri)
 			
 			$ss = new sql_shorthand($query_str);
 			if($ss->failed()) {
-				$json['error'] = $ss->error();
-				die_json_encode($json);
+				if($format == 'json') {
+					$json['error'] = $ss->error();
+					die_json_encode($json);
+				}
+				else {
+					die_monospace(preg_replace('/\n/',"<br/>\n",$ss->error()));
+				}
 			}
 			else {
 				$sql_part = $ss->sql();
+				
+				if($format == 'sql') {
+					die("SELECT ".$sql_part['select']." FROM `<table>` ".$sql_part['how']);
+				}
+				
 				$result = $db->execAssoc($sql_part['select'],$sql_part['how']);
+				
+				if($format == 'html') {
+					$str = "sql: ".$result['sql']."\n\n";
+					$str .= "result: ".print_r($result['data'],true);
+					die_monospace($str);
+				}
+				
 				$json['sql'] = $result['sql'];
 				$json['data'] = $result['data'];
 				$json['path'] = $db_name.'/'.$query.'.json';
 				
 				if(strlen($sql_part['array'])) {
 					$repstr = $sql_part['array'];
-					foreach($json['data'] as $index => $row) {
-						$tmpstr = $repstr;
-						foreach($row as $key => $value) {
-							$tmpstr = preg_replace('/`'.$key.'`/',$value,$tmpstr);
+					
+					if($sql_part['distinct']) {
+						foreach($json['data'] as $index => $row) {
+							$tmpstr = $repstr;
+							foreach($row as $key => $value) {
+								$tmpstr = preg_replace('/`'.$key.'`/',$value,$tmpstr);
+							}
+							$data[$tmpstr] = true;
 						}
-						$json['data'][$index] = $tmpstr;
+						$json['data'] = array();
+						foreach($data as $key => $true) {
+							$json['data'] []= $key;
+						}
 					}
+					else {
+						foreach($json['data'] as $index => $row) {
+							$tmpstr = $repstr;
+							foreach($row as $key => $value) {
+								$tmpstr = preg_replace('/`'.$key.'`/',$value,$tmpstr);
+							}
+							$json['data'][$index] = $tmpstr;
+						}
+					}
+				}
+				
+				if(strlen($sql_part['json'])) {
+					$fields = preg_split('/;/',$sql_part['json'], 2);
+					$data = array();
+					
+					$column = substr($fields[0],1,-1);
+					
+					if(preg_match('/^`([^`]+)`$/', $fields[1], $word)) {
+						foreach($json['data'] as $row) {
+							$rac = $row[$column];
+							$raw = $row[$word[1]];
+							$data[$rac] = $raw;
+						}
+					}
+					else if(preg_match('/^\{`([^`]+)`;`([^`]+)`\}$/', $fields[1], $word)) {
+						foreach($json['data'] as $row) {
+							$rac = $row[$column];
+							$raw = $row[$word[1]];
+							if(!is_array($data[$rac])) $data[$rac] = array();
+							$data[$rac][$raw] = $row[$word[2]];
+						}
+					}
+					else if(preg_match('/^\[(~?`[^`]+`(?:,~?`[^`]+`)*)\]$/', $fields[1], $word)) {
+						$objs = preg_split('/,/',$word[1]);
+						foreach($json['data'] as $row) {
+							$rac = $row[$column];
+							$data[$rac] = array();
+							foreach($objs as $cname) {
+								if($cname[0] == '~') {
+									$data[$rac] []= floatval($row[substr($cname,2,-1)]);
+								}
+								else {
+									$data[$rac] []= $row[substr($cname,1,-1)];
+								}
+							}
+						}
+					}
+					else if(preg_match('/^\{`([^`]+)`;\[(~?`[^`]+`(?:,~?`[^`]+`)*)\]\}$/', $fields[1], $word)) {
+						$objs = preg_split('/,/',$word[2]);
+						foreach($json['data'] as $row) {
+							$rac = $row[$column];
+							$raw = $row[$word[1]];
+							if(!is_array($data[$rac])) $data[$rac] = array();
+							
+							foreach($objs as $cname) {
+								if($cname[0] == '~') {
+									$data[$rac][$raw] []= floatval($row[substr($cname,2,-1)]);
+								}
+								else {
+									$data[$rac][$raw] []= $row[substr($cname,1,-1)];
+								}
+							}
+						}
+					}
+					else {
+						$json['error'] = $sql_part['json']."\n---?\n".'syntax error: not valid json-format';
+					}
+					
+					//$json['error'] = print_r($data,true);
+					$json['data'] = $data;
 				}
 				
 				$json_str = json_encode($json);
@@ -261,6 +358,13 @@ function die_json_encode($json) {
 function die_json($json_str) {
 	json_headers();
 	echo $json_str;
+	exit;
+}
+
+function die_monospace($echo) {
+	echo '<div style="font-family:monospace;">'."\n";
+	echo preg_replace('/  /', "&nbsp;&nbsp;", preg_replace('/\n/',"<br/>\n",htmlentities($echo)));
+	echo "\n</div>";
 	exit;
 }
 

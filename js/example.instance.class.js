@@ -29,11 +29,11 @@
 	
 	var global = window[__func__] = function() {
 		if(this !== window) {
-			var instance = construct.apply(this, arguments);
+			instance = construct.apply(this, arguments);
 			return instance;
 		}
 		else {
-			
+			return instance;
 		}
 	};
 	

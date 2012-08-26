@@ -19,7 +19,8 @@ class sql_shorthand {
 	private $sql = '';
 	private $select = '*';
 	private $array_return = '';
-	
+	private $json_return = '';
+	private $distinct = false;
 	
 	private function err($pos, $type, $say='') {
 	
@@ -72,6 +73,8 @@ class sql_shorthand {
 			'select' => $this->select,
 			'how' => $this->sql,
 			'array' => $this->array_return,
+			'json' => $this->json_return,
+			'distinct' => $this->distinct,
 		);
 	}
 	
@@ -95,6 +98,9 @@ class sql_shorthand {
 		$value = '';
 		$wrap  = '';
 		
+		$json_levels = 0;
+		$sort_order = false;
+		
 		for($i=0; $i<$strlen; $i++) {
 			$chr = $str[$i];
 			
@@ -102,12 +108,25 @@ class sql_shorthand {
 			
 				case 'func':
 					switch($chr) {
+						case '$':
+							$this->distinct = true;
+							break;
 						case '@':
 							$fname = 'WHERE'; break;
 						case '+':
 							$fname = 'SUM'; break;
 						case '#':
 							$fname = 'RETURN'; break;
+						case '.':
+							if($fname === 'RETURN') {
+								$sort_order = 'ASC';
+							}
+							break;
+						case ',':
+							if($fname === 'RETURN') {
+								$sort_order = 'DESC';
+							}
+							break;
 						case '(':
 							switch($fname) {
 								case 'WHERE':
@@ -339,7 +358,50 @@ class sql_shorthand {
 					break;
 			
 				case 'json-format':
-					return $this->err($i-1,'ue','json-format');
+					switch($chr) {
+						
+						case '`':
+							$this->json_return .= $chr;
+							$mode = 'json-format-column';
+							break;
+							
+						case '{':
+							$json_levels += 1;
+							$this->json_return .= $chr;
+							break;
+							
+						case '}':
+							if($json_levels == 0) {
+								$mode = 'func';
+							}
+							else {
+								$json_levels -= 1;
+								$this->json_return .= $chr;
+							}
+							break;
+							
+						default:
+							$this->json_return .= $chr;
+							break;
+					}
+					//return $this->err($i-1,'ue','json-format');
+					break;
+					
+				case 'json-format-column':
+					$this->json_return .= $chr;
+					if($escape) {
+						//$cname .= $chr;
+						$escape = false;
+						break;
+					}
+					switch($chr) {
+						case '\\': $escape = true; break;
+						case '`':
+							$mode = 'json-format';
+							break;
+						default: //$cname .= $chr;
+							break;
+					}
 					break;
 					
 				case 'concat-str':
@@ -411,6 +473,7 @@ class sql_shorthand {
 								$concat []= '\''.$cname.'\'';
 								$cname = '';
 							}
+							$mode = 'func';
 							switch($fname) {
 								case 'RETURN':
 									$this->array_return = implode('', $concat);
@@ -447,6 +510,14 @@ class sql_shorthand {
 		}
 		
 		$this->sql = implode(' ',$stmt);
+		if(count($selw)) {
+			if($sort_order !== false) {
+				$this->sql .= ' ORDER BY '.implode(' '.$sort_order.', ', $selw).' '.$sort_order;
+			}
+			if($this->distinct) {
+				$this->sql .= ' GROUP BY '.implode(', ', $selw).' ';
+			}
+		}
 		$this->select = count($selw)? implode(',',$selw): '*';
 	}
 }

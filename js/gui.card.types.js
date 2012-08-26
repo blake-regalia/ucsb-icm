@@ -16,10 +16,8 @@
 		
 		var pendingOnDrawAction = false;
 		
-		dojo.xhrGet({
-			url: "data/ucsb.facilities.building@(`buildingId`)="+bid+".json",
-			handleAs: 'json',
-			load: function(json) {
+		Download.json("data/ucsb/facilities.building@(`buildingId`='"+bid+"').json",
+			function(json) {
 				var bldg = json[0];
 				
 				var references = {};
@@ -35,8 +33,8 @@
 				if(card.isOpen() && pendingOnDrawAction) {
 					card.onDraw();
 				}
-			},
-		});
+			}
+		);
 		
 		var deck = false;
 		
@@ -123,10 +121,8 @@
 		
 		var courseTitle = name;
 		
-		dojo.xhrGet({
-			url: 'data/ucsb.registrar.lecture'+"%2523[`courseTitle`='"+courseTitle+"'].json",
-			handleAs: 'json',
-			load: function(json) {
+		Download.json("data/ucsb/registrar.lecture@(`courseTitle`='courseTitle').json",
+			function(json) {
 				lecture = json[0];
 				
 				card.setup({
@@ -149,8 +145,8 @@
 				if(card.isOpen() && pendingOnDrawAction) {
 					card.onDraw();
 				}
-			},
-		});
+			}
+		);
 		
 		var deck = false;
 		
@@ -241,10 +237,8 @@
 		
 		var pendingOnDrawAction = false;
 		
-		dojo.xhrGet({
-			url: "data/ucsb.directory.people@(`firstName` `lastName`)="+fullName.replace("'","\\'")+".json",
-			handleAs: 'json',
-			load: function(json) {
+		Download.json("data/ucsb/directory.people@([`firstName` `lastName`]='"+fullName.replace("'","\\'")+"').json",
+			function(json) {
 				contact = json[0];
 				
 				var references = {};
@@ -284,8 +278,8 @@
 				if(card.isOpen() && pendingOnDrawAction) {
 					card.onDraw();
 				}
-			},
-		});
+			}
+		);
 		
 		var deck = false;
 		
@@ -366,10 +360,8 @@
 		
 		var pendingOnDrawAction = false;
 		
-		dojo.xhrGet({
-			url: "data/ucsb.directory.department@(`departmentName`)="+departmentName+".json",
-			handleAs: 'json',
-			load: function(json) {
+		Download.json("data/ucsb/directory.department@(`departmentName`='"+departmentName+"').json",
+			function(json) {
 				dept = json[0];
 				
 				var content = {
@@ -397,13 +389,11 @@
 				if(card.isOpen() && pendingOnDrawAction) {
 					card.onDraw();
 				}
-			},
-		});
+			}
+		);
 		
-		dojo.xhrGet({
-			url: "data/ucsb.directory.people@(`mined`;`department`)=commserv;"+departmentName+".json",
-			handleAs: 'json',
-			load: function(json) {
+		Download.json("data/ucsb/directory.people@(`mined`='commserv',`department`='"+departmentName+"').json",
+			function(json) {
 				var people = json;
 				
 				var references = {
@@ -413,8 +403,8 @@
 				card.setup({
 					references: references,
 				});
-			},
-		});
+			}
+		);
 		
 		var deck = false;
 		

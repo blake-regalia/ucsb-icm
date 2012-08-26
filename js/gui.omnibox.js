@@ -29,168 +29,6 @@ congressional
 
 /******/
 
-(function() {
-	var __func__ = 'SearchItems';
-	var classes = [];
-	var table = {
-		lookup: {},
-	};
-	
-	
-	// know how wide the arrays have to be in order for no collisions to occur
-	var matrix_width = 0;
-	
-	// keep track of the download status' with 32-bit integers
-	var download_status = 0;
-	var download_full = 0;
-	
-	var self = {
-		reduce: function(key) {
-			var major = 0;
-			while(key > matrix_width) {
-				major += 1;
-				key -= matrix_width;
-			}
-			return {
-				major: major,
-				minor: key,
-			};
-		},
-		download: function(key, power) {
-			var uriKey = key.replace('#','%2523');
-			dojo.xhrGet({
-				url: 'data/'+uriKey+'.json',
-				handleAs: 'json',
-				load: function(json) {
-					
-					// store the json data
-					classes[power].data = json;
-					
-					if(json.length > matrix_width) {
-						
-						// round up to the nearest power of 2
-						matrix_width = Math.pow(2,Math.ceil(Math.log(json.length)/Math.LN2));
-					}
-						
-					// OR this download status bit into place
-					var bit = 1 << power;
-					download_status |= bit;
-					
-					// if all the downloads are complete
-					if(download_status === download_full) {
-						self.downloads_ready();
-					}
-				},
-			});
-		},
-		downloads_ready: function() {
-			//console.info(global, 'downloads ready:', classes);
-		},
-		update_classes: function() {
-			var i=classes.length;
-			while(i--) {
-				var class_target = classes[i];
-				switch(class_target.state) {
-				// pending download
-				case 0:
-					class_target.state += 1;
-					self.download(class_target.dataset, i);
-					break;
-				// downloading
-				case 1:
-					break;
-				// okay
-				case 2:
-					break;
-				}
-			}
-		},
-	};
-	var global = window[__func__] = function() {
-		global.set.apply(this, arguments);
-	};
-	$.extend(global, {
-		add: function() {
-			var len = arguments.length;
-			if(len + classes.length > 32) {
-				console.error(global,': item list length exceeded 32');
-			}
-			// traverse the list forward, must be done this way if this function can called more than once
-			for(var i=0; i!==len; i++) {
-				var arg = arguments[i];
-				
-				var power = classes.length;
-				
-				download_full |= 1 << power;
-				
-				// the front of the classes list has lowest priority, push later arguments to the front
-				classes.unshift({
-					key: arg.dataset,
-					dataset: arg.dataset,
-					title: arg.title,
-					state: 0,
-				});
-				
-				table.lookup[arg.dataset] = {
-					hash: power,
-					select: arg.select || function(){}
-				};
-			}
-			self.update_classes();
-		},
-		empty: function() {
-			classes.length = 0;
-			matrix_width = 0;
-			download_status = 0;
-			delete table.lookup;
-			table.lookup = {};
-			self.update_classes();
-		},
-		set: function() {
-			global.empty();
-			global.add.apply(this, arguments);
-		},
-		data: function(index) {
-			return classes[index].data;
-		},
-		power: function(index) {
-			return matrix_width * index;
-		},
-		size: function() {
-			return classes.length;
-		},
-		result: function(key) {
-			var index = self.reduce(key);
-			var target = classes[index.major];
-			return {
-				string: target.data[index.minor],
-				class_title: target.title,
-			};
-		},
-		lookup: function(hash) {
-			var index = self.reduce(hash);
-			var target = classes[index.major];
-			var string = target.data[index.minor];
-			var origin = table.lookup[target.key];
-			return {
-				execute: function() {
-					origin.select.apply(null, [string]);
-				},
-			};
-		},
-		expose: function() {
-			return {
-				classes: classes,
-				matrix_width: matrix_width,
-				table: table,
-			};
-		},
-		toString: function() {
-			return __func__+'()';
-		}
-	});
-})();
-
 
 /**
 * public class OmniBox
@@ -204,6 +42,11 @@ congressional
 (function() {
 	var __func__ = 'Omnibox';
 	var instance = false;
+	
+	var domstr_results = 'omnibox-results';
+	var domstr_results_shadow = domstr_results+'-shadow';
+	var domstr_results_containers = domstr_results+'-containers';
+	
 	var construct = function(dom_node) {
 		
 		var input_predictor = new InputPredictor();
@@ -220,9 +63,10 @@ congressional
 			// reference loop data locally
 			var i = loop.indexMinor;
 			var mapIndex = loop.indexMajor;
+			
 			var text = loop.text;
 			var tiers = loop.tiers;
-			//var items = loop.items;
+			var items = loop.items;
 			
 			// get reference to the matches
 			var matches = loop.matches;
@@ -244,7 +88,6 @@ congressional
 			**/
 			
 			
-			var items = SearchItems.data(mapIndex);
 			var power = SearchItems.power(mapIndex);
 			
 			/** HASHING **
@@ -297,24 +140,35 @@ congressional
 				
 				i += 1;
 				if(i === items.length) {
+					console.log('finished: ',mapIndex,' / ',SearchItems.size());
 					i = 0;
-					mapIndex += 1;
 					
-					if(mapIndex === SearchItems.size()) {
-						console.info(global,': search took ',loop.cycles,' cycles in ',Benchmark.highlight(((new Date()).getTime()-loop.start_time)+'ms'));
-						self.handle_results(tiers);
-						return this.die();
-					}
-					items = SearchItems.data(mapIndex);
-					power = SearchItems.power(mapIndex);
+					do {
+						mapIndex += 1;
+						
+						if(mapIndex === SearchItems.size()) {
+							console.info(global,': search took ',loop.cycles,' cycles in ',Benchmark.highlight(((new Date()).getTime()-loop.start_time)+'ms'));
+							self.handle_results(tiers);
+							return this.die();
+						}
+						items = SearchItems.data(mapIndex);
+						power = SearchItems.power(mapIndex);
+						console.log('hey, mapIndex: ',mapIndex,' has ',items.length,' items.');
+					} while(!items.length);
 				}
 			}
+			
+			
+			console.log(i,' / ',items.length);
 			
 //			console.log('performed '+num_comparisons+' comparisons; index: '+i+'; length: '+length);
 			
 			// store the value of the index back to the loop data
 			loop.indexMinor = i;
 			loop.indexMajor = mapIndex;
+			loop.tiers = tiers;
+			
+			console.log(loop);
 			
 			// continue executing this loop
 			this.cycle();
@@ -328,7 +182,7 @@ congressional
 				indexMinor: 0,
 				text: '',
 				tiers: {max:0},
-				items: {},//Database.get(datasetName),
+				items: SearchItems.data(0),
 			},
 			beforeStart: function() {
 				this.data.text = search_text;
@@ -342,7 +196,7 @@ congressional
 				var empty = !search_text.length;
 				var display = empty? 'none': 'block';
 				
-				dojo.query('.omnibox_results_containers').forEach(function(elmt) {
+				dojo.query('.'+domstr_results_containers).forEach(function(elmt) {
 					elmt.style.display = display;
 				});
 				
@@ -362,7 +216,7 @@ congressional
 				threaded_search.interupt();
 				
 				if(e.keyCode == 13) {
-					var link = dojo.attr(dojo.byId('omnibox_results').childNodes[0],'link');
+					var link = dojo.attr(dojo.byId(domstr_results).childNodes[0],'link');
 					
 					if(link) {
 						SearchItems.lookup(link).execute();
@@ -385,7 +239,7 @@ congressional
 			// string building the list's HTML has shown to be ~85% faster than dynamically creating each element
 			handle_results: function(tiers) {
 				var c = 0;
-				var b = '<div id="omnibox_results" class="omnibox_results_containers">';
+				var b = '<div id="'+domstr_results+'" class="'+domstr_results_containers+'">';
 				for(var x=0; x<=tiers.max; x++) {
 					if(tiers[x]) {
 						var tier = tiers[x];
@@ -395,14 +249,14 @@ congressional
 							var result = SearchItems.result(match_key);
 							var string = result.string;
 							var show = string? string.substr(0,x)+'<b>'+string.substr(x,search_text.length)+'</b>'+string.substr(x+search_text.length): '';
-							b += '<div class="search_result" link="'+match_key+'"><span class="title">'+show+'</span><span class="class">'+result.class_title+'</span></div>';
+							b += '<div class="search-result" link="'+match_key+'"><span class="title">'+show+'</span><span class="class">'+result.class_title+'</span></div>';
 							c += 1;
 						}
 					}
 				}
 				
 				if(c == 0) {
-					b += '<div class="search_result">'
+					b += '<div class="search-result">'
 							+'<span class="title"></span>'
 							+'<span class="class">press enter to search</span>'
 						+'</div>';
@@ -410,17 +264,17 @@ congressional
 				}
 				
 				b += '</div>';
-				dojo.place(b, 'omnibox_results', 'replace');
+				dojo.place(b, domstr_results, 'replace');
 				
 				var listHeight = (c*20);
 				if(listHeight > 200) {
 					listHeight = 200;
 				}
-				dojo.byId('omnibox_results').style.height = listHeight+'px';
-				var shadow_offset = CSS.header_space.value-(CSS.omnibox_top.value+CSS.omnibox_space.value);
+				dojo.byId(domstr_results).style.height = listHeight+'px';
+				var shadow_offset = CSS('header.space.y').pixels()-(CSS('omnibox.top').pixels()+CSS('omnibox.space.y').pixels());
 				var shadow_height = Math.max(0, listHeight - shadow_offset);
-				dojo.byId('omnibox_results_shadow').style.height = shadow_height+'px';
-				dojo.byId('omnibox_results_shadow').style.display = (shadow_height == 0)? 'none': 'block';
+				dojo.byId(domstr_results_shadow).style.height = shadow_height+'px';
+				dojo.byId(domstr_results_shadow).style.display = (shadow_height == 0)? 'none': 'block';
 				
 				self.bind_actions(tiers);
 			},
