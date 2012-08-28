@@ -1,0 +1,1 @@
+{"sql":"SELECT * FROM `ucsb`.`facilities.building` WHERE (`buildingName` = 'Ellison Hall');","data":[{"buildingId":"563","buildingName":"Ellison Hall","buildingAbrv":"ELLSN","xmin":"-119.846","ymin":"34.4152","xmax":"-119.845","ymax":"34.4159"}],"path":"ucsb\/facilities.building@(`buildingName`='Ellison Hall').json"}

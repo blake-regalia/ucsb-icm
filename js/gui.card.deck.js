@@ -86,6 +86,8 @@
 				}, 600);
 				
 				my.card_drawn = false;
+				
+				card.onFold();
 			},
 			
 			

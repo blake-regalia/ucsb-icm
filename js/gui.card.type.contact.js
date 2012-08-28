@@ -34,7 +34,7 @@
 		
 		// resolve office location
 		if(raw.location.length) {
-			var resolveLoc = /^(\d\w+) (.*)$/.exec(raw.location);
+			var location = new Location(raw.location);
 		}
 		
 		// setup the format of the card
@@ -43,11 +43,12 @@
 			subtitle: raw.title,
 			icon: 'resource/card.icon.contact.jpg',
 			content: {
-				'Office': raw.location.length? new Reference.location(Building.nameToId(resolveLoc[2])+' '+resolveLoc[1]): '',
+				'Office': raw.location.length? new Reference.location(location.resolved? location: raw.location): '',
 				'Department': new Reference.department(raw.department),
 				'Title': raw.title,
 				'Email': new Reference.email(raw.email),
 			},
+			/*
 			image: {
 				google: {
 					demo: (raw.firstName.toLowerCase() == 'blake' && raw.lastName.toLowerCase() == 'regalia')? true: false,
@@ -55,6 +56,7 @@
 				},
 				url: 'http://www.excursionclubucsb.org/Excursion_Club_at_UCSB/bio/blake.jpg',
 			},
+			*/
 			references: references,
 		});
 		

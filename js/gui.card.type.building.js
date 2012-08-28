@@ -8,6 +8,15 @@
 	var __func__ = 'BuildingCard';
 	
 	
+	var highlightBuilding = new Symbol({
+		fill: 'rgba(255,0,0,0.3)',
+		stroke: {
+			color: 'rgba(255,0,0,0.75)',
+			style: 'solid',
+			width: 3,
+		},
+	});
+	
 	
 	var construct = function(building) {
 		
@@ -50,8 +59,29 @@
 		**/
 		$.extend(card, {
 			
-			// must be over-ridden
-			onDraw: function(){},
+			// fires when the card is drawn from the stack
+			onDraw: function(){
+				building.getPolygon(function(geometry) {
+					Map.add(
+						{
+							polygon: geometry,
+						},
+						highlightBuilding,
+						'highlight',
+						1
+					).center({
+						x: -CSS('cardDeck.info.width').pixels(
+								dojo.position(document.body).w
+							)*0.35,
+						y: '-1%',
+					});
+				});
+			},
+			
+			// fires when the card is being folded into the stack
+			onFold: function() {
+				Map.clear('highlight');
+			},
 		});
 		
 		

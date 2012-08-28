@@ -114,6 +114,11 @@ CardDeck('stack').add(card);
 				global.warn('onDraw meant to be over-ridden by extending subclass');
 			},
 			
+			// to be over-ridden by subclasses
+			onFold: function() {
+				global.warn('onFold meant to be over-ridden by extending subclass');
+			},
+			
 			isOpen: function() {
 				return (my.viewStatus == global.OPEN);
 			},

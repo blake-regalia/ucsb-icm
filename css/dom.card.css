@@ -36,7 +36,7 @@ card: {
 	},
 	
 	icon: {
-		position: 'abolute',
+		position: 'absolute',
 		
 		width: '45px',
 		height: '40px',
@@ -69,7 +69,7 @@ card: {
 		fontSize: '26pt',
 		display: 'block',
 		
-		marginLeft: '48px',
+		marginLeft: '50px',
 		
 		textAlign: 'left',
 	},
@@ -118,6 +118,8 @@ cardDeck: {
 		
 		marginTop: header.space.y,
 		perspective: '450px',
+		
+		zIndex: header.zValues.guiObject - 1,
 	},
 	
 	view: {

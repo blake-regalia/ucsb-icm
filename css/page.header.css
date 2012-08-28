@@ -23,6 +23,9 @@ header: {
 	boxShadow: [this.$boxShadow, '#2C2C2C'],
 	
 	zIndex: 64,
+	zValues: {
+		guiObject: header.zIndex + 8,
+	},
 	
 	space: {
 		y: header.height + header.$borderTopWidth + header.$borderBottomWidth,

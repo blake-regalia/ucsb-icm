@@ -1,6 +1,7 @@
 preload.*.js
 kit.*.js
 util.*.js
+meta.*.js
 class.*.js
 gui.*.js
 define.*.js

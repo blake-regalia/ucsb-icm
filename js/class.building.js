@@ -7,8 +7,21 @@
 	
 	var __func__ = 'Building';
 	
-	var database = {};
+	var database = {
+		abrvToBid: {},
+		nameToBid: {},
+		polygon: {},
+	};
 	var downloadsReady = false;
+	
+	var highlightBuilding = new Symbol({
+		fill: 'rgba(255,0,0,0.3)',
+		stroke: {
+			color: 'rgba(255,0,0,0.75)',
+			style: 'solid',
+			width: 3,
+		},
+	});
 	
 	var construct = function(building) {
 		
@@ -16,7 +29,9 @@
 		* private:
 		**/
 		var buildingId = building.buildingId;
+		var buildingName = building.buildingName;
 		
+		var callbackPolygon = false;
 		
 		/**
 		* protected:
@@ -54,6 +69,16 @@
 				return database.bidToName[buildingId];
 			},
 			
+			// calls a function when the geometry is ready
+			getPolygon: function(callback) {
+				if(database.polygon[buildingId]) {
+					callback.apply(callback, [database.polygon[buildingId]]);
+				}
+				else {
+					callbackPolygon = callback;
+				}
+			},
+			
 			
 			// over-ride toString method
 			toString: function() {
@@ -61,6 +86,15 @@
 			},
 		});
 		
+		
+		if(!database.polygon[buildingId]) {
+			Download.json('server/9/query?outFields=features&f=pjson&text='+buildingName, function(json) {
+				database.polygon[buildingId] = json.features[0].geometry;
+				if(callbackPolygon) {
+					callbackPolygon.apply({}, [json.features[0].geometry]);
+				}
+			});
+		}
 		
 		return public;
 		
@@ -131,7 +165,7 @@
 			// check if an entry exists for the given building name
 			if(typeof buildingId === 'undefined') {
 				global.error('building abrv not found: "',buildingAbrv,'"');
-				return -1;
+				return false;
 			}
 			
 			// return the id number if it was found
@@ -148,12 +182,29 @@
 			// check if an entry exists for the given building name
 			if(typeof buildingId === 'undefined') {
 				global.error('building name not found: "',buildingName,'"');
-				return -1;
+				return false;
 			}
 			
 			// return the id number if it was found
 			return buildingId;
 		},
+		
+		// attempt to translate an building name to a building id
+		idToName: function(buildingId) {
+			
+			// perform a hash-table lookup on the input string
+			var buildingName = database.bidToName[buildingId];
+			
+			// check if an entry exists for the given building name
+			if(typeof buildingName === 'undefined') {
+				global.error('building id not found: ',buildingId,'');
+				return false;
+			}
+			
+			// return the id number if it was found
+			return buildingId;
+		},
+		
 	});
 	
 	
@@ -172,6 +223,16 @@
 		},
 		ready: function() {
 			downloadsReady = true;
+
+			/**
+			var bidToName = database.bidToName;
+			for(var buildingId in bidToName) {
+				var buildingName = bidToName[buildingId];
+				Download.json('server/9/query?outFields=features&f=pjson&text='+buildingName, function(json) {
+					database.polygon[buildingId] = json.features[0].geometry;
+				});
+			}
+			**/
 		},
 	});
 	

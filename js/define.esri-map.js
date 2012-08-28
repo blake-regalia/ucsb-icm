@@ -16,7 +16,7 @@ window.UCSB_Campus_earth = {
 
 window.UCSB_Campus_ags2 = {
 	basemap: {
-		url: 'http://ags2.geog.ucsb.edu/ArcGIS/rest/services/icmBaseMap20120411/MapServer',
+		url: 'http://ags2.geog.ucsb.edu/ArcGIS/rest/services/icmBaseMap20120413/MapServer',
 	},
 	extent: {
 		xmin: -13342700,
@@ -63,6 +63,8 @@ window.DefaultPackage = UCSB_Campus_ags2;
 			extent: new esri.geometry.Extent(package.extent),
 		});
 		
+		global.server = package.basemap.url;
+		
 		// Add Basemap
 		map.addLayer(
 			new esri.layers.ArcGISTiledMapServiceLayer(package.basemap.url)
@@ -101,7 +103,6 @@ window.DefaultPackage = UCSB_Campus_ags2;
 		ready: function(callback) {
 			listeners.push(callback);
 		},
-		
 		
 		
 		setCenter: function(webMercatorCoordinatePair) {
