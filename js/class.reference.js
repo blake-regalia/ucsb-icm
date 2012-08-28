@@ -289,44 +289,18 @@
 		
 		location: function(str) {
 			
-			// fetch the interested part of the string
-			var match = /^([A-Z]{1,5}) (\d\w*)$/.exec(str);
+			var location = new Location(str);
 			
-			if(match == null) {
-				var match = /^(\d+) (\d\w*)$/.exec(str);
-				if(match == null) return {};
-				
-				var buildingId = parseInt(match[1]);
-				var roomNumber = match[2];
+			if(!location.resolved) {
+				global.warn('could not create reference to unknown location');
 			}
-			else {
-				var buildingName = match[1];
-				var roomNumber   = match[2];
-				
-				// attempt to resolve the location by abrv
-				var buildingId = Building.abrvToId(match[1]);
-			}
-			
-			// if it resolved
-			if(buildingId !== -1) {
-				
-				// instantiate an object to retrieve building info
-				var building = new Building(buildingId);
-				
-				// update the name
-				buildingName = building.getName();
-			}
-			else {
-				global.warn('Unknown buildingName: ',buildingName);
-			}
-			
 			
 			var instance = construct.apply(this, arguments);
 			
 			instance.build = function(args) {
 				
 				// build the html string
-				var html = '<button>'+buildingName+'</button> <em>'+roomNumber+'</em>';
+				var html = '<button>'+location.toString()+'</button>';
 				
 				// construct a standard reference dom node
 				var e_dom = refer(args, html);
@@ -334,7 +308,7 @@
 				// bind events to the node
 				dojo.connect(dojo.query('button', e_dom)[0], 'click', function(e) {
 					e.stopPropagation();
-					new BuildingCard(buildingId);
+					location.execute();
 				});
 				
 				// return the constructed element

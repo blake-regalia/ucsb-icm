@@ -6,8 +6,8 @@
 	var own = {};
 	
 	var css = {
-		card_spacing: 8,
-		deck_top: -22,
+		card_spacing: 36,
+		deck_top: -100,
 	};
 	
 	var construct = function(key, deck_dom) {
@@ -69,7 +69,7 @@
 				dojo.addClass(card_dom , 'card_deckview');
 				
 				var translate_y = index * css.card_spacing + css.deck_top;
-				$.style(card_dom , 'margin-top', translate_y+'%');
+				$.style(card_dom , 'margin-top', translate_y+'px');
 				
 				card.fold();
 				public.ztop(card_dom);
@@ -142,7 +142,7 @@
 					stack[i].index = i;
 					var card_dom = stack[i].getElement();
 					$.style(card_dom, 'margin-top',
-						(parseInt($.style(card_dom, 'margin-top')) - css.card_spacing) + '%'
+						(parseInt($.style(card_dom, 'margin-top')) - css.card_spacing) + 'px'
 					);
 					dojo.removeClass(card_dom, 'settled');
 					setTimeout((function() {

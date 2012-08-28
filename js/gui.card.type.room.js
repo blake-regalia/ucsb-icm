@@ -1,27 +1,18 @@
 /**
 *
-* public class BuildingCard extends Card
+* public class RoomCard extends Card
 *
 **/
 (function() {
 	
-	var __func__ = 'BuildingCard';
+	var __func__ = 'RoomCard';
 	
+	var highlightRoom = Room.highlight;
 	
-	var highlightBuilding = new Symbol({
-		fill: 'rgba(255,0,0,0.3)',
-		stroke: {
-			color: 'rgba(255,0,0,0.75)',
-			style: 'solid',
-			width: 3,
-		},
-	});
-	
-	
-	var construct = function(building) {
+	var construct = function(room) {
 		
 		// super's constructor
-		var card = new Card('building:'+building.id);
+		var card = new Card('room:'+room.id);
 		
 		// if this card already exists in the stack
 		if(card.index !== -1) {
@@ -33,14 +24,14 @@
 		/**
 		* private:
 		**/
-		var raw = building();
+		var raw = room();
 		var references = {};
 		
 		// setup the format of the card
 		card.setup({
-			title: raw.buildingName,
-			subtitle: raw.buildingAbrv,
-			icon: 'resource/card.icon.building.png',
+			title: room.title,
+			subtitle: room.subtitle,
+			icon: 'resource/card.icon.room.png',
 			content: {
 			},
 		});
@@ -61,12 +52,12 @@
 			
 			// fires when the card is drawn from the stack
 			onDraw: function(){
-				building.getPolygon(function(geometry) {
+				room.getExtent(function(geometry) {
 					Map.add(
 						{
-							polygon: geometry,
+							extent: geometry,
 						},
-						highlightBuilding,
+						highlightRoom,
 						'highlight',
 						1
 					).center({
@@ -74,7 +65,7 @@
 								dojo.position(document.body).w
 							)*0.35,
 						y: '-1%',
-						expand: 5,
+						expand: 2,
 					});
 				});
 			},

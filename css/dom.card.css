@@ -24,7 +24,7 @@ card: {
 	container: {
 		position: 'absolute',
 		
-		width: '75%',
+		width: '60%',
 		height: '80%',
 		
 		left: '0',
@@ -110,8 +110,10 @@ cardDeck: {
 	info: {
 		position: 'fixed',
 		
-		width: '25%',
+		width: '30%',
 		height: '100%',
+		
+		minWidth: '250px',
 		
 		right: 0,
 		top: 0,

@@ -2,6 +2,7 @@
 	
 	var __func__ = 'Map';
 	
+	var instance;
 	
 	/**
 	* protected static:
@@ -50,6 +51,10 @@
 		**/
 		$.extend(public, {
 			
+			setCenter: function(x, y) {
+				var point = new Geometry.point(x, y);
+				map.centerAt(point());
+			},
 		});
 		
 		
@@ -169,6 +174,8 @@
 						
 						var x = extra.x;
 						var y = extra.y;
+						var expand = extra.expand;
+						
 						if(x) {
 							center.x -= pxw * x;
 						}
@@ -178,6 +185,10 @@
 									center.y += map.height * parseFloat(y)*0.01;
 								}
 							}
+						}
+						if(expand) {
+							map.setExtent(ext.expand(expand));
+							return chain;
 						}
 					}
 					map.centerAt(center);

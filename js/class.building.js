@@ -148,7 +148,7 @@
 				Download.json("data/ucsb/facilities.building@(["+format+"]='"+str+"').json",
 					function(json) {
 						if(!json.length) return global.error('Query for "',str,'" returned empty result');
-						var building = new Building(json[0]);
+						var building = new global(json[0]);
 						new BuildingCard(building);
 					}
 				);
@@ -201,8 +201,8 @@
 				return false;
 			}
 			
-			// return the id number if it was found
-			return buildingId;
+			// return the name
+			return buildingName;
 		},
 		
 	});

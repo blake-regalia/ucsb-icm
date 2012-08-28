@@ -2,7 +2,9 @@
 	
 	var __func__ = 'Location';
 	
-	
+	var bldgRegex = /^([a-z].*)[\s\-\.\:]+(\d\w+)$/i;
+	var bidRegex  = /^([0-9].*)[\s\-\.\:]+(\d\w+)$/i;
+	var roomRegex = /^(\d\w+)[\s\-\.\:]+([a-z].*)$/i;
 	
 	var construct = function(str) {
 		
@@ -11,54 +13,52 @@
 		**/
 		var resolved = true;
 		
-		var bid;
-		var bnm;
-		var rmn;
+		var buildingName;
+		var buildingId;
+		var roomNumber;
 		
 		(function() {
 			var x;
 			
-			// eg: 563 1710A
-			if((x=/^(\d+)\s+(\d\w+)$/.exec(str)) !== null) {
-				bid = x[1];
-				rmn = x[2];
-			}
-			// eg: Ellison 1710A
-			else if((x=/^(\w+)\s+(\d\w+)$/.exec(str)) !== null) {
-				bnm = x[1];
-				rmn = x[2];
-			}
-			// eg: 1710A Ellison
-			else if((x=/^(\d\w+)\s+(\w+)$/.exec(str)) !== null) {
-				rmn = x[1];
-				bnm = x[2];
+			// eg: Ellison Hall 1710A
+			if((x=bldgRegex.exec(str)) !== null) {
+				buildingName = x[1];
+				roomNumber = x[2];
 			}
 			
+			// eg: 1710A Ellison
+			else if((x=roomRegex.exec(str)) !== null) {
+				roomNumber = x[1];
+				buildingName = x[2];
+			}
+			
+			// eg: 563 1710A
+			else if((x=bidRegex.exec(str)) !== null) {
+				buildingId = x[1];
+				roomNumber = x[2];
+			}
+			
+			
 			// resolve targets
-			if(bnm) {
-				var bid = Building.nameToId(bnm);
-				if(!bid) {
-					global.warn('could not resolve building "',bnm,'"');
-					resolved = false;
+			if(buildingName) {
+				buildingId = Building.nameToId(buildingName);
+				if(!buildingId) {
+					buildingId = Building.nameToId(buildingName+' Hall');
+					if(!buildingId) {
+						global.warn('could not resolve building "',buildingName,'"');
+						resolved = false;
+					}
 				}
 			}
 			else {
-				bnm = Building.idToName(bid);
-				if(!bnm) {
-					global.warn('could not resolved building id: ',bid);
+				buildingName = Building.idToName(buildingId);
+				if(!buildingName) {
+					global.warn('could not resolved building id: ',buildingId);
 					resolved = false;
 				}
 			}
 			
 		})();
-		
-		
-		if(rmn) {
-			// lookup room
-		}
-		else if(bid) {
-			// lookup building
-		}
 		
 		
 		/**
@@ -84,8 +84,31 @@
 			
 			resolved: resolved,
 			
+			isRoom: roomNumber && !!roomNumber.length,
+			
+			getRoom: function() {
+				return Room(buildingId, roomNumber);
+			},
+			
+			execute: function() {
+				if(public.isRoom) {
+					var room = Room(buildingId, roomNumber);
+					return new RoomCard(room);
+				}
+				else if(resolved) {
+					var building = Building(buildingId);;
+					return new BuildingCard(building);
+				}
+			},
+			
 			toString: function() {
-				return 
+				if(roomNumber.length) {
+					return buildingName+' '+roomNumber;
+				}
+				else if(resolved) {
+					return buildingName;
+				}
+				return str;
 			},
 		});
 		

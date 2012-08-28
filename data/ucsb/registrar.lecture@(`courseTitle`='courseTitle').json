@@ -1,0 +1,1 @@
+{"sql":"SELECT * FROM `ucsb`.`registrar.lecture` WHERE (`courseTitle` = 'courseTitle');","data":[],"path":"ucsb\/registrar.lecture@(`courseTitle`='courseTitle').json"}

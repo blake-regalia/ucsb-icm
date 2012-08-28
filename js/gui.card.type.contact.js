@@ -26,6 +26,7 @@
 		**/
 		var raw = contact();
 		var references = {};
+		var location = new Location(raw.location);
 		
 		// resolve references to courses
 		if(raw.instructs.length) {
@@ -34,16 +35,15 @@
 		
 		// resolve office location
 		if(raw.location.length) {
-			var location = new Location(raw.location);
+			references['Office'] = new Reference.location(raw.location);
 		}
 		
 		// setup the format of the card
 		card.setup({
 			title: contact.fullName,
 			subtitle: raw.title,
-			icon: 'resource/card.icon.contact.jpg',
+			icon: 'resource/card.icon.contact.png',
 			content: {
-				'Office': raw.location.length? new Reference.location(location.resolved? location: raw.location): '',
 				'Department': new Reference.department(raw.department),
 				'Title': raw.title,
 				'Email': new Reference.email(raw.email),
@@ -75,7 +75,19 @@
 		$.extend(card, {
 			
 			// must be over-ridden
-			onDraw: function(){},
+			onDraw: function(){
+				if(location.resolved && location.isRoom) {
+					location.getRoom().getExtent(function(geometry) {
+						Map.add({
+							extent: geometry,
+							system: 'lat-lng',
+						}, Room.highlight, 'highlight', 1).center({expand:2});
+					});
+				}
+			},
+			
+			// must be over-ridden
+			onFold: function() {},
 		});
 		
 		
