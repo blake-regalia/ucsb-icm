@@ -1,0 +1,1 @@
+{"sql":"SELECT * FROM `ucsb`.`directory.department` WHERE (`departmentName` = 'Associated Students');","data":[],"path":"ucsb\/directory.department@(`departmentName`='Associated Students').json"}

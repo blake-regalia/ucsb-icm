@@ -136,26 +136,26 @@
 				url = url.replace(/</g,'%253C');
 				url = url.replace(/>/g,'%253E');
 				var opt = {
-					url: url,
-					handleAs: 'json',
-					error: function(e) {
+					'url': url,
+					'handleAs': 'json',
+					'error': function(e) {
 						global.error('Could not parse JSON from response: "',url,'"');
 						global.error(e);
 					},
-					load: function(json) {
-						if(json.error) {
+					'load': function(json) {
+						if(json['error']) {
 							global.warn('error response from: ',id,' ["',this.url,'"]');
-							global.error(json.error);
+							global.error(json['error']);
 						}
-						else if(json.data) {
-							scn.apply(url,[json.data]);
+						else if(json['data']) {
+							scn.apply(url,[json['data']]);
 						}
 						else {
 							scn.apply(url,[json]);
 						}
 					},
 				};
-				return dojo.xhrGet(opt);
+				return dojo['xhrGet'](opt);
 			}
 			
 			if(!obj.urls) {
@@ -167,6 +167,7 @@
 			for(var e in obj_urls) {
 				dll += 1;
 				var url = obj_urls[e];
+				url = url.replace(/%/g,'%2525');
 				url = url.replace(/#/g,'%2523');
 				url = url.replace(/:/g,'%253A');
 				url = url.replace(/</g,'%253C');
@@ -177,9 +178,9 @@
 			var dlc = 0;
 			for(var downloadId in obj.urls) {
 				var opt = {
-					url: obj.urls[downloadId],
-					handleAs: 'json',
-					error: function(e) {
+					'url': obj.urls[downloadId],
+					'handleAs': 'json',
+					'error': function(e) {
 						global.error('Could not parse JSON from response: ',downloadId,' ["',this.url,'"]');
 						global.error(e);
 					},
@@ -188,12 +189,12 @@
 				(function() {
 					var id = this.id;
 					opt.load = function(json) {
-						if(json.error) {
+						if(json['error']) {
 							global.warn('error response from: ',id,' ["',this.url,'"]');
-							global.error(json.error);
+							global.error(json['error']);
 						}
-						else if(json.data) {
-							obj.each.apply(obj, [id, json.data]);
+						else if(json['data']) {
+							obj.each.apply(obj, [id, json['data']]);
 							dlc += 1;
 							if(dll === dlc && obj.ready) {
 								obj.ready.apply(obj, [dlc]);
@@ -209,7 +210,7 @@
 					};
 				}).apply({id:downloadId});
 				
-				dojo.xhrGet(opt);
+				dojo['xhrGet'](opt);
 			}
 		},
 	});

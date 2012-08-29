@@ -25,10 +25,10 @@
 	
 	var construct = function(dqs) {
 		
-		dqs = dojo.query(dqs);
+		dqs = dojo['query'](dqs);
 		if(!dqs.length) global.error('"',dqs,'" selector returned empty set');
 		var dom = dqs[0];
-		var dom_input = dojo.query('input',dom);
+		var dom_input = dojo['query']('input',dom);
 		if(!dom_input.length) global.error('element does not contain an input node: ',dom);
 		dom_input = dom_input[0];
 		
@@ -54,8 +54,8 @@
 				var empty = !searchText.length;
 				var display = empty? 'none': 'block';
 				
-				dojo.query('.'+domstr_results_containers).forEach(function(elmt) {
-					elmt.style.display = display;
+				dojo['query']('.'+domstr_results_containers)['forEach'](function(elmt) {
+					elmt['style']['display'] = display;
 				});
 				
 				if(!empty) {
@@ -83,13 +83,17 @@
 				
 				// if the [RETURN] key is hit
 				if(e.keyCode == 13) {
-					var link = dojo.attr(dojo.byId(domstr_results).childNodes[0],'link');
+					var link = dojo['attr'](dojo['byId'](domstr_results)['childNodes'][0],'link');
 					
 					if(link) {
 						dataManager.lookup(link);
 					}
 					else {
-						SearchQuery(search_text);
+						SearchQuery(searchText, function(something) {
+							if(something.isLocation) {
+								something.execute();
+							}
+						});
 					}
 					return;
 				}
@@ -137,17 +141,17 @@
 				}
 				
 				b += '</div>';
-				dojo.place(b, domstr_results, 'replace');
+				dojo['place'](b, domstr_results, 'replace');
 				
 				var listHeight = (c*20);
 				if(listHeight > 200) {
 					listHeight = 200;
 				}
-				dojo.byId(domstr_results).style.height = listHeight+'px';
+				dojo['byId'](domstr_results)['style']['height'] = listHeight+'px';
 				var shadow_offset = CSS('header.space.y').pixels()-(CSS('omnibox.top').pixels()+CSS('omnibox.space.y').pixels());
 				var shadow_height = Math.max(0, listHeight - shadow_offset);
-				dojo.byId(domstr_results_shadow).style.height = shadow_height+'px';
-				dojo.byId(domstr_results_shadow).style.display = (shadow_height == 0)? 'none': 'block';
+				dojo['byId'](domstr_results_shadow)['style']['height'] = shadow_height+'px';
+				dojo['byId'](domstr_results_shadow)['style']['display'] = (shadow_height == 0)? 'none': 'block';
 				
 				self.bind_actions(tiers);
 			},
@@ -156,10 +160,10 @@
 			bind_actions: function(tiers) {
 				setTimeout(function() {
 					var et = new Timer();
-					dojo.query('.search-result')
-						.forEach(function(tag) {
-							dojo.connect(tag,'onclick',function() {
-								dataManager.lookup(dojo.attr(this,'link'));
+					dojo['query']('.search-result')
+						['forEach'](function(tag) {
+							dojo['connect'](tag,'onclick',function() {
+								dataManager.lookup(dojo['attr'](this,'link'));
 							});
 						});
 					console.info(global,': binding took '+et()+'ms');
@@ -195,7 +199,7 @@
 		/**
 		* public operator() ();
 		**/
-		var public = function() {
+		var operator = function() {
 			
 		};
 		
@@ -203,26 +207,26 @@
 		/**
 		* public:
 		**/
-		$.extend(public, {
+		$.extend(operator, {
 			
 		});
 		
 		
 		// register key events on the input element
-		dojo.connect(dom_input, 'onkeyup', self.keyup);
-		dojo.connect(dom_input, 'onkeydown', self.keydown);
+		dojo['connect'](dom_input, 'onkeyup', self.keyup);
+		dojo['connect'](dom_input, 'onkeydown', self.keydown);
 		
 		// steal any stray keystrokes that bubble up to the document
-		dojo.connect(document, 'onkeydown', function() {
+		dojo['connect'](document, 'onkeydown', function() {
 			dom_input.focus();
 		});
 		
 		// listen for any stary mouse clicks that bubble up to the document
-		dojo.connect(document, 'click', function() {
+		dojo['connect'](document, 'click', function() {
 			
 		});
 		
-		return public;
+		return operator;
 		
 	};
 	

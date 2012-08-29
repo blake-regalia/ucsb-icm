@@ -22,7 +22,7 @@
 		/**
 		* public operator() ();
 		**/
-		var public = function() {
+		var operator = function() {
 			return contact;
 		};
 		
@@ -30,7 +30,7 @@
 		/**
 		* public:
 		**/
-		$.extend(public, {
+		$.extend(operator, {
 			
 			// standard identifier
 			id: contact.firstName+' '+contact.lastName,
@@ -40,7 +40,7 @@
 		});
 		
 		
-		return public;
+		return operator;
 		
 	};
 	

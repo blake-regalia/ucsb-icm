@@ -11,9 +11,9 @@
 		'null': 'STYLE_NULL',
 	};
 	
-	var esri_symbol = esri.symbol;
-	var esri_simpleFill = esri_symbol.SimpleFillSymbol;
-	var esri_simpleLine = esri_symbol.SimpleLineSymbol;
+	var esri_symbol = esri['symbol'];
+	var esri_simpleFill = esri_symbol['SimpleFillSymbol'];
+	var esri_simpleLine = esri_symbol['SimpleLineSymbol'];
 	
 	
 	
@@ -21,9 +21,9 @@
 		var x;
 		if((x=/^rgb(a?)\((\d+),(\d+),(\d+),?([0-9\.]+)?\)$/.exec(str)) !== null) {
 			if(x[1].length) {
-				return new dojo.Color([parseInt(x[2]), parseInt(x[3]), parseInt(x[4]), parseFloat(x[5])]);
+				return new dojo['Color']([parseInt(x[2]), parseInt(x[3]), parseInt(x[4]), parseFloat(x[5])]);
 			}
-			return new dojo.Color([parseInt(x[2]), parseInt(x[3]), parseInt(x[4])]);
+			return new dojo['Color']([parseInt(x[2]), parseInt(x[3]), parseInt(x[4])]);
 		}
 	};
 	
@@ -47,7 +47,7 @@
 			
 			
 			var fillStyle = 'solid';
-			var fillColor = new dojo.Color(0,0,0);
+			var fillColor = new dojo['Color'](0,0,0);
 			
 			if(fill) {
 				
@@ -67,7 +67,7 @@
 			
 			
 			var outlineStyle = 'null';
-			var outlineColor = new dojo.Color([0,0,0]);
+			var outlineColor = new dojo['Color']([0,0,0]);
 			var outlineWidth = 1;
 			
 			if(stroke) {
@@ -114,7 +114,7 @@
 		/**
 		* public operator() ();
 		**/
-		var public = function() {
+		var operator = function() {
 			return symbol;
 		};
 		
@@ -122,7 +122,7 @@
 		/**
 		* public:
 		**/
-		$.extend(public, {
+		$.extend(operator, {
 			
 			//
 			isMetaSymbol: true,
@@ -132,7 +132,7 @@
 		});
 		
 		
-		return public;
+		return operator;
 		
 	};
 	

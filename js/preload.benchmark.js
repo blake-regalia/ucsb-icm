@@ -44,7 +44,7 @@
 		}
 	}
 	
-	var global = window.Benchmark = {
+	var global = window['Benchmark'] = {
 		start: function(key) {
 			if(event[key]) {
 				delete event[key];
@@ -85,7 +85,7 @@
 			var framework_xhr_method = false;
 			if(typeof dojo !== 'undefined' && dojo) {
 				framework_xhr_get_method = function(o) {
-					dojo.xhrGet(o);
+					dojo['xhrGet'](o);
 				};
 			}
 			

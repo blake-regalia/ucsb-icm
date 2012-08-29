@@ -16,7 +16,7 @@
 		
 		
 		// create the element & return it
-		return dojo.create(tag, {
+		return dojo['create'](tag, {
 			class: args.class,
 			innerHTML: args.title+html,
 		});
@@ -29,15 +29,15 @@
 			
 		};
 		
-		var public = function() {
+		var operator = function() {
 			
 		};
 		
-		$.extend(public, {
+		$.extend(operator, {
 			isReference: true,
 		});
 		
-		return public;
+		return operator;
 	};
 	
 	
@@ -75,14 +75,14 @@
 				var e_dom = refer(args, html);
 				
 				// bind events to the nodes
-				dojo.query('button', e_dom).forEach( function(elmt) {
-					dojo.connect(
+				dojo['query']('button', e_dom).forEach( function(elmt) {
+					dojo['connect'](
 						elmt,
 						'click',
 						function(e) {
 							e.stopPropagation();
 							new ContactCard(
-								dojo.attr(elmt, 'link')
+								dojo['attr'](elmt, 'link')
 							);
 						}
 					);
@@ -111,8 +111,8 @@
 				var e_dom = refer(args, html);
 				
 				// bind events to the nodes
-				dojo.query('button', e_dom).forEach( function(elmt) {
-					dojo.connect(
+				dojo['query']('button', e_dom).forEach( function(elmt) {
+					dojo['connect'](
 						elmt,
 						'click',
 						function(e) {
@@ -163,14 +163,14 @@
 				var e_dom = refer(args, html);
 				
 				// bind events to the nodes
-				dojo.query('button', e_dom).forEach( function(elmt) {
-					dojo.connect(
+				dojo['query']('button', e_dom).forEach( function(elmt) {
+					dojo['connect'](
 						elmt,
 						'click',
 						function(e) {
 							e.stopPropagation();
 							new ContactCard(
-								dojo.attr(elmt,'link')
+								dojo['attr'](elmt,'link')
 							);
 						}
 					);
@@ -210,14 +210,14 @@
 				var e_dom = refer(args, html);
 				
 				// bind events to the nodes
-				dojo.query('button', e_dom).forEach( function(elmt) {
-					dojo.connect(
+				dojo['query']('button', e_dom).forEach( function(elmt) {
+					dojo['connect'](
 						elmt,
 						'click',
 						function(e) {
 							e.stopPropagation();
 							new LectureCard(
-								dojo.attr(elmt,'link')
+								dojo['attr'](elmt,'link')
 							);
 						}
 					);
@@ -245,7 +245,7 @@
 				var e_dom = refer(args, html);
 				
 				// bind events to the node
-				dojo.connect(
+				dojo['connect'](
 					e_dom,
 					'click',
 					function(e) {
@@ -276,7 +276,7 @@
 				var e_dom = refer(args, html);
 				
 				// bind events to the node
-				dojo.connect(e_dom, 'click', DOM_Event.noBubble);
+				dojo['connect'](e_dom, 'click', DOM_Event.noBubble);
 				
 				// return the constructed element
 				return e_dom;
@@ -306,7 +306,7 @@
 				var e_dom = refer(args, html);
 				
 				// bind events to the node
-				dojo.connect(dojo.query('button', e_dom)[0], 'click', function(e) {
+				dojo['connect'](dojo['query']('button', e_dom)[0], 'click', function(e) {
 					e.stopPropagation();
 					location.execute();
 				});
@@ -334,7 +334,7 @@
 				var e_dom = refer(args, html);
 				
 				// bind events to the node
-				dojo.connect(e_dom, 'click', DOM_Event.noBubble);
+				dojo['connect'](e_dom, 'click', DOM_Event.noBubble);
 				
 				// return the constructed element
 				return e_dom;
@@ -360,7 +360,7 @@
 				var e_dom = refer(args, html);
 				
 				// bind events to the node
-				dojo.connect(e_dom, 'click', function(e) {
+				dojo['connect'](e_dom, 'click', function(e) {
 					e.stopPropagation();
 					console.info(namespace, data);
 				});

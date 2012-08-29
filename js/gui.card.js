@@ -1,7 +1,7 @@
 var DomEventControl = function(link) {
 	return {
 		unbind: function() {
-			dojo.disconnect(link);
+			dojo['disconnect'](link);
 		},
 	};
 };
@@ -69,7 +69,7 @@ CardDeck('stack').add(card);
 			viewStatus: global.OPEN,
 			
 			// create a div element
-			dom: dojo.create('div', {
+			dom: dojo['create']('div', {
 				id: 'card-'+cardId,
 				class: 'card-container',
 				
@@ -89,10 +89,10 @@ CardDeck('stack').add(card);
 			controlBinding: function(eventListenerName) {
 				return {
 					getIndex: function() {
-						return public.index;
+						return operator.index;
 					},
 					unbind: function() {
-						dojo.disconnect(my.eventListeners[eventListenerName]);
+						dojo['disconnect'](my.eventListeners[eventListenerName]);
 						my.eventListeners[eventListenerName] = false;
 					},
 				};
@@ -100,12 +100,12 @@ CardDeck('stack').add(card);
 		};
 		
 		
-		var public = function() {
+		var operator = function() {
 			
 		};
 		
 		
-		$.extend(public, {
+		$.extend(operator, {
 			
 			index: -1,
 			
@@ -179,10 +179,10 @@ CardDeck('stack').add(card);
 			// allow another class to assign this dom an event
 			click: function(method) {
 				if(my.eventListeners.click) {
-					dojo.disconnect(my.eventListeners.click);
+					dojo['disconnect'](my.eventListeners.click);
 					my.eventListeners.click = false;
 				}
-				my.eventListeners.click = dojo.connect(my.dom.firstChild, 'onclick', function() {
+				my.eventListeners.click = dojo['connect'](my.dom.firstChild, 'onclick', function() {
 					method.apply(self.controlBinding('click'), arguments);
 				})
 			},
@@ -195,10 +195,10 @@ CardDeck('stack').add(card);
 		
 		
 		// in case this was instantiated with the optional setup object
-		public.setup(setup);
+		operator.setup(setup);
 		
 		
-		return public;
+		return operator;
 	};
 	
 	
@@ -247,21 +247,21 @@ CardDeck('stack').add(card);
 			
 			// creates a main title
 			title: function(text) {
-				var e_dom = dojo.query('.card-header>.card-title', this.dom)[0];
-				dojo.place('<span class="card-title">'+text+'</span>', e_dom, 'replace');
+				var e_dom = dojo['query']('.card-header>.card-title', this.dom)[0];
+				dojo['place']('<span class="card-title">'+text+'</span>', e_dom, 'replace');
 			},
 			
 			
 			// creates a subtitle
 			subtitle: function(text) {
-				var e_dom = dojo.query('.card-header>.card-subtitle', this.dom)[0];
-				dojo.place('<span class="card-subtitle">'+text+'</span>', e_dom, 'replace');
+				var e_dom = dojo['query']('.card-header>.card-subtitle', this.dom)[0];
+				dojo['place']('<span class="card-subtitle">'+text+'</span>', e_dom, 'replace');
 			},
 			
 			// sets the icon image
 			icon: function(url) {
-				var e_dom = dojo.query('.card-icon', this.dom)[0];
-				dojo.place('<img src="'+url+'" height="40px"></img>', e_dom, 'last');
+				var e_dom = dojo['query']('.card-icon', this.dom)[0];
+				dojo['place']('<img src="'+url+'" height="40px"></img>', e_dom, 'last');
 			},
 			
 			
@@ -269,7 +269,7 @@ CardDeck('stack').add(card);
 			days: function(dayString) {
 				
 				// referemce the target element
-				var e_dom = dojo.query('.card-timeline>.card-timeline-days', this.dom)[0];
+				var e_dom = dojo['query']('.card-timeline>.card-timeline-days', this.dom)[0];
 				
 				
 				var days = {
@@ -297,7 +297,7 @@ CardDeck('stack').add(card);
 				}
 				
 				// replace the html content of the days timeline
-				dojo.place('<span class="card-timeline-days">'
+				dojo['place']('<span class="card-timeline-days">'
 						+'<div class="days-row">'+b+'</div>'
 					+'</span>', e_dom, 'replace');
 			},
@@ -308,7 +308,7 @@ CardDeck('stack').add(card);
 				
 				
 				// referemce the target element
-				var e_dom = dojo.query('.card-timeline>.card-timeline-times', this.dom)[0];
+				var e_dom = dojo['query']('.card-timeline>.card-timeline-times', this.dom)[0];
 				
 				if(typeof obj === 'string') {
 					var timeMatch = /(\d+):(\d+)\s*([ap]m)\s*[\-]\s*(\d+):(\d+)\s*([ap]m)/i.exec(obj);
@@ -350,7 +350,7 @@ CardDeck('stack').add(card);
 				c += '<span style="left:'+stu+'%; width:'+(etu-stu)+'%"></span>';
 				
 				// replace the html content of the days timeline
-				dojo.place('<span class="card-timeline-times">'
+				dojo['place']('<span class="card-timeline-times">'
 						+'<div class="times-row">'+b+'</div>'
 						+'<div class="blocks-row">'+c+'</div>'
 					+'</span>', e_dom, 'replace');
@@ -360,7 +360,7 @@ CardDeck('stack').add(card);
 			// fills the content view
 			content: function(obj) {
 				
-				var e_dom = dojo.query('.card-content', this.dom)[0];
+				var e_dom = dojo['query']('.card-content', this.dom)[0];
 				
 				// string builder for the content html
 				var b = '';
@@ -374,7 +374,7 @@ CardDeck('stack').add(card);
 						
 						// simple html
 						case 'string':
-							dojo.place(
+							dojo['place'](
 								'<div>'
 									+'<span class="card-content-item">'+each+': </span>'
 									+'<span class="card-content-text">'+target+'</span>'
@@ -388,7 +388,7 @@ CardDeck('stack').add(card);
 						case 'function':
 						case 'object':
 							if(target.isReference) {
-								dojo.place(
+								dojo['place'](
 									target.build({
 										title: each+': ',
 										class: 'card-content-'+each.toLowerCase().replace(/[^\w]/g,'_'),
@@ -407,7 +407,7 @@ CardDeck('stack').add(card);
 			references: function(obj) {
 				
 				// get the node to put the elements in
-				var e_dom = dojo.query('.card-references', this.dom)[0];
+				var e_dom = dojo['query']('.card-references', this.dom)[0];
 				
 				// iterate through the tags
 				for(var each in obj) {
@@ -428,26 +428,26 @@ CardDeck('stack').add(card);
 					});
 					
 					// append it to the parent node
-					dojo.place(b, e_dom, 'last');
+					dojo['place'](b, e_dom, 'last');
 				}
 				
 			},
 			
 			// creates a view to indicate 1 graphic associated with this card
 			image: function(obj) {
-				//var e_dom = dojo.query('.card-content-image', this.dom, 'replace')[0];
-				var e_dom = dojo.query('.card-content-image', this.dom)[0];
-				e_dom.style.display = 'block';
+				//var e_dom = dojo['query']('.card-content-image', this.dom, 'replace')[0];
+				var e_dom = dojo['query']('.card-content-image', this.dom)[0];
+				e_dom['style']['display'] = 'block';
 				
 				if(obj.google && !obj.google.demo) {
 					GoogleImageSearch(obj.google.args[0], function(url) {
 						var img = '<img src="'+url+'" style="max-width:320px; max-height:200px;"/>';
-						dojo.place(img, e_dom);
+						dojo['place'](img, e_dom);
 					});
 				}
 				else if(obj.url) {
 					var img = '<img src="'+obj.url+'" style="max-width:320px; max-height:200px;"/>';
-					dojo.place(img, e_dom);
+					dojo['place'](img, e_dom);
 				}
 			}
 		},

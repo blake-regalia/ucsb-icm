@@ -14,7 +14,7 @@
 		var self = {
 			
 		};
-		var public = function(e, val) {
+		var operator = function(e, val) {
 			var node = e.target;
 			var phrase = (typeof val !== 'undefined')? val: node.value;
 			
@@ -46,10 +46,10 @@
 			
 			return phrase;
 		};
-		$.extend(public, {
+		$.extend(operator, {
 			
 		});
-		return public;
+		return operator;
 	};
 	var global = window[__func__] = function() {
 		if(this !== window) {

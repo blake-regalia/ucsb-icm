@@ -1,0 +1,1 @@
+{"sql":"SELECT * FROM `ucsb`.`directory.people` WHERE (`office` != '');","data":[],"path":"ucsb\/directory.people@(`office`).json"}

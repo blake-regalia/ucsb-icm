@@ -12,8 +12,11 @@ header('Content-Type:text/html; charset=UTF-8');
 
 readfile('page.head.html');
 
+$js_merge = isset($_GET['jsm'])? true: false;
+$js_min   = isset($_GET['min'])? true: false;
+
 $merge_files = array(
-	'js' => false,
+	'js' => $js_merge,
 	'css' => true,
 );
 
@@ -21,7 +24,7 @@ $merge_files = array(
 **    css
 ***************/
 $csx_manifest_params = File_manifest::read('css/manifest.txt');
-$csx_compiler = new \csx\Compiler($csx_manifest_params);
+$csx_compiler = new CsxCompiler($csx_manifest_params);
 if($merge_files['css']) {
 	echo '<style>',"\n\n";
 	echo $csx_compiler->output();
@@ -32,19 +35,27 @@ if($merge_files['css']) {
 /***************
 ** javascript
 ***************/
-if($merge_files['js']) {
+if($js_min) {
 	echo "\t",'<script type="text/javascript">',"\n";
-	echo File_manifest::merge('js/manifest.txt', "/************************\n** %PATH%\n************************/\nBenchmark.start('%PATH%');", "Benchmark.stop('%PATH%','load');");
+	echo File_manifest::merge('js/no-min.manifest.txt', "/************************\n** %PATH%\n************************/\n");
+	echo file_get_contents('min.master.js');
 	echo "\n",'</script>'."\n";
 }
 else {
-	echo File_manifest::gen('js/manifest.txt', '<script type="text/javascript" src="js/%PATH%"></script>')."\n";
-}
+	if($merge_files['js']) {
+		echo "\t",'<script type="text/javascript">',"\n";
+		echo File_manifest::merge('js/manifest.txt', "/************************\n** %PATH%\n************************/\nBenchmark.start('%PATH%');", "Benchmark.stop('%PATH%','load');");
+		echo "\n",'</script>'."\n";
+	}
+	else {
+		echo File_manifest::gen('js/manifest.txt', '<script type="text/javascript" src="js/%PATH%"></script>')."\n";
+	}
 
-// commit all the CSS values into the javascript CSS object
-echo '<script type="text/javascript">',"\n";
-echo "Benchmark.stop('all scripts','load');\n";
-echo '$.extend(window.CSS,',$csx_compiler->get_json(),');',"\n",'</script>',"\n";
+	// commit all the CSS values into the javascript CSS object
+	echo '<script type="text/javascript">',"\n";
+	echo "Benchmark.stop('all scripts','load');\n";
+	echo '$.extend(window.CSS,',$csx_compiler->get_json(),');',"\n",'</script>',"\n";
+}
 
 
 echo '

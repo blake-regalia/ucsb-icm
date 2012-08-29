@@ -64,7 +64,7 @@
 			},
 		};
 		
-		var public = function() {
+		var operator = function() {
 			// set the flag that this loop is in progress
 			is_running = true;
 			
@@ -77,7 +77,7 @@
 			// start the loop in a thread
 			setTimeout(start, 0);
 		};
-		$.extend(public, {
+		$.extend(operator, {
 			
 			// sets the cycle duration
 			// longer cycles execute faster, shorter cycles allow for better chance of interuption
@@ -112,7 +112,7 @@
 				return this.data.results || false;
 			},
 		});
-		return public;
+		return operator;
 	};
 	var global = window[__func__] = function() {
 		if(this !== window) {

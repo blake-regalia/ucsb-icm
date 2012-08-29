@@ -1,7 +1,7 @@
 <?php
 
 
-$SERVER = 'http://ags2.geog.ucsb.edu/ArcGIS/rest/services/icmBasemap20120413/MapServer/';
+$SERVER = 'http://map.geog.ucsb.edu:8080/arcgis/rest/services/icm/basemap/MapServer/';
 
 if(!preg_match('/\\/server\\/([^\\/]+)\\/([^\\/]*)$/', $_SERVER['REQUEST_URI'], $match)) {
 	header("HTTP/1.0 404 Not Found");

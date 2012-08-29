@@ -2,22 +2,22 @@
 	
 	var __func__ = 'Geometry';
 	
-	var esri_geometry = esri.geometry;
-	var esri_point = esri_geometry.Point;
-	var esri_extent = esri_geometry.Extent;
-	var esri_polygon = esri_geometry.Polygon;
+	var esri_geometry = esri['geometry'];
+	var esri_point = esri_geometry['Point'];
+	var esri_extent = esri_geometry['Extent'];
+	var esri_polygon = esri_geometry['Polygon'];
 	
-	var spatialReference = {wkid:4326};
-	var esri_spatialReference = new esri.SpatialReference(spatialReference);
+	var spatialReference = {'wkid':4326};
+	var esri_spatialReference = new esri['SpatialReference'](spatialReference);
 	
-	var serverSpatialReference = {wkid:102113};
-	var esri_serverSpatialReference = new esri.SpatialReference(serverSpatialReference);
+	var serverSpatialReference = {'wkid':102113};
+	var esri_serverSpatialReference = new esri['SpatialReference'](serverSpatialReference);
 	
 	var projectToWM = function(lat,lng) {
-		var source = new Proj4js.Proj('EPSG:4326');
-		var dest = new Proj4js.Proj('EPSG:900913');
-		var tran = new Proj4js.Point(lng, lat);   //any object will do as long as it has 'x' and 'y' properties
-		Proj4js.transform(source, dest, tran);
+		var source = new Proj4js['Proj']('EPSG:4326');
+		var dest = new Proj4js['Proj']('EPSG:900913');
+		var tran = new Proj4js['Point'](lng, lat);   //any object will do as long as it has 'x' and 'y' properties
+		Proj4js['transform'](source, dest, tran);
 		
 		return tran;
 	}
@@ -78,7 +78,7 @@
 		/**
 		* public operator() ();
 		**/
-		var public = function() {
+		var operator = function() {
 			return geometry;
 		};
 		
@@ -86,7 +86,7 @@
 		/**
 		* public:
 		**/
-		$.extend(public, {
+		$.extend(operator, {
 			
 			//
 			isMetaGeometry: true,
@@ -96,7 +96,7 @@
 		});
 		
 		
-		return public;
+		return operator;
 		
 	};
 	

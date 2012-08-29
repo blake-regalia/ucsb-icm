@@ -1,4 +1,4 @@
-<?php namespace csx;
+<?php
 
 function stringify($set) {
 	$str = $set['value'];

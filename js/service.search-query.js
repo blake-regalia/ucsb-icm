@@ -12,7 +12,12 @@
 		/**
 		* private:
 		**/
+		var value = false;
 		
+		var testLocation = new Location(str);
+		if(testLocation.resolved) {
+			value = testLocation;
+		}
 		
 		/**
 		* protected:
@@ -25,7 +30,7 @@
 		/**
 		* public operator() ();
 		**/
-		var public = function() {
+		var operator = function() {
 			
 		};
 		
@@ -33,21 +38,31 @@
 		/**
 		* public:
 		**/
-		$.extend(public, {
+		$.extend(operator, {
 			
+			callback: function() {
+				if(value) {
+					callback.apply(callback, [value]);
+				}
+			},
 		});
 		
-		if(xhr) {
-			xhr.cancel();
+		if(value) {
+			operator.callback();
 		}
-		xhr = Download.json('/service/search/'+query,
-			function(json) {
-				xhr = false;
-				callback.apply(callback, [json]);
+		else {
+			if(xhr) {
+				xhr.cancel();
 			}
-		);
+			xhr = Download.json('/service/search/'+str,
+				function(json) {
+					xhr = false;
+					callback.apply(callback, [json]);
+				}
+			);
+		}
 		
-		return public;
+		return operator;
 		
 	};
 	
@@ -57,11 +72,16 @@
 	* public static operator() ()
 	**/
 	var global = window[__func__] = function(str) {
+		
 		// if this search was made already, or is cached
 		if(queries[str]) {
-			return queries[str];
+			instance = queries[str];
+			instance.callback();
 		}
-		instance = construct.apply(this, arguments);
+		else {
+			instance = construct.apply(this, arguments);
+			queries[str] = instance;
+		}
 		return instance;
 	};
 	

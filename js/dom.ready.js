@@ -9,9 +9,9 @@ function projectToWM(lat, lng) {
 	return tran;
 }
 
-dojo.addOnLoad(function() {
+dojo['addOnLoad'](function() {
 	new EsriMap(DefaultPackage);
 	new Omnibox('#omnibox');
-	new CardDeck('stack', dojo.byId('info-deck'));
+	new CardDeck('stack', dojo['byId']('info-deck'));
 	new Map();
 });

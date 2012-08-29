@@ -22,7 +22,7 @@
 		/**
 		* public operator() ();
 		**/
-		var public = function() {
+		var operator = function() {
 			
 		};
 		
@@ -30,12 +30,12 @@
 		/**
 		* public:
 		**/
-		$.extend(public, {
+		$.extend(operator, {
 			
 		});
 		
 		
-		return public;
+		return operator;
 		
 	};
 	

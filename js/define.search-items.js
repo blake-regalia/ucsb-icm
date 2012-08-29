@@ -84,7 +84,7 @@
 		/**
 		* public operator() ();
 		**/
-		var public = function() {
+		var operator = function() {
 			
 		};
 		
@@ -92,7 +92,7 @@
 		/**
 		* public:
 		**/
-		$.extend(public, {
+		$.extend(operator, {
 			
 			items: function(index) {
 				return itemClass[index].data;
@@ -175,7 +175,7 @@
 		});
 		
 		
-		return public;
+		return operator;
 		
 	};
 	

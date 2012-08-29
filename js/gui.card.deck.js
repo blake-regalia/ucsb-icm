@@ -24,10 +24,10 @@
 			
 		};
 		
-		var public = function() {
+		var operator = function() {
 		};
 		
-		$.extend(public, {
+		$.extend(operator, {
 			
 			
 			// add a card to the top of the deck
@@ -36,7 +36,7 @@
 				// if the card on top is open
 				if(top !== -1 && stack[top].isOpen()) {
 					// fold the card on top
-					public.fold(top);
+					operator.fold(top);
 				}
 				
 				// push it to the end of the array
@@ -49,13 +49,13 @@
 				var card_dom = card.getElement();
 				
 				// set the appropriate zindex, relative to the other cards in this deck
-				public.ztop(card_dom);
+				operator.ztop(card_dom);
 				
 				// append the card to this container
 				deck_dom.appendChild(card_dom);
 				
 				// register stack-like dom events to this card
-				public.draw(top);
+				operator.draw(top);
 			},
 			
 			
@@ -66,22 +66,22 @@
 				// reference the dom element of the bounding element
 				var card_dom = card.getElement();
 				
-				dojo.addClass(card_dom , 'card_deckview');
+				dojo['addClass'](card_dom , 'card_deckview');
 				
 				var translate_y = index * css.card_spacing + css.deck_top;
 				$.style(card_dom , 'margin-top', translate_y+'px');
 				
 				card.fold();
-				public.ztop(card_dom);
+				operator.ztop(card_dom);
 				
 				card.click(function() {
 					this.unbind();
-					public.draw(this.getIndex());
+					operator.draw(this.getIndex());
 				});
 				
 				setTimeout(function() {
 					if(!card.isOpen()) {
-						dojo.addClass(card_dom, 'settled');
+						dojo['addClass'](card_dom, 'settled');
 					}
 				}, 600);
 				
@@ -102,23 +102,23 @@
 				}
 				
 				if(my.card_drawn) {
-					public.fold(top);
+					operator.fold(top);
 				}
 				
 				var card = stack[index];
 				var card_dom = card.getElement();
 				
 				card.open();
-				card.index = public.pull(index);
+				card.index = operator.pull(index);
 				
-				dojo.removeClass(card_dom , 'card_deckview');
-				dojo.removeClass(card_dom , 'settled');
+				dojo['removeClass'](card_dom , 'card_deckview');
+				dojo['removeClass'](card_dom , 'settled');
 				
 				$.style(card_dom , 'margin-top', '0');
 				
 				card.click(function() {
 					this.unbind();
-					public.fold(this.getIndex());
+					operator.fold(this.getIndex());
 				});
 				
 				my.card_drawn = true;
@@ -144,16 +144,16 @@
 					$.style(card_dom, 'margin-top',
 						(parseInt($.style(card_dom, 'margin-top')) - css.card_spacing) + 'px'
 					);
-					dojo.removeClass(card_dom, 'settled');
+					dojo['removeClass'](card_dom, 'settled');
 					setTimeout((function() {
 						var elmt = this.card_dom;
 						return function() {
-							dojo.addClass(elmt, 'settled');
+							dojo['addClass'](elmt, 'settled');
 						}
 					}).apply({card_dom:card_dom}), 600);
 				}
 				
-				public.ztop(stack[top].getElement());
+				operator.ztop(stack[top].getElement());
 				
 				return top;
 			},
@@ -161,7 +161,7 @@
 			
 			// sets the zindex of the given element to be the top of this stack
 			ztop: function(card_dom) {
-				card_dom.style.zIndex = my.zindex_base + my.zindex_plus++;
+				card_dom['style']['zIndex'] = my.zindex_base + my.zindex_plus++;
 			},
 			
 			
@@ -196,7 +196,7 @@
 			
 		});
 		
-		return public;
+		return operator;
 	};
 	
 	

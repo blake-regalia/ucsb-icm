@@ -1,8 +1,8 @@
-<?php namespace csx;
+<?php 
 
 require "csx.php";
 
-class Compiler {
+class CsxCompiler {
 	
 	var $magic = null;
 	var $parser = null;

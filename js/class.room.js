@@ -48,7 +48,7 @@
 		/**
 		* public operator() ();
 		**/
-		var public = function() {
+		var operator = function() {
 			return room;
 		};
 		
@@ -56,7 +56,7 @@
 		/**
 		* public:
 		**/
-		$.extend(public, {
+		$.extend(operator, {
 			
 			// standard identifier
 			id: room.buildingId+';'+roomNumber,
@@ -80,7 +80,7 @@
 			},
 		});
 		
-		return public;
+		return operator;
 		
 	};
 	

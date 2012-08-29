@@ -9,11 +9,11 @@
 	**/
 	var map;
 	
-	var esri_graphic = esri.Graphic;
-	var esri_layers = esri.layers;
-	var esri_graphicsLayer = esri_layers.GraphicsLayer;
+	var esri_graphic = esri['Graphic'];
+	var esri_layers = esri['layers'];
+	var esri_graphicsLayer = esri_layers['GraphicsLayer'];
 	
-	var coordinateSystem = new esri.SpatialReference({wkid: 4326});
+	var coordinateSystem = new esri['SpatialReference']({'wkid': 4326});
 	
 	var layers = {
 		' ': new esri_graphicsLayer(),
@@ -23,7 +23,7 @@
 	var construct = function() {
 		
 		map = EsriMap.getMap();
-		map.addLayer(layers[' ']);
+		map['addLayer'](layers[' ']);
 		
 		/**
 		* private:
@@ -41,7 +41,7 @@
 		/**
 		* public operator() ();
 		**/
-		var public = function() {
+		var operator = function() {
 			
 		};
 		
@@ -49,16 +49,16 @@
 		/**
 		* public:
 		**/
-		$.extend(public, {
+		$.extend(operator, {
 			
 			setCenter: function(x, y) {
 				var point = new Geometry.point(x, y);
-				map.centerAt(point());
+				map['centerAt'](point());
 			},
 		});
 		
 		
-		return public;
+		return operator;
 		
 	};
 	
@@ -140,22 +140,22 @@
 				else {
 					layer = new esri_graphicsLayer();
 					layers[layerName] = layer;
-					map.addLayer(layer);
+					map['addLayer'](layer);
 				}
 			}
 			else {
 				layer = layers[' '];
 			}
 			
-			layer.add(
+			layer['add'](
 				new esri_graphic(geometry, symbol)
 			);
 			
 			
 			if(typeof maxLayerObjects == 'number') {
-				var layer_graphics = layer.graphics;
+				var layer_graphics = layer['graphics'];
 				while(layer_graphics.length > maxLayerObjects) {
-					layer.remove(layer_graphics[0]);
+					layer['remove'](layer_graphics[0]);
 				}
 			}
 			
@@ -167,10 +167,10 @@
 				
 				// call this chained function to center the map at the last graphics object added
 				center: function(extra) {
-					var ext = layer.graphics[layer.graphics.length-1]._extent;
-					var center = ext.getCenter();
+					var ext = layer['graphics'][layer['graphics']['length']-1]['_extent'];
+					var center = ext['getCenter']();
 					if(extra) {
-						pxw = map.extent.getWidth() / map.width;
+						pxw = map['extent']['getWidth']() / map['width'];
 						
 						var x = extra.x;
 						var y = extra.y;
@@ -182,23 +182,23 @@
 						if(y) {
 							if(typeof y === 'string') {
 								if(y[y.length-1] == '%') {
-									center.y += map.height * parseFloat(y)*0.01;
+									center.y += map['height'] * parseFloat(y)*0.01;
 								}
 							}
 						}
 						if(expand) {
-							map.setExtent(ext.expand(expand));
+							map['setExtent'](ext['expand'](expand));
 							return chain;
 						}
 					}
-					map.centerAt(center);
+					map['centerAt'](center);
 					return chain;
 				},
 			
 				fadeOut: function() {
 					var alpha = 1;
 					var d = function() {
-						layer.setOpacity(alpha);
+						layer['setOpacity'](alpha);
 						alpha = alpha * 0.95*alpha;
 						if(alpha > 0.1) {
 							setTimeout(d, 30);

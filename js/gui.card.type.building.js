@@ -71,7 +71,7 @@
 						1
 					).center({
 						x: -CSS('cardDeck.info.width').pixels(
-								dojo.position(document.body).w
+								dojo['position'](document.body).w
 							)*0.35,
 						y: '-1%',
 						expand: 5,

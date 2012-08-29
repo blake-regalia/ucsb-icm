@@ -2,6 +2,8 @@
 	
 	var __func__ = 'Location';
 	
+	var wordRegex = /^\s*([a-z][^\s]*)[\s\-\.\:]*$/i;
+	var numberRegex = /^\s*([0-9][^\s]*)[\s\-\.\:]*$/i;
 	var bldgRegex = /^([a-z].*)[\s\-\.\:]+(\d\w+)$/i;
 	var bidRegex  = /^([0-9].*)[\s\-\.\:]+(\d\w+)$/i;
 	var roomRegex = /^(\d\w+)[\s\-\.\:]+([a-z].*)$/i;
@@ -20,8 +22,18 @@
 		(function() {
 			var x;
 			
+			// eg: ELLSN
+			if((x=wordRegex.exec(str)) !== null) {
+				buildingName = x[1];
+			}
+			
+			// eg: 563
+			else if((x=numberRegex.exec(str)) !== null) {
+				buildingId = x[1];
+			}
+			
 			// eg: Ellison Hall 1710A
-			if((x=bldgRegex.exec(str)) !== null) {
+			else if((x=bldgRegex.exec(str)) !== null) {
 				buildingName = x[1];
 				roomNumber = x[2];
 			}
@@ -41,12 +53,22 @@
 			
 			// resolve targets
 			if(buildingName) {
-				buildingId = Building.nameToId(buildingName);
-				if(!buildingId) {
-					buildingId = Building.nameToId(buildingName+' Hall');
-					if(!buildingId) {
-						global.warn('could not resolve building "',buildingName,'"');
+				buildingId = Building.abrvToId(buildingName.toUpperCase());
+				if(!!buildingId) {
+					buildingName = Building.idToName(buildingId);
+					if(!buildingName) {
+						global.warn('could not resolved building id: ',buildingId);
 						resolved = false;
+					}
+				}
+				else {
+					buildingId = Building.nameToId(buildingName);
+					if(!buildingId) {
+						buildingId = Building.nameToId(buildingName+' Hall');
+						if(!buildingId) {
+							global.warn('could not resolve building "',buildingName,'"');
+							resolved = false;
+						}
 					}
 				}
 			}
@@ -72,7 +94,7 @@
 		/**
 		* public operator() ();
 		**/
-		var public = function() {
+		var operator = function() {
 			
 		};
 		
@@ -80,7 +102,9 @@
 		/**
 		* public:
 		**/
-		$.extend(public, {
+		$.extend(operator, {
+			
+			isLocation: true,
 			
 			resolved: resolved,
 			
@@ -91,12 +115,12 @@
 			},
 			
 			execute: function() {
-				if(public.isRoom) {
+				if(operator.isRoom) {
 					var room = Room(buildingId, roomNumber);
 					return new RoomCard(room);
 				}
 				else if(resolved) {
-					var building = Building(buildingId);;
+					var building = Building(buildingId, buildingName);;
 					return new BuildingCard(building);
 				}
 			},
@@ -113,7 +137,7 @@
 		});
 		
 		
-		return public;
+		return operator;
 		
 	};
 	

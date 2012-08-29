@@ -369,7 +369,7 @@ Object.css = (function() {
 
 
 
-window.$ = window.jQuery? window.jQuery: {
+window['$'] = window['jQuery']? window['jQuery']: {
 	extend: Object.extend,
 	style: Object.css.style,
 	css: Object.css.css,
@@ -528,7 +528,7 @@ Function.wrap = function(method, asthis) {
 		});
 		return public;
 	};
-	var global = window.Timer = function() {
+	var global = window['Timer'] = function() {
 		if(this !== window) {
 			var instance = construct.apply(this, arguments);
 			return instance;

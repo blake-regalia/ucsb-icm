@@ -44,7 +44,7 @@
 		/**
 		* public operator() ();
 		**/
-		var public = function() {
+		var operator = function() {
 			return building;
 		};
 		
@@ -52,7 +52,7 @@
 		/**
 		* public:
 		**/
-		$.extend(public, {
+		$.extend(operator, {
 			
 			// standard identifier
 			id: building.buildingId,
@@ -88,7 +88,7 @@
 		
 		
 		if(!database.polygon[buildingId]) {
-			Download.json('server/9/query?outFields=features&f=pjson&text='+buildingName, function(json) {
+			Download.json('server/9/query?returnGeometry=true&f=pjson&text='+buildingName, function(json) {
 				database.polygon[buildingId] = json.features[0].geometry;
 				if(callbackPolygon) {
 					callbackPolygon.apply({}, [json.features[0].geometry]);
@@ -96,7 +96,7 @@
 			});
 		}
 		
-		return public;
+		return operator;
 		
 	};
 	
@@ -105,13 +105,17 @@
 	/**
 	* public static operator() ()
 	**/
-	var global = window[__func__] = function() {
+	var global = window[__func__] = function(a, b) {
 		if(this !== window) {
 			instance = construct.apply(this, arguments);
 			return instance;
 		}
 		else {
-			return instance;
+			return new global({
+				buildingId: a,
+				buildingName: b,
+				buildingAbrv: global.idToAbrv(a),
+			});
 		}
 	};
 	
@@ -203,6 +207,19 @@
 			
 			// return the name
 			return buildingName;
+		},
+		
+		// attempt to translate a building abbreviation to a building id
+		idToAbrv: function(buildingId) {
+			
+			var abrv = database.abrvToBid;
+			
+			for(var e in abrv) {
+				if(abrv[e] == buildingId) return e;
+			}
+			
+			// return the id number if it was found
+			return false;
 		},
 		
 	});

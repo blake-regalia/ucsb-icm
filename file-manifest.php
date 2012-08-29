@@ -105,7 +105,7 @@ class File_manifest {
 	}
 	
 	
-	public static function merge($manifest_filename, $header_format, $footer_format) {
+	public static function merge($manifest_filename, $header_format="", $footer_format="") {
 		
 		$info = self::read($manifest_filename);
 		

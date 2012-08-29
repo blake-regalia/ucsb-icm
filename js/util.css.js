@@ -11,16 +11,16 @@
 		};
 		
 		
-		var public = function() {
+		var operator = function() {
 		};
 		
 		
-		$.extend(public, {
+		$.extend(operator, {
 			
 		});
 		
 		
-		return public;
+		return operator;
 		
 	};
 	
