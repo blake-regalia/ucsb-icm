@@ -135,11 +135,13 @@
 				url = url.replace(/:/g,'%253A');
 				url = url.replace(/</g,'%253C');
 				url = url.replace(/>/g,'%253E');
+				url = url.replace(/\\/g,'ü');
+				
 				var opt = {
 					'url': url,
 					'handleAs': 'json',
 					'error': function(e) {
-						global.error('Could not parse JSON from response: "',url,'"');
+						//global.error('Could not parse JSON from response: "',url,'"');
 						global.error(e);
 					},
 					'load': function(json) {
@@ -181,7 +183,7 @@
 					'url': obj.urls[downloadId],
 					'handleAs': 'json',
 					'error': function(e) {
-						global.error('Could not parse JSON from response: ',downloadId,' ["',this.url,'"]');
+						//global.error('Could not parse JSON from response: ',downloadId,' ["',this.url,'"]');
 						global.error(e);
 					},
 				};

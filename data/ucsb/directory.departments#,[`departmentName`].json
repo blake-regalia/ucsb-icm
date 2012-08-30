@@ -1,0 +1,1 @@
+{"sql":"SELECT `departmentName` FROM `ucsb`.`directory_departments`  ORDER BY `departmentName` DESC;","data":[],"path":"ucsb\/directory.departments#,[`departmentName`].json"}

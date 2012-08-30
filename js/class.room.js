@@ -156,7 +156,7 @@
 	**/
 	Download.json({
 		urls: {
-			extents: 'data/ucsb/facilities.room#{`buildingId`:{`roomNumber`:[~`ymin`,~`xmin`,~`ymax`,~`xmax`]}}.json',
+			extents: 'data/ucsb/facility.rooms#{`buildingId`:{`roomNumber`:[~`ymin`,~`xmin`,~`ymax`,~`xmax`]}}.json',
 		},
 		each: function(id, json) {
 			database[id] = json;

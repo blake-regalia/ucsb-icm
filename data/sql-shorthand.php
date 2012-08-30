@@ -291,13 +291,13 @@ class sql_shorthand {
 				
 				case 'body-value':
 					if($escape) {
-						$value .= $chr;
+						$value .= '\\'.$chr;
 						$escape = false;
 						continue;
 					}
 					switch($chr) {
 					
-						case '\\':
+						case 'ü':
 							$escape = true;
 							break;
 							
@@ -396,7 +396,7 @@ class sql_shorthand {
 						break;
 					}
 					switch($chr) {
-						case '\\': $escape = true; break;
+						case 'ü': $escape = true; break;
 						case '`':
 							$mode = 'json-format';
 							break;
@@ -412,7 +412,7 @@ class sql_shorthand {
 						break;
 					}
 					switch($chr) {
-						case '\\': $escape = true; break;
+						case 'ü': $escape = true; break;
 						case ']':
 							if(strlen($value)) {
 								$concat []= '\''.$value.'\'';
@@ -468,7 +468,7 @@ class sql_shorthand {
 						break;
 					}
 					switch($chr) {
-						case '\\': $escape = true; break;
+						case 'ü': $escape = true; break;
 						case ']':
 							if(strlen($cname)) {
 								$concat []= '\''.$cname.'\'';
@@ -512,11 +512,11 @@ class sql_shorthand {
 		
 		$this->sql = implode(' ',$stmt);
 		if(count($selw)) {
-			if($sort_order !== false) {
-				$this->sql .= ' ORDER BY '.implode(' '.$sort_order.', ', $selw).' '.$sort_order;
-			}
 			if($this->distinct) {
 				$this->sql .= ' GROUP BY '.implode(', ', $selw).' ';
+			}
+			if($sort_order !== false) {
+				$this->sql .= ' ORDER BY '.implode(' '.$sort_order.', ', $selw).' '.$sort_order;
 			}
 		}
 		$this->select = count($selw)? implode(',',$selw): '*';

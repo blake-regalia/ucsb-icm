@@ -17,6 +17,7 @@ $do_not_cache = ($bang === '!');
 $query = preg_replace('/:/',';', $query);
 $query = preg_replace('/</',',', $query);
 $query = preg_replace('/>/','.', $query);
+$query = preg_replace('/ï¿½/','ü',$query);
 
 
 // if this query has already been cached, return the file
@@ -41,6 +42,9 @@ if(preg_match('/^([a-z_-][a-z_-]*(?:\\.[a-z_-][a-z_-]*)*)(.*)$/i', $query, $uri)
 		if(!is_dir($db_name)) {
 			@mkdir($db_name);
 		}
+		
+		// reformat table name
+		$table_name = preg_replace('/\\./', '_', $table_name);
 		
 		// if the table exists
 		if($db->tableExists($table_name)) {
@@ -80,6 +84,8 @@ if(preg_match('/^([a-z_-][a-z_-]*(?:\\.[a-z_-][a-z_-]*)*)(.*)$/i', $query, $uri)
 				$json['data'] = $result['data'];
 				$json['path'] = $db_name.'/'.$query.'.json';
 				
+				$data = array();
+				
 				if(strlen($sql_part['array'])) {
 					$repstr = $sql_part['array'];
 					
@@ -109,7 +115,6 @@ if(preg_match('/^([a-z_-][a-z_-]*(?:\\.[a-z_-][a-z_-]*)*)(.*)$/i', $query, $uri)
 				
 				if(strlen($sql_part['json'])) {
 					$fields = preg_split('/;/',$sql_part['json'], 2);
-					$data = array();
 					
 					$column = substr($fields[0],1,-1);
 					

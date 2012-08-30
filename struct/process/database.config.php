@@ -24,6 +24,12 @@ $databases = array(
 		'PASS' => '',
 		'db_name' => $DEFAULT_DATABSE,
 	),
+	'map.geog.ucsb.edu' => array(
+		'HOST' => 'localhost',
+		'USER' => 'root',
+		'PASS' => 'ca23m@p$QL',
+		'db_name' => $DEFAULT_DATABSE,
+	),
 );
 
 if($databases[$MACHINE]) {

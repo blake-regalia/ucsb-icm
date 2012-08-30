@@ -1,6 +1,6 @@
 <?php
 
-$AUTOUPDATE_DATABASE = "source.autoupdate";
+$AUTOUPDATE_DATABASE = "source_autoupdate";
 
 require "phpQuery.php";
 require "database.php";

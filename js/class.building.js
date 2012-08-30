@@ -57,13 +57,6 @@
 			// standard identifier
 			id: building.buildingId,
 			
-			
-			// returns the extent of this building
-			getExtent: function() {
-				return database.extents[buildingId];
-			},
-			
-			
 			// returns the name of this building
 			getName: function() {
 				return database.bidToName[buildingId];
@@ -149,7 +142,7 @@
 		//
 		newCard: function(format) {
 			return function(str) {
-				Download.json("data/ucsb/facilities.building@(["+format+"]='"+str+"').json",
+				Download.json("data/ucsb/facility.buildings@(["+format+"]='"+str+"').json",
 					function(json) {
 						if(!json.length) return global.error('Query for "',str,'" returned empty result');
 						var building = new global(json[0]);
@@ -230,10 +223,9 @@
 	**/
 	Download.json({
 		urls: {
-			nameToBid: 'data/ucsb/facilities.building#{`buildingName`:`buildingId`}.json',
-			abrvToBid: 'data/ucsb/facilities.building#{`buildingAbrv`:`buildingId`}.json',
-			bidToName: 'data/ucsb/facilities.building#{`buildingId`:`buildingName`}.json',
-			extents: 'data/ucsb/facilities.building#{`buildingId`:[~`ymin`,~`xmin`,~`ymax`,~`xmax`]}.json',
+			nameToBid: 'data/ucsb/facility.buildings#{`buildingName`:`buildingId`}.json',
+			abrvToBid: 'data/ucsb/facility.buildings#{`buildingAbrv`:`buildingId`}.json',
+			bidToName: 'data/ucsb/facility.buildings#{`buildingId`:`buildingName`}.json',
 		},
 		each: function(id, json) {
 			database[id] = json;

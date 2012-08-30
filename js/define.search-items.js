@@ -7,19 +7,19 @@
 	
 	var subjects = {
 		'Building': {
-			url: 'data/ucsb/facilities.building#<[`buildingName`].json',
+			url: 'data/ucsb/facility.buildings#<[`buildingName`].json',
 			select: Building.newCard('`buildingName`'),
 		},
 		'Department': {
-			url: 'data/ucsb/directory.department.academic#<[`departmentName`].json',
+			url: 'data/ucsb/directory.departments#<[`departmentName`].json',
 			select: Department.newCard,//('`department`'),
 		},
 		'Undergrad Lecture': {
-			url: 'data/ucsb/registrar.lecture.undergrad#<[`courseTitle` - `fullTitle`]$.json',
-			select: function(){}, //Lectures.lookup('lecture.undergrad'),
+			url: 'data/ucsb/registrar.lectures.undergrad#<[`courseTitle` - `fullTitle`]$.json',
+			select: Lecture.newCard('`courseTitle` - `fullTitle`'),
 		},
 		'Graduate Lecture': {
-			url: 'data/ucsb/registrar.lecture.graduate#<[`courseTitle` - `fullTitle`]$.json',
+			url: 'data/ucsb/registrar.lectures.graduate#<[`courseTitle` - `fullTitle`]$.json',
 			select: function() {}, //Lectures.lookup('lecture.graduate'),
 		},
 		'Contact': {
