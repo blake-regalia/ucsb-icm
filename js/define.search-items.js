@@ -12,7 +12,7 @@
 		},
 		'Department': {
 			url: 'data/ucsb/directory.departments#<[`departmentName`].json',
-			select: Department.newCard,//('`department`'),
+			select: Department.newCard('`departmentName`'),
 		},
 		'Undergrad Lecture': {
 			url: 'data/ucsb/registrar.lectures.undergrad#<[`courseTitle` - `fullTitle`]$.json',

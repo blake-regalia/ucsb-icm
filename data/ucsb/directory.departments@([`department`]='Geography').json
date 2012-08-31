@@ -1,0 +1,1 @@
+{"sql":"SELECT * FROM `ucsb`.`directory_departments` WHERE (CONCAT(`department`) = 'Geography');","data":[],"path":"ucsb\/directory.departments@([`department`]='Geography').json"}

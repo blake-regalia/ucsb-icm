@@ -161,7 +161,7 @@
 			
 			// check if an entry exists for the given building name
 			if(typeof buildingId === 'undefined') {
-				global.error('building abrv not found: "',buildingAbrv,'"');
+				global.warn('building abrv not found: "',buildingAbrv,'"');
 				return false;
 			}
 			

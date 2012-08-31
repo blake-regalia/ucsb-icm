@@ -1,1 +1,0 @@
-{"sql":"SELECT `courseTitle`,`fullTitle` FROM `ucsb`.`registrar.lecture.undergrad`  ORDER BY `courseTitle` DESC, `fullTitle` DESC GROUP BY `courseTitle`, `fullTitle` ;","data":[],"path":"ucsb\/registrar.lecture.undergrad#,[`courseTitle` - `fullTitle`]$.json"}

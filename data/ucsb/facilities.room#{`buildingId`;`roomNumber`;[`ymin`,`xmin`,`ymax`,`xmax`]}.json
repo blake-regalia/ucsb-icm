@@ -1,1 +1,0 @@
-{"sql":"SELECT * FROM `ucsb`.`facilities.room` ;","data":[],"path":"ucsb\/facilities.room#{`buildingId`;`roomNumber`;[`ymin`,`xmin`,`ymax`,`xmax`]}.json","error":"`buildingId`;`roomNumber`;[`ymin`,`xmin`,`ymax`,`xmax`]\n---?\nsyntax error: not valid json-format"}

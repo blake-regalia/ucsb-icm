@@ -1,1 +1,0 @@
-{"sql":"SELECT * FROM `ucsb`.`directory.department` WHERE (`departmentName` = 'Marine Science Institute');","data":[{"departmentName":"Marine Science Institute","buildingId":"0","location":"4326B Marine Science Bldg","category":"group","description":null,"website":null,"abrv":null}],"path":"ucsb\/directory.department@(`departmentName`='Marine Science Institute').json"}

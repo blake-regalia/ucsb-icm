@@ -53,8 +53,10 @@
 			
 			// resolve targets
 			if(buildingName) {
+				buildingName = buildingName.replace(/^\s*|\s*$/,'');
 				buildingId = Building.abrvToId(buildingName.toUpperCase());
 				if(!!buildingId) {
+					buildingId = parseInt(buildingId);
 					buildingName = Building.idToName(buildingId);
 					if(!buildingName) {
 						global.warn('could not resolved building id: ',buildingId);

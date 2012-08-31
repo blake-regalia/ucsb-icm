@@ -1,1 +1,0 @@
-{"sql":"SELECT * FROM `ucsb`.`directory.department` WHERE (`departmentName` = 'Religious Studies');","data":[{"departmentName":"Religious Studies","buildingId":"515","location":null,"category":"academic","description":null,"website":"http:\/\/www.religion.ucsb.edu","abrv":"RG ST"}],"path":"ucsb\/directory.department@(`departmentName`='Religious Studies').json"}

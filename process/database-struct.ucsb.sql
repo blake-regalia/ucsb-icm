@@ -117,11 +117,11 @@ SET time_zone = "-08:00";
 -- Namespace: registrar
 --
 -- --------------------------------------------------------
-
+	
 	--
-	-- Table structure for table: *
+	-- Table structure for table: lectures
 	--
-	CREATE TABLE IF NOT EXISTS `registrar` (
+	CREATE TABLE IF NOT EXISTS `registrar_lectures` (
 	  `courseTitle` varchar(255) DEFAULT NULL,
 	  `fullTitle` varchar(255) DEFAULT NULL,
 	  `description` varchar(255) DEFAULT NULL,
@@ -147,4 +147,40 @@ SET time_zone = "-08:00";
 	  `people` varchar(255) NOT NULL
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+	--
+	-- Table structure for table: sections
+	--
+	CREATE TABLE IF NOT EXISTS `registrar_sections` (
+	  `courseTitle` varchar(255) DEFAULT NULL,
+	  `fullTitle` varchar(255) DEFAULT NULL,
+	  `description` varchar(255) DEFAULT NULL,
+	  `departmentName` varchar(255) DEFAULT NULL,
+	  `preReq` varchar(255) DEFAULT NULL,
+	  `college` varchar(255) DEFAULT NULL,
+	  `units` varchar(255) DEFAULT NULL,
+	  `grading` varchar(255) DEFAULT NULL,
+	  `primaryTitle` varchar(255) DEFAULT NULL,
+	  `status` varchar(255) DEFAULT NULL,
+	  `enrollCode` varchar(255) DEFAULT NULL,
+	  `levelLimit` varchar(255) DEFAULT NULL,
+	  `majorLimitPass` varchar(255) DEFAULT NULL,
+	  `majorLimit` varchar(255) DEFAULT NULL,
+	  `messages` varchar(255) DEFAULT NULL,
+	  `instructor` varchar(255) DEFAULT NULL,
+	  `days` varchar(255) DEFAULT NULL,
+	  `time` varchar(255) DEFAULT NULL,
+	  `location` varchar(255) DEFAULT NULL,
+	  `enrolled` varchar(255) DEFAULT NULL,
+	  `courseType` varchar(8) DEFAULT NULL,
+	  `courseLevel` varchar(16) DEFAULT NULL,
+	  `people` varchar(255) NOT NULL
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+	--
+	-- Table structure for table: subjects
+	--
+	CREATE TABLE IF NOT EXISTS `registrar_subjects` (
+	  `subjectTitle` varchar(255) DEFAULT NULL,
+	  `subjectAbrv` varchar(16) DEFAULT NULL
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

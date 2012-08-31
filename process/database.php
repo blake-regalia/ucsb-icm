@@ -197,6 +197,11 @@ class MySQL_Pointer {
 		return $this->attempt($sql);
 	}
 	
+	function execute($sql_filename) {
+		$sql = file_get_contents($sql_filename);
+		return $this->attempt($sql);
+	}
+	
 	function error($say) {
 		echo $say;
 		echo "\nmysql said: ".mysql_error()."\n";
