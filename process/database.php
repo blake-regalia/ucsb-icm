@@ -194,6 +194,10 @@ class MySQL_Pointer {
 	function reorderBy($fieldNames, $asc=true) {
 		$puts = implode("` ".($asc? "ASC": "DESC").",`", $fieldNames);
 		$sql = "ALTER TABLE ".$this->path." ORDER BY `".$puts."` ".($asc? "ASC": "DESC").";";
+		
+		echo $sql;
+		exit(1);
+		
 		return $this->attempt($sql);
 	}
 	
