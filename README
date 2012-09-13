@@ -17,7 +17,7 @@ pwd
 This will tell you what directory the .gitconfig file is in, navigate there and open .gitconfig file. Append the following to your .gitconfig file:
 [alias]
 	unstage = reset HEAD
-	cap = "!f(){ git commit -m \"$*\" && git push -u origin master; }; f"
+	cap = "!f(){ git commit -m \"$*\" && git push -u origin sandbox; }; f"
 	ass = !git add * && git status -s
 	
 	
