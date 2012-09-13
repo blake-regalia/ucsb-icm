@@ -1,3 +1,12 @@
+/*!
+ * Author: Blake Regalia - blake.regalia@gmail.com
+ *
+ * Copyright 2012 Blake Regalia
+ * Released under the MIT license
+ * http://opensource.org/licenses/mit-license.php
+ *
+ */
+
 (function() {
 	
 	var __func__ = 'Geometry';
@@ -31,9 +40,30 @@
 		var geometry;
 		
 		(function() {
-			var point = obj.point;
-			var extent = obj.extent;
-			var polygon= obj.polygon;
+			
+			var point,
+				extent,
+				polygon;
+			
+			var geometryType = obj.geometryType;
+			if(!!geometryType) {
+				switch(geometryType) {
+				case 'point':
+					point = obj.getPoint();
+					break;
+				case 'extent':
+					extent = obj.getExtent();
+					break;
+				case 'polygon':
+					polygon = obj.getPolygon();
+					break;
+				}
+			}
+			else {
+				point = obj.point;
+				extent = obj.extent;
+				polygon= obj.polygon;
+			}
 			
 			if(point) {
 				geometry = new esri_point(point.x, point.y, esri_spatialReference);

@@ -1,3 +1,12 @@
+/*!
+ * Author: Blake Regalia - blake.regalia@gmail.com
+ *
+ * Copyright 2012 Blake Regalia
+ * Released under the MIT license
+ * http://opensource.org/licenses/mit-license.php
+ *
+ */
+
 
 
 (function() {
@@ -6,26 +15,47 @@
 	var instance = false;
 	
 	var subjects = {
-		'Building': {
-			url: 'data/ucsb/facility.buildings#<[`buildingName`].json',
-			select: Building.newCard('`buildingName`'),
+		
+		'Undergrad': {
+			url: "data/ucsb/directory.people@(`type`='undergrad student')#<[`firstName` `lastName`].json",
+			select: Contact.newCard('`firstName` `lastName`', "@(`type`='undergrad student')"),
 		},
+		
 		'Department': {
 			url: 'data/ucsb/directory.departments#<[`departmentName`].json',
 			select: Department.newCard('`departmentName`'),
 		},
-		'Undergrad Lecture': {
-			url: 'data/ucsb/registrar.lectures.undergrad#<[`courseTitle` - `fullTitle`]$.json',
-			select: Lecture.newCard('`courseTitle` - `fullTitle`'),
+		
+		'Staff': {
+			url: "data/ucsb/directory.people@(`type`='staff')#<[`firstName` `lastName`].json",
+			select: Contact.newCard('`firstName` `lastName`',"@(`type`='staff')"),
 		},
+		
 		'Graduate Lecture': {
 			url: 'data/ucsb/registrar.lectures.graduate#<[`courseTitle` - `fullTitle`]$.json',
 			select: function() {}, //Lectures.lookup('lecture.graduate'),
 		},
-		'Contact': {
-			url: 'data/ucsb/directory.people#<[`firstName` `lastName`].json',
-			select: Contact.newCard('`firstName` `lastName`'),
+		
+		'Graduate': {
+			url: "data/ucsb/directory.people@(`type`='graduate student')#<[`firstName` `lastName`].json",
+			select: Contact.newCard('`firstName` `lastName`',"@(`type`='graduate student')"),
 		},
+		
+		'Building': {
+			url: 'data/ucsb/facility.buildings#<[`buildingName`].json',
+			select: Building.newCard('`buildingName`'),
+		},
+		
+		'Undergrad Lecture': {
+			url: 'data/ucsb/registrar.lectures.undergrad#<[`courseTitle` - `fullTitle`]$.json',
+			select: Lecture.newCard('`courseTitle` - `fullTitle`'),
+		},
+		
+		'Professor': {
+			url: "data/ucsb/directory.people@(`type`='faculty')#<[`firstName` `lastName`].json",
+			select: Contact.newCard('`firstName` `lastName`',"@(`type`='faculty')"),
+		},
+		
 	};
 	
 	
@@ -36,11 +66,12 @@
 		* private:
 		**/
 		
-		var itemClass = {};
+		var itemClass = [];
 		var listSize = 0;
 		var matrix_width = 0;
 		var ready = false;
 		
+		var powerOfKey = {};
 		
 		/**
 		* protected:
@@ -65,11 +96,12 @@
 			
 			expand: function(key) {
 				var count = 0, pcount = 0;
-				for(var e in itemClass) {
-					count += itemClass[e].data.length;
+				var len = itemClass.length;
+				for(i=0; i<len; i++) {
+					count += itemClass[i].data.length;
 					if(key < count) {
 						return {
-							major: parseInt(e),
+							major: i,
 							minor: key - pcount,
 						};
 					}
@@ -99,26 +131,30 @@
 			},
 			
 			size: function() {
-				return listSize;
+				return itemClass.length;
 			},
 			
 			power: function(key) {
 				var c = 0;
-				for(var e in itemClass) {
+				var len = itemClass.length;
+				for(i=0; i<len; i++) {
+					var target = itemClass[i];
 					if(!key--) break;
-					c += itemClass[e].data.length;
+					c += target.data.length;
 				}
 				return c;
 			},
 			
 			get: function(key) {
 				var count = 0, pcount = 0;
-				for(var e in itemClass) {
-					count += itemClass[e].data.length;
+				var len = itemClass.length;
+				for(i=0; i<len; i++) {
+					var target = itemClass[i];
+					count += target.data.length;
 					if(key < count) {
 						return {
-							string: itemClass[e].data[key-pcount],
-							classTitle: itemClass[e].title,
+							string: target.data[key-pcount],
+							classTitle: target.title,
 						}
 					}
 					pcount = count;
@@ -147,9 +183,11 @@
 		/**
 		*
 		**/
+		var xpi = 0;
 		var subjectUrls = {};
 		for(var e in subjects) {
 			subjectUrls[e] = subjects[e].url;
+			powerOfKey[e] = xpi++;
 		}
 		
 		Download.json({
@@ -158,7 +196,7 @@
 			
 			each: function(key, json) {
 				
-				var pi = listSize++;
+				var pi = powerOfKey[key];
 				
 				itemClass[pi] = {
 					data: json,

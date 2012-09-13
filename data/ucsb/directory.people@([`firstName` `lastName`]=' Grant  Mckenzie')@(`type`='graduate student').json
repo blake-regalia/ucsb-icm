@@ -1,0 +1,1 @@
+{"sql":"SELECT * FROM `ucsb`.`directory_people` WHERE (CONCAT(`firstName`,' ',`lastName`) = ' Grant  Mckenzie') AND (`type` = 'graduate student');","data":[],"path":"ucsb\/directory.people@([`firstName` `lastName`]=' Grant  Mckenzie')@(`type`='graduate student').json"}

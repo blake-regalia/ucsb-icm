@@ -1,3 +1,12 @@
+/*!
+ * Author: Blake Regalia - blake.regalia@gmail.com
+ *
+ * Copyright 2012 Blake Regalia
+ * Released under the MIT license
+ * http://opensource.org/licenses/mit-license.php
+ *
+ */
+
 /**
 *
 * public class Building
@@ -31,7 +40,9 @@
 		var buildingId = building.buildingId;
 		var buildingName = building.buildingName;
 		
-		var callbackPolygon = false;
+		var eventHandler = new EventHandler();
+		
+		var polygonListeners = eventHandler('polygon');
 		
 		/**
 		* protected:
@@ -57,6 +68,8 @@
 			// standard identifier
 			id: building.buildingId,
 			
+			geometryType: 'polygon',
+			
 			// returns the name of this building
 			getName: function() {
 				return database.bidToName[buildingId];
@@ -64,11 +77,16 @@
 			
 			// calls a function when the geometry is ready
 			getPolygon: function(callback) {
+				
+				// if the geometry has already been downloaded
 				if(database.polygon[buildingId]) {
+					
+					// call the function back immediately
 					callback.apply(callback, [database.polygon[buildingId]]);
 				}
+				// otherwise store it to memory
 				else {
-					callbackPolygon = callback;
+					eventHandler('polygon', callback);
 				}
 			},
 			
@@ -83,9 +101,7 @@
 		if(!database.polygon[buildingId]) {
 			Download.json('server/9/query?returnGeometry=true&f=pjson&text='+buildingName, function(json) {
 				database.polygon[buildingId] = json.features[0].geometry;
-				if(callbackPolygon) {
-					callbackPolygon.apply({}, [json.features[0].geometry]);
-				}
+				polygonListeners(json.features[0].geometry);
 			});
 		}
 		
@@ -105,8 +121,8 @@
 		}
 		else {
 			return new global({
-				buildingId: a,
-				buildingName: b,
+				buildingId: a? a: global.nameToId(b),
+				buildingName: b? b: global.idToName(a),
 				buildingAbrv: global.idToAbrv(a),
 			});
 		}

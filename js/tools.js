@@ -1,3 +1,12 @@
+/*!
+ * Author: Blake Regalia - blake.regalia@gmail.com
+ *
+ * Copyright 2012 Blake Regalia
+ * Released under the MIT license
+ * http://opensource.org/licenses/mit-license.php
+ *
+ */
+
 //This function is used to display/hide the sideInfoWindow
 //To use, make sure the object has an id set (ex: <div id="foo">)
 function toggle_visibility(id) {

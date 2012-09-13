@@ -121,7 +121,7 @@ string key, value?
 		/**
 		* private regexp argSyntaxRegex
 		**/
-		var argSyntaxRegex = /^(\[)?\s*(?:([a-z][a-z\-]*(?:\:[a-z][a-z0-9]*)?(?:\|[a-z][a-z\-]*(?:\:[a-z][a-z0-9]*)?)*)\s+)?([a-z][a-z0-9]*)(\??)(\])?$/i;
+		var argSyntaxRegex = /^(\[)?\s*(?:([a-z][a-z\-]*(?:\:[a-z][a-z0-9]*)?(?:\|[a-z][a-z\-]*(?:\:[a-z][a-z0-9]*)?)*)\s+)?([a-z][a-z0-9]*)(\??)(\.\.\.)?(\])?$/i;
 		
 		var construct = function(argstr) {
 			
@@ -148,7 +148,7 @@ string key, value?
 							
 							meta = {
 								// is this argument required
-								reqd: (match[1] === match[5]),
+								reqd: (match[1] === match[6]),
 								
 								// should this argument have a specific property
 								prop: [],
@@ -161,6 +161,9 @@ string key, value?
 								
 								// type(s) argument conforms to
 								type: 0,
+								
+								// infinite numer of args
+								inf: !!match[5],
 							};
 							
 							if(!match[2]) {

@@ -1,0 +1,1 @@
+{"sql":"SELECT * FROM `ucsb`.`directory_people` WHERE (`type` = 'faculty') AND (`lastName` = 'Harvey' AND `firstName` = 'Lorraine');","data":[],"path":"ucsb\/directory.people@(`type`='faculty')@(`lastName`='Harvey',`firstName`='Lorraine').json"}

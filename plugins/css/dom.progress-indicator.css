@@ -1,0 +1,66 @@
+/** <csx> **/
+
+progress: {
+	position: 'absolute',
+	
+	width: '400px',
+	height: '260px',
+	
+	left: '50%',
+	top: '45%',
+	
+	marginLeft: 0-this.width * 0.5,
+	marginTop: 0-this.height * 0.5,
+	
+	border: '1px solid black',
+	
+	backgroundColor: 'rgba(255,255,255,0.4)',
+	
+	title: {
+		fontFamily: 'monospace',
+		
+		textAlign: 'center',
+		padding: '12px 0',
+	},
+	
+	bar: {
+		position: 'absolute',
+		
+		width: '90%',
+		height: '20px',
+		
+		left: '4%',
+		
+		border: '1px solid black',
+		
+		span: {
+			position: 'absolute',
+			
+			left: 0,
+			top: 0,
+			
+			width: 0,
+			height: '100%',
+			
+			backgroundColor: 'black',
+		},
+	},
+},
+
+/** </csx> **/
+
+.progress-indicator {
+	@progress;
+}
+
+.progress-indicator-title {
+	@progress.title;
+}
+
+.progress-indicator-bar-container {
+	@progress.bar;
+}
+
+.progress-indicator-bar-width {
+	@progress.bar.span;
+}

@@ -1,3 +1,12 @@
+/*!
+ * Author: Blake Regalia - blake.regalia@gmail.com
+ *
+ * Copyright 2012 Blake Regalia
+ * Released under the MIT license
+ * http://opensource.org/licenses/mit-license.php
+ *
+ */
+
 (function() {
 	
 	var __func__ = 'Symbol';
@@ -77,6 +86,7 @@
 					
 					case 'string':
 						var outlineColor = resolveColorStr(stroke);
+						outlineStyle = 'solid';
 						break;
 						
 					case 'object':

@@ -1,3 +1,12 @@
+/*!
+ * Author: Blake Regalia - blake.regalia@gmail.com
+ *
+ * Copyright 2012 Blake Regalia
+ * Released under the MIT license
+ * http://opensource.org/licenses/mit-license.php
+ *
+ */
+
 (function() {
 	
 	var __func__ = 'Map';
@@ -54,6 +63,10 @@
 			setCenter: function(x, y) {
 				var point = new Geometry.point(x, y);
 				map['centerAt'](point());
+			},
+			
+			getMap: function() {
+				return map;
 			},
 		});
 		

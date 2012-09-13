@@ -93,7 +93,7 @@ $interested = array(
 
 
 // hit the ldap server with a query for all people
-$r = ldap_search($ds, 'o=UCSB', '(cn=*)', $interested,0,0,75);
+$r = ldap_search($ds, 'o=UCSB', '(cn=*)', $interested,0,0,60*10);
 
 // if the query timed out, exit with status code 1
 if(!$r) {
@@ -102,7 +102,7 @@ if(!$r) {
 }
 
 // verbose output
-echo 'download complete. parsing results....'."\n";
+echo 'download complete. parsing results...'."\n";
 
 // fetch the results to php array
 $info = ldap_get_entries($ds, $r);
@@ -116,14 +116,24 @@ ldap_close($ds);
 $db->dropTable($table);
 
 // remove the `count` field from the result array
+$result_size = $info['count'];
+$size_inv = 1 / $result_size;
 unset($info['count']);
 
 // setup an array to store all the rows
 $people = array();
 
 
+// keep track of how many records we have processed
+$i = 0;
+$w = 1;
+echo '0%........25%..........50%.........75%........100%'."\n";
+
 // iterate over the results
 foreach($info as &$row) {
+		
+	$i += 1; $x = $i*$size_inv*50;
+	while($x > $w) { $w += 1; echo '|'; }
 	
 	// setup temp array for selecting only interested fields
 	$arr = array();
@@ -148,9 +158,21 @@ foreach($info as &$row) {
 	unset($row);
 }
 
+echo "\n";
+
+// verbose output
+echo 'formatting data & inserting into database...'."\n";
+
+// keep track of how many records we have processed
+$i = 0;
+$w = 1;
+echo '0%........25%..........50%.........75%........100%'."\n";
 
 // iterate over every record and format appropriate fields
 foreach($people as &$row) {
+	
+	$i += 1; $x = $i*$size_inv*50;
+	while($x > $w) { $w += 1; echo '|'; flush(); }
 	
 	// type
 	$affiliations = preg_split('/\\;/', $row['ucsbaffiliation']);
@@ -217,18 +239,18 @@ foreach($people as &$row) {
 	unset($row['cn']);
 	
 	// firstName / lastName
-	$names = preg_split('/,/', $row['displayname']);
+	$names = preg_split('/\s*,\s*/', $row['displayname']);
 	switch(count($names)) {
 		case 0:
-			$row['firstName'] = $names[0];
+			$row['firstName'] = preg_replace('/\s+$/', '', $names[0]);
 			break;
 		case 1:
-			$row['firstName'] = $names[1];
-			$row['lastName'] = $names[0];
+			$row['firstName'] = preg_replace('/\s+$/', '', $names[1]);
+			$row['lastName'] = preg_replace('/^\s+/', '', $names[0]);
 			break;
 		default:
-			$row['firstName'] = $names[1].' '.$names[2];
-			$row['lastName'] = $names[0];
+			$row['firstName'] = preg_replace('/\s+$/', '', $names[1].' '.$names[2]);
+			$row['lastName'] = preg_replace('/^\s+/', '', $names[0]);
 			break;
 	}
 	unset($row['displayname']);
@@ -303,6 +325,7 @@ foreach($people as &$row) {
 	}
 }
 
+echo "\n";
 
 // verbose output
 echo 'writing results to disk...'."\n";

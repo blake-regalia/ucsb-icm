@@ -1,3 +1,12 @@
+/*!
+ * Author: Blake Regalia - blake.regalia@gmail.com
+ *
+ * Copyright 2012 Blake Regalia
+ * Released under the MIT license
+ * http://opensource.org/licenses/mit-license.php
+ *
+ */
+
 /**
 *
 * public class ContactCard extends Card
@@ -26,26 +35,26 @@
 		**/
 		var raw = contact();
 		var references = {};
-		var location = new Location(raw.location);
 		
 		// resolve references to courses
-		if(raw.instructs.length) {
+		if(raw.instructs && raw.instructs.length) {
 			references['Instructs'] = new Reference.course(String.splitNoEmpty(raw.instructs));
 		}
 		
 		// resolve office location
 		if(raw.location.length) {
+			var location = new Location(raw.location);
 			references['Office'] = new Reference.location(raw.location);
 		}
 		
 		// setup the format of the card
 		card.setup({
 			title: contact.fullName,
-			subtitle: raw.title,
+			subtitle: String.splitNoEmpty(raw.title,';').join('<br/>'),
 			icon: 'resource/card.icon.contact.png',
 			content: {
-				'Department': new Reference.department(raw.department),
-				'Title': raw.title,
+				'Department(s)': new Reference.department(raw.departments),
+				'Title': String.splitNoEmpty(raw.title,';').join('<br/>'),
 				'Email': new Reference.email(raw.email),
 			},
 			/*
@@ -76,7 +85,7 @@
 			
 			// must be over-ridden
 			onDraw: function(){
-				if(location.resolved && location.isRoom) {
+				if(location && location.resolved && location.isRoom) {
 					location.getRoom().getExtent(function(geometry) {
 						Map.add({
 							extent: geometry,

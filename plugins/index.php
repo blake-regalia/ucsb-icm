@@ -42,15 +42,85 @@ else {
 }
 
 
-echo "\t",'<script type="text/javascript">',"\n";
-echo "Benchmark.stop('all scripts','load');\n";
-echo File_manifest::merge('js/plugin/manifest.txt', "/************************\n** %PATH%\n************************/\n(function(window) {", "\n}).apply({});");
-echo "\n",'</script>'."\n";
+
+$ns_vars = array(
+	'window',
+	
+	// Databases
+	'Data',
+	'Select',
+	'Query',
+	
+	// Flow control
+	'When',
+	
+	// Utilities
+	'DynamicArray',
+	'Unit',
+	
+	// Map
+	'Symbol',
+	'Map',
+	
+	// UI Control
+	"$",
+	
+	// UCSB
+	'Building'
+);
+
+
+$arglist = array();
+foreach($ns_vars as $arg) {
+	$arglist []= 'publicObjects["'.$arg.'"]';
+}
+
+$objlist = array();
+foreach($ns_vars as $arg) {
+	$objlist []= '"'.$arg.'": '.$arg;
+}
+
+$jiclist = array();
+foreach($ns_vars as $arg) {
+	$jiclist []= $arg.' = (typeof '.$arg.' === "undefined")? {}: '.$arg.';'."\n";
+}
+
+echo '<script type="text/javascript">',"\n",
+	implode('', $jiclist).
+'
+var defaultObjectClass = {
+	'.implode(",\n\t",$objlist).'
+};
+
+window.plugin = function(pluginName, publicObjects) {
+	var args = ['.implode(',',$arglist).'];
+	plugin[pluginName].apply(pluginName, args);
+};',
+'</script>',"\n";
+
+
+$js_vars = implode(',',$ns_vars);
+
+
+if(true || $merge_files['js']) {
+	echo "\t",'<script type="text/javascript">',"\n";
+	echo "Benchmark.stop('all scripts','load');\n";
+	echo File_manifest::merge('js/plugin/manifest.txt', "/************************\n** %PATH%\n************************/\n"
+		.'plugin["%PATH%"]=(function('.$js_vars.') {',
+	"\n});");
+	echo "\n",'</script>'."\n";
+}
+else {
+	echo File_manifest::gen('js/plugin/manifest.txt',
+	'<script type="text/javascript" src="js/plugin/%PATH%"></script>'
+	)."\n";
+}
 
 
 
 // commit all the CSS values into the javascript CSS object
 echo '<script type="text/javascript">',"\n",'$.extend(window.CSS,',$csx_compiler->get_json(),');',"\n",'</script>'."\n";
+echo '<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDBsk6iqJQdxOG1tEEKxCL2XQm-Fo-aTx4&sensor=false"></script>';
 
 
 echo '

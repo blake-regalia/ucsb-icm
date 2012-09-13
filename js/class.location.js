@@ -1,3 +1,12 @@
+/*!
+ * Author: Blake Regalia - blake.regalia@gmail.com
+ *
+ * Copyright 2012 Blake Regalia
+ * Released under the MIT license
+ * http://opensource.org/licenses/mit-license.php
+ *
+ */
+
 (function() {
 	
 	var __func__ = 'Location';
@@ -112,6 +121,10 @@
 			
 			isRoom: roomNumber && !!roomNumber.length,
 			
+			getBuilding: function() {
+				return Building(buildingId, buildingName);
+			},
+			
 			getRoom: function() {
 				return Room(buildingId, roomNumber);
 			},
@@ -122,7 +135,7 @@
 					return new RoomCard(room);
 				}
 				else if(resolved) {
-					var building = Building(buildingId, buildingName);;
+					var building = Building(buildingId, buildingName);
 					return new BuildingCard(building);
 				}
 			},

@@ -1,3 +1,12 @@
+/*!
+ * Author: Blake Regalia - blake.regalia@gmail.com
+ *
+ * Copyright 2012 Blake Regalia
+ * Released under the MIT license
+ * http://opensource.org/licenses/mit-license.php
+ *
+ */
+
 (function() {
 	
 	var __func__ = 'Reference';
@@ -238,21 +247,37 @@
 			
 			instance.build = function(args) {
 				
+				var list = String.splitNoEmpty(str,';');
+				
 				// build the html string
-				var html = '<button link="'+str+'">'+str+'</button>';
+				var html;
+				
+				var i = list.length;
+				html = [];
+				while(i--) {
+					// build elements for the links
+					var departmentName = list[i];
+					html.push('<button link="'+departmentName+'">'+departmentName+'</button>');
+				}
+				// implode the html string array
+				html = html.join(', ');
 				
 				// construct a standard reference dom node
 				var e_dom = refer(args, html);
 				
 				// bind events to the node
-				dojo['connect'](
-					e_dom,
-					'click',
-					function(e) {
-						e.stopPropagation();
-						new DepartmentCard(str);
-					}
-				);
+				dojo['query']('button', e_dom).forEach( function(elmt) {
+					dojo['connect'](
+						e_dom,
+						'click',
+						function(e) {
+							e.stopPropagation();
+							new DepartmentCard(
+								dojo['attr'](elmt,'link')
+							);
+						}
+					);
+				});
 				
 				// return the constructed element
 				return e_dom;

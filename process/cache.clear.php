@@ -17,8 +17,12 @@ $prefix_len = strlen($prefix);
 
 foreach($files as $f) {
 	if(substr($f, 0, $prefix_len) == $prefix) {
+		echo '-- removing: '.$f."\n";
 		unlink($f);
 	}
 }
 
+echo '===================================='."\n";
+
 ?>
+

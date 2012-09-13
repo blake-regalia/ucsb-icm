@@ -1,6 +1,13 @@
 preload.*.js
-jquery.js
-unra.js
+kit.*.js
+util.argument-resolver.js
+util.color.js
+util.color-gradient.js
 util.*.js
-dom.ready.js
+meta.*.js
+define.*.js
+class.*.js
+helper.*.js
+gui.*.js
+dom.*.js
 *.js

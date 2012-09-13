@@ -1,0 +1,17 @@
+
+each() called on data-set, perform ajax request => AJAX_RESPONSE
+
+Set initial BUFFERSIZE = Math.max(128, Math.pow(AJAX_RESPONSE, 0.5) )
+
+A::
+Queue up BUFFERSIZE elements in download queue
+
+When queue fills or timeout occurs, send queue as array to server.
+
+Server iterates through each request sequentially and writes to the output, recording how many bytes the output accumulates
+
+If threshold is exceeded, return in ajax response requests that were not fulfilled. => AJAX_RESPONSE
+
+Client resets BUFFERSIZE to sizeof(AJAX_RESPONSE)
+
+goto A;
