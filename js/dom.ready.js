@@ -14,4 +14,8 @@ dojo['addOnLoad'](function() {
 	new Omnibox('#omnibox');
 	new CardDeck('stack', dojo['byId']('info-deck'));
 	new Map();
+	initLayers();
+	addLayer('recycling');
+	
+	console.log('Done!');
 });

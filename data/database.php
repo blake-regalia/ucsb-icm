@@ -274,7 +274,8 @@ class MySQL_Pointer {
 		$link = mysql_connect($server, $user, $pass, $new, $flags);
 		
 		if($link === FALSE) {
-			die('failed to connect to MySQL server');
+		    print('<br>'.$server.$user.$pass.$new.$flags.'<br>');
+			die('failed to connect to MySQL server'.mysql_error());
 			exit;
 		}
 		else {
