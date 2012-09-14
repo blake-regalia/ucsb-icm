@@ -1,6 +1,6 @@
 <?
 
-$MACHINE = 'basus';
+$MACHINE = 'map';
 $DEFAULT_DATABSE = 'ucsb';
 
 /*** database ***/
@@ -24,6 +24,18 @@ $databases = array(
 		'PASS' => '',
 		'db_name' => $DEFAULT_DATABSE,
 	),
+    'sniper' => array(
+        'HOST' => 'localhost',
+        'USER' => 'root',
+        'PASS' => 'root',
+        'db_name' => $DEFAULT_DATABSE,
+    ),
+    'map' => array(
+        'HOST' => 'map.geog.ucsb.edu',
+        'USER' => 'icm',
+        'PASS' => 'ca23m@p$QL',
+        'db_name' => $DEFAULT_DATABSE,
+    ),
 );
 
 if($databases[$MACHINE]) {
@@ -37,5 +49,6 @@ else {
 		'db_name' => $DEFAULT_DATABSE,
 	);
 }
+
 
 ?>
