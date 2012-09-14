@@ -1,1 +1,0 @@
-{"sql":"SELECT * FROM `ucsb`.`facility_buildings` WHERE (CONCAT(`buildingName`) = 'Embarcadero Hall');","data":[{"buildingId":"941","buildingName":"Embarcadero Hall","buildingAbrv":"","buildingUse":"Acad &amp; Admin","baseArea":"0","departments":"","photo":""}],"path":"ucsb\/facility.buildings@([`buildingName`]='Embarcadero Hall').json"}

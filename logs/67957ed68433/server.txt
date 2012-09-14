@@ -1,0 +1,17 @@
+Array
+(
+    [PHPRC] => C:/Users/bryan/Desktop/UwAmp/bin/php/php-5.2.17
+    [HTTP_HOST] => 128.111.104.241
+    [HTTP_REFERER] => http://128.111.104.241/ucsb-icm/
+    [SystemRoot] => C:\Windows
+    [SERVER_SIGNATURE] => <address>Apache/2.2.17 (Win32) PHP/5.2.17 Server at 128.111.104.241 Port 80</address>
+
+    [SERVER_NAME] => 128.111.104.241
+    [SERVER_ADDR] => 128.111.104.241
+    [SERVER_PORT] => 80
+    [DOCUMENT_ROOT] => C:/Users/bryan/Desktop/UwAmp/www/
+    [SERVER_ADMIN] => contact@exemple.com
+    [SCRIPT_FILENAME] => C:/Dropbox/ucsb-geog/ucsb-icm/benchmark.php
+    [SERVER_PROTOCOL] => HTTP/1.1
+    [PHP_SELF] => /ucsb-icm/benchmark.php
+)
