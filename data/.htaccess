@@ -1,2 +1,2 @@
 RewriteEngine On
-RewriteRule ^([a-zA-Z_.-][a-zA-Z0-9_.-]*)/([^/]+)\.(json|sql|html)(!?)$ /ucsb-icm/data/get.json.php?d=$1&q=$2&f=$3&b=$4
+RewriteRule ^([a-zA-Z_.-][a-zA-Z0-9_.-]*)/([^/]+)\.(json|sql|html)(!?)$ get.json.php?d=$1&q=$2&f=$3&b=$4
