@@ -1,3 +1,9 @@
+	dojo.require("dijit.layout.BorderContainer");
+	dojo.require("dijit.layout.ContentPane");
+	dojo.require("dijit.layout.TabContainer");
+	dojo.require("dijit.layout.AccordionContainer");
+	dojo.require("dijit.Toolbar");
+
 var _basePath = "http://map.geog.ucsb.edu:8080";
 var layers = [];  //Hol
 var layersActive = [];
@@ -10,8 +16,16 @@ function initLayer(url, type, id, opac, visibility) {
 	legendLayers.push({layer:layer});
 	return layer;
 }
+function hideLoading() {
+	document.getElementById('loadingImg').style.display = 'none';
+}
+function showLoading() {
+	document.getElementById('loadingImg').style.display = 'block';
+}
 
 function initLayers() {
+		dojo.connect(EsriMap.getMap(),"onUpdateEnd",hideLoading);
+		dojo.connect(EsriMap.getMap(),"onUpdateStart",showLoading);
 		layers['basemap'] = initLayer(_basePath+"/arcgis/rest/services/icm/basemap/MapServer", 'cached', "basemap", 1, false);
 		layers['recycling'] = initLayer(_basePath+"/arcgis/rest/services/icm/icmRecycling/MapServer", 'cached', "recycling", 1, false);
 		layers['emergencyPhones'] = initLayer(_basePath+"/arcgis/rest/services/icm/icmEmergencyPhones/MapServer", 'cached', "emergencyPhones", 1, false);	

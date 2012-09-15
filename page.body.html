@@ -1,36 +1,93 @@
-
-<body class="claro">
-
+<body class="nihilo">
 	<div id="flush">
-		
-		<div id="header">
-		
-			<div id="omnibox">
-				<input id="omnibox-input" type="text"></input>
-				
-				<div id="omnibox-results" class="omnibox-results-containers" style="display:none;">
-				
+	<div style="width:100%; height:100%;" dojotype="dijit.layout.BorderContainer">
+		<div dojotype="dijit.layout.ContentPane" region="top" style="z-index:100;">
+			<div id="header">
+			
+				<div id="omnibox">
+					<input id="omnibox-input" type="text"></input>
+					
+					<div id="omnibox-results" class="omnibox-results-containers" style="position:fixed; display:none;z-index:100">
+					
+					</div>
 				</div>
+				<div id="omnibox-results-shadow" class="omnibox-results-containers" style="display:none;"></div>
+				
+				
+				<div id="header-corner">
+					<img class="campus-logo" src="resource/ucsb-logo.png"></img>
+				</div>
+				
+				
 			</div>
 			
-			
-			<div id="header-corner">
-				<img class="campus-logo" src="resource/ucsb-logo.png"></img>
+		</div>
+
+		<div dojotype="dijit.layout.BorderContainer" region="center" id="content" style="margin:0px; position:absolute;">
+		
+			<div dojotype="dijit.layout.ContentPane" class="dijitContentPane" id="map" style="position:absolute; overflow:hidden; border: 1px solid silver; padding:0px !important;" gutters="false" region="center">
+				<img id="loadingImg" src="images/loading.gif" style="position:absolute; right:50%; top:50%; z-index:100;" />
+				<div id="mapScale" style="background-color:whitesmoke; font-weight:bolder; font-size:smaller; text-align:right; position:absolute; padding:3px; right:30px; bottom:6px; z-index:99;">1:1,154,287</div>     
+				<div id="mapPosition" style="background-color:whitesmoke; font-weight:bolder; font-size:smaller; position:absolute; padding:3px;left:30px; bottom:6px; z-index:99;"></div>
+				<div id="info-deck"></div>
 			</div>
-			
-			<div>Swap Layers: <a href="javascript:changeLayer('recycling')">Recycle</a> | <a href="javascript:changeLayer('emergencyPhones')">Emergency Phones</a> || Add Layers: <a href="javascript:addLayer('recycling')">Recycle</a> | <a href="javascript:addLayer('emergencyPhones')">Emergency Phones</a>  || <a href="javascript:clearLayers();">Clear Map</a><br />
+		
+			<div id="legend" dojotype="dijit.layout.ContentPane" region="bottom">
+				Legend /could/ go here.
 			</div>
 		</div>
 		
-		<div id="omnibox-results-shadow" class="omnibox-results-containers" style="display:none;"></div>
-		
-		<div id="content">
-			<div id="map">
-				<div id="legendDiv"></div>
-			</div>
-			
-			<div id="info-deck"></div>
-		
-	</div>
+
+
+		<div dojotype="dijit.layout.BorderContainer" region="left" style="margin:0px; position:absolute; width:12%">
+			<div id="LeftHeaderPane" dojotype="dijit.layout.ContentPane" region="top" style="border:1px solid silver; padding:0px;">
+				<!-- navigation toolbar-->
+				<div id="navToolbar" dojoType="dijit.Toolbar" style="text-align:center">
+						<div dojoType="dijit.form.Button" id="zoommain" iconClass="zoommainIcon" onClick="mainCampusExtent()">Main</div>
+						<div dojoType="dijit.form.Button" id="zoomfullext" iconClass="zoomfullextIcon" onClick="navToolbar.zoomToFullExtent();">Full</div>
+						<div dojoType="dijit.form.Button" id="zoomprev" iconClass="zoomprevIcon" onClick="navToolbar.zoomToPrevExtent();">Prev</div>
+						<div dojoType="dijit.form.Button" id="zoomnext" iconClass="zoomnextIcon" onClick="navToolbar.zoomToNextExtent();">Next</div>
+				</div>
+			</div>  
 	
+	
+	
+			<div id="fancy" dojotype="dijit.layout.ContentPane" region="left" style="width:100%; border:1px solid silver; position:absolute; padding:0px !important;">
+				<div dojoType="dijit.layout.AccordionContainer" id="AccordionContainer" duration="200" style="width:100%; overflow: hidden">
+
+					<div dojoType="dijit.layout.ContentPane" title="Legend">
+						<div id="legendDiv"></div>
+					</div>
+
+					<div dojoType="dijit.layout.ContentPane" title="Layers">
+						<div>
+							Swap Layers:<br /> <a href="javascript:changeLayer('recycling')">Recycle</a> | <a href="javascript:changeLayer('emergencyPhones')">Emergency Phones</a>
+							<br /><br />
+							Add Layers:<br /> <a href="javascript:addLayer('recycling')">Recycle</a> | <a href="javascript:addLayer('emergencyPhones')">Emergency Phones</a>
+							<br /><br />
+							<a href="javascript:clearLayers();">Clear Map</a>
+						</div>				
+					</div> 
+           
+					<div dojoType="dijit.layout.ContentPane" title="Course Locator">						
+					</div>
+
+					<div dojoType="dijit.layout.ContentPane" title="Room Locator"> 
+					</div>
+                
+					<div dojoType="dijit.layout.ContentPane" title="Parking">
+					</div>
+					
+				</div>
+			</div>
+		
+			<div id="attributionPane" dojotype="dijit.layout.ContentPane" region="bottom">
+				<!--This div is for the icons-->
+				<div id="attributionIcons" style="text-align:center;"><a href="http://www.geog.ucsb.edu" target="_blank"><img src="images/geogLogo.png" alt="Developed by UCSB Geography" align="middle" border="0" style="height:50; margin:5px"></a></div>
+				<!--This div is for the text-->
+				<div id="attributionText" style="text-align:center; font-size:smaller">Actively developed by UCSB Geography Students</div>
+			</div>
+		</div>
+	</div>
+
 </body>

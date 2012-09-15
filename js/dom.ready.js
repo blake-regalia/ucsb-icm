@@ -15,5 +15,4 @@ dojo['addOnLoad'](function() {
 	initLayers();
 	initLegend();
 	console.log('Done!');
-	
 });
