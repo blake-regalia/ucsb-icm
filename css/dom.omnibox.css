@@ -3,8 +3,9 @@
 omnibox: {
 	position: 'absolute',
 	
-	width: '38%',
+	width: '15%',
 	height: header.height * 0.4,
+
 	
 	left: '12px',
 	top: header.height*0.5 - this.height*0.5,
@@ -31,9 +32,9 @@ omnibox: {
 	zIndex: 128,
 		
 	results: {
-		position: 'absolute',
+		position: 'fixed',
 		
-		width: '100%',
+		width: '33%',
 		height: '200px',
 		
 		padding: '0 6px',

@@ -1,7 +1,7 @@
 /** <csx> **/
 
 header: {
-	position: 'absolute',
+	position: 'relative',
 	
 	width: '100%',
 	height: '84px',
