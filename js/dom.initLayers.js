@@ -29,7 +29,7 @@ function initLayers() {
 		//Example resizing the browser window
 		dojo.connect(window, 'resize', EsriMap.getMap(),EsriMap.getMap().resize);
 		//Example resizing a dojo ContentPane
-		dojo.connect(contentPane,"resize",EsriMap.getMap(),EsriMap.getMap().resize);
+		dojo.connect(document.getElementById('content'),"resize",EsriMap.getMap(),EsriMap.getMap().resize);
 		
 		layers['basemap'] = initLayer(_basePath+"/arcgis/rest/services/icm/basemap/MapServer", 'cached', "basemap", 1, false);
 		layers['recycling'] = initLayer(_basePath+"/arcgis/rest/services/icm/icmRecycling/MapServer", 'cached', "recycling", 1, false);
@@ -50,7 +50,6 @@ function addLayer(layer) {
 function clearLayers() {
 	if (layersActive.length > 0) {  //if there are active layers, start the loop
 		layersActive.forEach(function(layer) {
-			console.log('Active Layer: '+layer);
 			layers[layer].setVisibility(false);
 		});
 		layersActive = [];
