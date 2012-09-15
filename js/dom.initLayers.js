@@ -26,6 +26,11 @@ function showLoading() {
 function initLayers() {
 		dojo.connect(EsriMap.getMap(),"onUpdateEnd",hideLoading);
 		dojo.connect(EsriMap.getMap(),"onUpdateStart",showLoading);
+		//Example resizing the browser window
+		dojo.connect(window, 'resize', EsriMap.getMap(),EsriMap.getMap().resize);
+		//Example resizing a dojo ContentPane
+		dojo.connect(contentPane,"resize",EsriMap.getMap(),EsriMap.getMap().resize);
+		
 		layers['basemap'] = initLayer(_basePath+"/arcgis/rest/services/icm/basemap/MapServer", 'cached', "basemap", 1, false);
 		layers['recycling'] = initLayer(_basePath+"/arcgis/rest/services/icm/icmRecycling/MapServer", 'cached', "recycling", 1, false);
 		layers['emergencyPhones'] = initLayer(_basePath+"/arcgis/rest/services/icm/icmEmergencyPhones/MapServer", 'cached', "emergencyPhones", 1, false);	
