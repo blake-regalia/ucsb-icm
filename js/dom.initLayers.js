@@ -17,10 +17,16 @@ function initLayers() {
 		layers['emergencyPhones'] = initLayer(_basePath+"/arcgis/rest/services/icm/icmEmergencyPhones/MapServer", 'cached', "emergencyPhones", 1, false);
 }
 function addLayer(layer) {
-	EsriMap.getMap().addLayers([layers[layer]]);
-	layers[layer].setVisibility(true);	
-	//Adds the newly active layer id to the top of the activeLayers array
-	layersActive.unshift(layers[layer].id);
+	if (layersActive.indexOf(layer) == -1) { // check if layer is already active.
+			EsriMap.getMap().addLayers([layers[layer]]);
+			layers[layer].setVisibility(true);	
+			//Adds the newly active layer id to the top of the activeLayers array
+			layersActive.unshift(layers[layer].id);
+	}
+	else {
+		console.log('Layer "'+layer+'" already active.');
+	}
+
 }
 function clearLayers() {
 	if (layersActive.length > 0) {  //if there are active layers, start the loop
