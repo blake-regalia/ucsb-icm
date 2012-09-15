@@ -18,7 +18,7 @@ function initLayers() {
 }
 function addLayer(layer) {
 	EsriMap.getMap().addLayers([layers[layer]]);
-	
+	layers[layer].setVisibility(true);	
 	//Adds the newly active layer id to the top of the activeLayers array
 	layersActive.unshift(layers[layer].id);
 }
@@ -26,7 +26,7 @@ function clearLayers() {
 	if (layersActive.length > 0) {  //if there are active layers, start the loop
 		layersActive.forEach(function(layer) {
 			console.log('Active Layer: '+layer);
-			layers[layer].setVisibility(!layers[layer].visible);
+			layers[layer].setVisibility(false);
 		});
 		layersActive = [];
 	}
@@ -38,5 +38,5 @@ function clearLayers() {
 function changeLayer(layer) {
 	clearLayers();
 	addLayer(layer);
-	layers[layer].setVisibility(!layers[layer].visible);
+	layers[layer].setVisibility(true);
 }
