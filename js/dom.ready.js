@@ -1,5 +1,3 @@
-
-
 function projectToWM(lat, lng) {
 	var source = new Proj4js.Proj('EPSG:4326');
 	var dest = new Proj4js.Proj('EPSG:900913');
@@ -15,7 +13,7 @@ dojo['addOnLoad'](function() {
 	new CardDeck('stack', dojo['byId']('info-deck'));
 	new Map();
 	initLayers();
-	addLayer('recycling');
 	
 	console.log('Done!');
+	
 });
