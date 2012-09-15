@@ -13,7 +13,7 @@ dojo['addOnLoad'](function() {
 	new CardDeck('stack', dojo['byId']('info-deck'));
 	new Map();
 	initLayers();
-	
+	initLegend();
 	console.log('Done!');
 	
 });
