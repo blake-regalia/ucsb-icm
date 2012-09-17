@@ -134,7 +134,7 @@ $ASP_Tokens = array(
 	'__EVENTVALIDATION' => pq('#__EVENTVALIDATION')->val(),
 );
 
-// store all the department options
+// store all the subject options
 $courseOptions = array();
 
 function saveCourseOption($option) {
@@ -151,7 +151,7 @@ unset($initPage);
 
 
 
-if($limitOneDepartment) {
+if($limitOneSubject) {
 	$courseOptions = array($param_dept);
 }
 
@@ -164,7 +164,7 @@ $db->createTable($db_table_name, array(
 	'courseTitle'    => 'varchar(255)',
 	'fullTitle'      => 'varchar(255)',
 	'description'    => 'varchar(255)',
-	'department'     => 'varchar(255)',
+	'subject'        => 'varchar(255)',
 	'preReq'         => 'varchar(255)',
 	'college'        => 'varchar(255)',
 	'units'          => 'varchar(255)',
@@ -201,7 +201,7 @@ function format($str) {
 $records = array();
 
 /** function responsible for extracting fields from each row **/
-function extractRow($row, $department) {
+function extractRow($row, $subject) {
 	global $records, $db, $course_level;
 	$array = &$records;
 	
@@ -264,7 +264,7 @@ function extractRow($row, $department) {
 		'courseTitle'    => $courseTitle,
 		'fullTitle'      => $fullTitle,
 		'description'    => $description,
-		'department'     => $department,
+		'subject'        => $subject,
 		'preReq'         => $preReq,
 		'college'        => $college,
 		'units'          => $units,
@@ -292,15 +292,15 @@ function extractRow($row, $department) {
 
 ob_start();
 
-/* iterate through every department and scrape their info */
-foreach($courseOptions as $department) {
+/* iterate through every subject and scrape their info */
+foreach($courseOptions as $subject) {
 	
 	// initialize a curl object
 	$regHandle = curl_init();
 	
 	// prepare the post field data
 	$regPostFieldsArray = $ASP_Tokens + array(
-		'ctl00$pageContent$courseList'           => $department,
+		'ctl00$pageContent$courseList'           => $subject,
 		'ctl00$pageContent$quarterList'          => $param_qtr,
 		'ctl00$pageContent$dropDownCourseLevels' => $param_level,
 		'ctl00$pageContent$searchButton.x'       => '22',
@@ -333,16 +333,16 @@ foreach($courseOptions as $department) {
 	$doc = phpQuery::newDocument($regHtml);
 	phpQuery::selectDocument($doc);
 	
-	// verbosely strip the whitespace from the department
-	$vDepartment = strtolower(preg_replace('/\s+/','',$department));
+	// verbosely strip the whitespace from the subject
+	$vSubject = strtolower(preg_replace('/\s+/','',$subject));
 	
 	// execute a callback on every occurrence
-	pq('.CourseInfoRow')->each('extractRow',new CallbackParam, $vDepartment);
+	pq('.CourseInfoRow')->each('extractRow',new CallbackParam, $vSubject);
 	
 	// cleanup
 	unset($regPage);
 	
-	echo $department."\n";
+	echo $subject."\n";
 	ob_flush();
 	flush();
 }

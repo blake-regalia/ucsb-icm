@@ -72,7 +72,9 @@
 			return instance;
 		}
 		else {
-			return global.warn('No-args constructor not implemented');
+			return new Department({
+				departmentName: a,
+			});
 		}
 	};
 	

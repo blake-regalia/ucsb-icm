@@ -53,7 +53,7 @@
 			subtitle: raw.fullTitle,
 			icon: 'resource/card.icon.lecture.png',
 			content: {
-				'Department': new Reference.department(raw.department),
+				'Subject': new Reference.subject(raw.subject),
 				'Description': raw.description,
 				'Days': raw.days,
 				'Time': raw.time,

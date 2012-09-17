@@ -241,6 +241,49 @@
 		},
 		
 		
+		subject: function(str) {
+			
+			var instance = construct.apply(this, arguments);
+			
+			instance.build = function(args) {
+				
+				// build the html string
+				var html = [];
+				
+				html.push('<button link="'+str+'">'+str.toUpperCase()+'</button>');
+				
+				// implode the html string array
+				html = html.join(', ');
+				
+				// construct a standard reference dom node
+				var e_dom = refer(args, html);
+				
+				// bind events to the node
+				dojo['query']('button', e_dom).forEach( function(elmt) {
+					dojo['connect'](
+						e_dom,
+						'click',
+						function(e) {
+							e.stopPropagation();
+							/*
+							new SubjectCard(
+								dojo['attr'](elmt,'link')
+							);
+							*/
+							global.warn('Subject Cards not implemented yet');
+						}
+					);
+				});
+				
+				// return the constructed element
+				return e_dom;
+			};
+			
+			// return an object instance
+			return instance;
+		},
+		
+		
 		department: function(str) {
 			
 			var instance = construct.apply(this, arguments);

@@ -39,6 +39,7 @@
 		**/
 		var buildingId = building.buildingId;
 		var buildingName = building.buildingName;
+		var departments = null;
 		
 		var eventHandler = new EventHandler();
 		
@@ -90,6 +91,22 @@
 				}
 			},
 			
+			// returns an array of department objects
+			getDepartments: function() {
+			
+				// wait until the last minute to generate department references
+				if(departments === null) {
+					var list = String.splitNoEmpty(building.departments, ';');
+					var i = list.length;
+					while(i--) {
+						departments.push(
+							Department(list[i]);
+						);
+					}
+				}
+				
+				return departments;
+			},
 			
 			// over-ride toString method
 			toString: function() {
