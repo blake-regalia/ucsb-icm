@@ -35,7 +35,7 @@
 			if(arguments.length === 1) {
 				// return a callback function handler
 				return function() {
-					var len = handlerList.length-1, i = 0;
+					var len = handlerList.length-1, i = -1;
 					while(i++ != len) {
 						handlerList[i].apply(this, arguments);
 					}
