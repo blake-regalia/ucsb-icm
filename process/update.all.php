@@ -1,5 +1,7 @@
 <?php
 
+require "cmd.exec.php";
+
 $JOIN_CHAR = '_';
 
 $quarter = 'summer';
@@ -23,19 +25,7 @@ $cmds = array(
 );
 
 
-
-foreach($cmds as $cmdStr) {
-	attempt($cmdStr);
-}
-
-function attempt($cmd) {
-	exec($cmd, $out, $err);
-	echo implode("\n",$out);
-	if($err) {
-		echo "\n";
-		exit(1);
-	}
-}
+cmd::exec($cmds);
 
 
 ?>

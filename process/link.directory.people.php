@@ -1,6 +1,7 @@
 <?php
 
 require "../database.php";
+require "cmd.exec.php";
 
 // initialize the object to connect to a database
 $rgdb = new MySQL_Pointer('ucsb');
@@ -265,18 +266,6 @@ $cmds = array(
 	'php table.split.php "'.$base_table_lecture.'" "courseLevel"',
 );
 
-foreach($cmds as $cmdStr) {
-	attempt($cmdStr);
-}
-
-function attempt($cmd) {
-	echo "\n".'$ '.$cmd."\n";
-	exec($cmd, $out, $err);
-	echo implode("\n",$out);
-	if($err) {
-		echo "\n";
-		exit(1);
-	}
-}
+cmd::exec($cmds);
 
 ?>

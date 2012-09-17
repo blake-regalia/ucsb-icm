@@ -1,5 +1,7 @@
 <?php
 
+require "cmd.exec.php";
+
 $JOIN_CHAR = '_';
 $AUTOUPDATE_DATABASE = "source".$JOIN_CHAR."autoupdate";
 
@@ -25,19 +27,7 @@ $cmds = array(
 );
 
 
-foreach($cmds as $cmdStr) {
-	attempt($cmdStr);
-}
-
-function attempt($cmd) {
-	echo "\n".'$ '.$cmd."\n";
-	exec($cmd, $out, $err);
-	echo implode("\n",$out);
-	if($err) {
-		echo "\n";
-		exit(1);
-	}
-}
+cmd::exec($cmds);
 
 
 ?>

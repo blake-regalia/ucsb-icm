@@ -75,10 +75,11 @@ $tableRegex = '/^'.
 	preg_replace(
 		array_keys($delimeterReplacements),
 		array_values($delimeterReplacements),
-		$table).'\\..+/';
+		$table).'\\'.$JOIN_CHAR.'.+/';
 
 // perform a regex test on all table names and remove any with the given table prefix
 $allTables = $db->getTables();
+
 foreach($allTables as $aTableName) {
 	if(preg_match($tableRegex, $aTableName)) {
 		echo 'dropping table: '.$aTableName."\n";
