@@ -125,7 +125,7 @@ class MySQL_Pointer {
 	}
 	
 	function resolveClause($array, $glue=' AND ') {
-		$plode = '';
+		$plode = array();
 		foreach($array as $key => $value) {
 			$plode[]= "`".$this->escapeField($key)."` = '".$this->escapeValue($value)."'";
 		}
