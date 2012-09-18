@@ -100,7 +100,7 @@
 					var i = list.length;
 					while(i--) {
 						departments.push(
-							Department(list[i]);
+							Department(list[i])
 						);
 					}
 				}

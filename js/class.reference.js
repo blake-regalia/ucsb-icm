@@ -246,11 +246,13 @@
 			var instance = construct.apply(this, arguments);
 			
 			instance.build = function(args) {
+			
+				str = str.toUpperCase();
 				
 				// build the html string
 				var html = [];
 				
-				html.push('<button link="'+str+'">'+str.toUpperCase()+'</button>');
+				html.push('<button link="'+str+'">'+str+'</button>');
 				
 				// implode the html string array
 				html = html.join(', ');
@@ -265,12 +267,11 @@
 						'click',
 						function(e) {
 							e.stopPropagation();
-							/*
 							new SubjectCard(
-								dojo['attr'](elmt,'link')
+								Subject(
+									dojo['attr'](elmt,'link')
+								)
 							);
-							*/
-							global.warn('Subject Cards not implemented yet');
 						}
 					);
 				});
@@ -316,7 +317,9 @@
 						function(e) {
 							e.stopPropagation();
 							new DepartmentCard(
-								dojo['attr'](elmt,'link')
+								Department(
+									dojo['attr'](elmt,'link')
+								)
 							);
 						}
 					);

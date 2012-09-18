@@ -35,7 +35,7 @@
 		var raw = department();
 		var references = {};
 		
-		if(raw.location.length) {
+		if(raw.location && raw.location.length) {
 			var location = new Location(raw.location);
 		}
 		

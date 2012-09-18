@@ -40,7 +40,8 @@ $base_table_section = $base_table.$JOIN_CHAR.'sections';
 
 $cmds = array(
 
-/**
+/**/
+
 	// drop the old table
 	'php table.drop.php --source-db="'.$AUTOUPDATE_DATABASE.'" '.$current_registrar_table.'*',
 
@@ -53,12 +54,17 @@ $cmds = array(
 	
 	// reorder registrar by field "courseTitle"
 	'php table.order.php "'.$base_table.'" "courseTitle"',
+	
 /**/
+
 	// split tables by field "courseType"
 	'php table.split.php "'.$base_table.'" "courseType"',
 	
 	// split the lecture table by "courseLevel"
 	'php table.split.php "'.$base_table_lecture.'" "courseLevel"',
+	
+	// clear any cached files realted to this dataset
+	'php cache.clear.php "'.$base_table.'"',
 	
 );
 

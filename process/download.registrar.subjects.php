@@ -52,7 +52,7 @@ foreach($list as $abrv => $title) {
 	// insert into table
 	$res = $db->insert(
 		array(
-			'subjectTitle' => $title,
+			'subjectName' => $title,
 			'subjectAbrv' => $abrv,
 		)
 	);

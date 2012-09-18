@@ -9,19 +9,18 @@
 
 /**
 *
-* public class ContactCard extends Card
+* public class BuildingCard extends Card
 *
 **/
 (function() {
 	
-	var __func__ = 'ContactCard';
+	var __func__ = 'SubjectCard';
 	
 	
-	
-	var construct = function(contact) {
+	var construct = function(subject) {
 		
 		// super's constructor
-		var card = new Card('contact:'+contact.id);
+		var card = new Card('subject:'+subject.id);
 		
 		// if this card already exists in the stack
 		if(card.index !== -1) {
@@ -33,45 +32,23 @@
 		/**
 		* private:
 		**/
-		var raw = contact();
+		var raw = subject();
 		var references = {};
 		
-		// resolve references to courses
-		if(raw.instructs && raw.instructs.length) {
-			references['Instructs'] = new Reference.course(String.splitNoEmpty(raw.instructs));
-		}
-		
-		// resolve office location
-		if(raw.location.length) {
+		if(raw.location && raw.location.length) {
 			var location = new Location(raw.location);
-			references['Office'] = new Reference.location(raw.location);
-		}
-		
-		var iconType = 'contact';
-		if(/professor/i.test(raw.title) || /lecture/i.test(raw.title)) {
-			iconType = 'lecturer';
 		}
 		
 		// setup the format of the card
 		card.setup({
-			title: contact.fullName,
-			subtitle: String.splitNoEmpty(raw.title,';').join('<br/>'),
-			icon: 'resource/card.icon.'+iconType+'.png',
+			title: raw.subjectAbrv,
+			subtitle: raw.subjectName,
+			icon: 'resource/card.icon.subject.png',
 			content: {
-				'Department(s)': new Reference.department(raw.departments),
-				'Title': String.splitNoEmpty(raw.title,';').join('<br/>'),
-				'Email': new Reference.email(raw.email),
 			},
-			/*
-			image: {
-				google: {
-					demo: (raw.firstName.toLowerCase() == 'blake' && raw.lastName.toLowerCase() == 'regalia')? true: false,
-					args: [raw.firstName+' '+raw.lastName],
-				},
-				url: 'http://www.excursionclubucsb.org/Excursion_Club_at_UCSB/bio/blake.jpg',
+			references: {
+//				'Administration': new Reference.administration(people),
 			},
-			*/
-			references: references,
 		});
 		
 		
@@ -88,7 +65,7 @@
 		**/
 		$.extend(card, {
 			
-			// must be over-ridden
+			// fires when the card is drawn from the stack
 			onDraw: function(){
 				if(location && location.resolved && location.isRoom) {
 					location.getRoom().getExtent(function(geometry) {
@@ -100,8 +77,10 @@
 				}
 			},
 			
-			// must be over-ridden
-			onFold: function() {},
+			// fires when the card is being folded into the stack
+			onFold: function() {
+				
+			},
 		});
 		
 		

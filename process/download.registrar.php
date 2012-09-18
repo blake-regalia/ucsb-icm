@@ -217,12 +217,12 @@ function extractRow($row, $subject) {
 	
 	/* deatiled information box */
 	$masterCourseTable = pq($row)->find('.MasterCourseTable');
-	$fullTitle   = $masterCourseTable->find('span[id$="labelTitle"]')->text();
-	$description = $masterCourseTable->find('span[id$="labelDescription"]')->text();
-	$preReq      = $masterCourseTable->find('span[id$="labelPreReqComment"]')->text();
-	$college     = $masterCourseTable->find('span[id$="labelCollege"]')->text();
-	$units       = $masterCourseTable->find('span[id$="labelUnits"]')->text();
-	$grading     = $masterCourseTable->find('span[id$="labelQuarter"]')->text();
+	$fullTitle   = format($masterCourseTable->find('span[id$="labelTitle"]')->text());
+	$description = format($masterCourseTable->find('span[id$="labelDescription"]')->text());
+	$preReq      = format($masterCourseTable->find('span[id$="labelPreReqComment"]')->text());
+	$college     = format($masterCourseTable->find('span[id$="labelCollege"]')->text());
+	$units       = format($masterCourseTable->find('span[id$="labelUnits"]')->text());
+	$grading     = format($masterCourseTable->find('span[id$="labelQuarter"]')->text());
 	
 	// primary title, indicates that it is a lecture
 	$primaryTitle = pq($row)->find('span[id$="HyperLinkPrimaryCourse"]')->text();
